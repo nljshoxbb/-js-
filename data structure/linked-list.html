@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    //Node class
+    function Node(element) {
+        this.element = element;
+        this.next = null;
+    }
+
+    //LinkedList class
+    function LList() {
+        this.head = new Node("head");
+        this.find = find;
+        this.insert = insert;
+        this.remove = remove;
+        this.findPrevious = findPrevious;
+        this.display = display;
+    }
+
+    //遍历链表，查找给定数据
+    function find(item) {
+
+        var currNode = this.head;
+        while (currNode.element != item) {
+            currNode = currNode.next;
+        }
+        return currNode;
+    }
+
+    // insert
+    function insert(newElement, item) {
+        var newNode = new Node(newElement);
+        var current = this.find(item);
+        newNode.next = current.next;
+        current.next = newNode;
+    }
+
+    //待删除节点前面的节点
+    function findPrevious(item) {
+        var currNode = this.head;
+        //检查每一个节点的下 一个节点中是否存储着待删除数据
+        while (currNode.next !== null && (currNode.next.element != item)) {
+            currNode = currNode.next;
+        }
+        return currNode;
+    }
+
+    function remove(item) {
+        var prevNode = this.findPrevious(item);
+        if (prevNode.next !== null) {
+            prevNode.next = prevNode.next.next;
+        }
+    }
+
+
+    function display() {
+        var currNode = this.head;
+        while (!(currNode.next == null)) {
+            currNode = currNode.next;
+            console.log(currNode);
+        }
+     }
+
+     //===========  es6 ===============
+    class Node {
+        constructor(element) {
+            this.element = element;
+            this.next = null;
+        }
+    }
+
+    class LList {
+        constructor() {
+            this.head = new Node("head");
+        }
+
+        find(item) {
+            let currNode = this.head;
+            while (currNode.element != item) {
+                currNode = currNode.next;
+            }
+            return currNode;
+        }
+        insert(newElement, item) {
+            let newNode = new Node(newElement);
+            let current = this.find(item);
+            newNode.next = current.next;
+            current.next = newNode;
+        }
+
+        findPrevious(item) {
+            let currNode = this.head;
+            while (currNode.next !== null && (currNode.next.element != item)) {
+                currNode = currNode.next;
+            }
+            return currNode;
+        }
+
+        remove(item) {
+            let prevNode = this.findPrevious(item);
+            if (prevNode.next !== null) {
+                prevNode.next = prevNode.next.next;
+            }
+        }
+
+        display() {
+            let currNode = this.head;
+            while (currNode.next !== null) {
+                currNode = currNode.next;
+                console.log(currNode);
+            }
+        }
+
+    }
+    var cities = new LList();
+    cities.insert("Conway", "head");
+    cities.insert("Russellville", "Conway");
+    cities.insert("alma", "Russellville");
+    cities.remove("Russellville");
+    cities.display();
+
+</script>
+
+</html>
