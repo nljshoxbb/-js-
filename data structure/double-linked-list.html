@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    function Node(element) {
+        this.element = element;
+        this.next = null;
+        this.previous = null;
+    }
+
+    function DLList() {
+        this.head = new Node('head');
+        this.find = find;
+        this.insert = insert;
+        this.display = display;
+        this.remove = remove;
+        this.findLast = findLast;
+        this.dispReverse = dispReverse;
+    }
+
+    function insert(newElement, item) {
+        var newNode = new Node(newElement);
+        var current = this.find(item);
+        newNode.next = current.next;
+        newNode.previous = current;
+        current.next = newNode;
+    }
+
+    function find(item) {
+        var currNode = this.head;
+        while (currNode.element != item) {
+            currNode = currNode.next;
+        }
+        return currNode;
+    }
+
+    //双向链表的 remove() 方法比单向链表的效率更高,因为不需要再查找前驱节点了
+    function remove(item) {
+        var currNode = this.find(item);
+        if (currNode.next !== null) {
+            currNode.previous.next = currNode.next;
+            currNode.next.previous = currNode.previous;
+            currNode.next = null;
+            currNode.previous = null;
+        }
+    }
+    //为了完成以反序显示链表中元素这类任务,需要给双向链表增加一个工具方法,用来查找 最后的节点
+    function findLast() {
+        var currNode = this.head;
+        while (currNode.next !== null) {
+            currNode = currNode.next;
+        }
+        return currNode;
+    }
+    //反序显示双向链表中的元素
+    function dispReverse() {
+        var currNode = this.head;
+        currNode = this.findLast();
+        while (currNode.previous !== null) {
+            console.log(currNode.element);
+            currNode = currNode.previous;
+        }
+    }
+    function display() {
+        var currNode = this.head;
+        while (!(currNode.next == null)) {
+            console.log(currNode.next.element);
+            currNode = currNode.next;
+        }
+    }
+
+</script>
+<script>
+    class Node {
+        constructor(element) {
+            this.element = element;
+            this.next = null;
+            this.previous = null;
+        }
+    }
+
+    class DLList {
+        constructor() {
+            this.head = new Node('head');
+        }
+        find(item) {
+            let currNode = this.head;
+            while (currNode.element != item) {
+                currNode = currNode.next;
+            }
+            return currNode;
+        }
+        findLast() {
+            let currNode = this.head;
+            while (currNode.next != null) {
+                currNode = currNode.next;
+            }
+            return currNode;
+        }
+        insert(newElement, item) {
+            let newNode = new Node(newElement);
+            let current = this.find(item);
+            newNode.next = current.next;
+            newNode.previous = current;
+            current.next = newNode;
+        }
+        remove(item) {
+            let currNode = this.find(item);
+            if (currNode.next != null) {
+                currNode.previous.next = currNode.next;
+                currNode.next.previous = currNode.previous;
+                currNode.next = null;
+                currNode.previous = null;
+            }
+        }
+        display() {
+            let currNode = this.head;
+            while (currNode.next !== null) {
+                console.log(currNode.element);
+                currNode = currNode.next;
+            }
+        }
+        dispReverse() {
+            let currNode = this.head;
+            while (currNode.previous != null) {
+                console.log(currNode.element);
+                currNode = currNode.previous;
+            }
+        }
+
+    }
+    var cities = new DLList();
+    cities.insert("Conway", "head");
+    cities.insert("Russellville", "Conway");
+    cities.insert("Carlisle", "Russellville");
+    cities.insert("Alma", "Carlisle");
+    cities.display();
+
+    cities.remove("Carlisle");
+    cities.display();
+    cities.dispReverse();
+
+</script>
+
+</html>
