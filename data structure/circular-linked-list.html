@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    class Node {
+        constructor(element) {
+            this.element = element;
+            this.next = null;
+            this.previous = null;
+        }
+    }
+
+    class CLList {
+        constructor() {
+            this.head = new Node('head');
+            this.head.next = this.head;
+        }
+        find(item) {
+            let currNode = this.head;
+            while (currNode.element != item) {
+                currNode = currNode.next;
+            }
+            return currNode;
+        }
+        findLast() {
+            let currNode = this.head;
+            while (currNode.next != null) {
+                currNode = currNode.next;
+            }
+            return currNode;
+        }
+        insert(newElement, item) {
+            let newNode = new Node(newElement);
+            let current = this.find(item);
+            newNode.next = current.next;
+            newNode.previous = current;
+            current.next = newNode;
+        }
+        remove(item) {
+            let currNode = this.find(item);
+            if (currNode.next != null) {
+                currNode.previous.next = currNode.next;
+                currNode.next.previous = currNode.previous;
+                currNode.previous = null;
+                currNode.next = null;
+            }
+        }
+        display() {
+            let currNode = this.head;
+            while (currNode.next != null && currNode.next.element !== "head") {
+                console.log(currNode.next);
+                currNode = currNode.next;
+            }
+        }
+    }
+    var cities = new CLList();
+    cities.insert("Conway", "head");
+    cities.insert("Russellville", "Conway");
+    cities.insert("Carlisle", "Russellville");
+    cities.insert("Alma", "Carlisle");
+    cities.display();
+    cities.remove("Carlisle");
+    cities.display();
+
+</script>
+
+</html>
