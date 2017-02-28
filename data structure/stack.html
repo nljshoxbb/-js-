@@ -9,38 +9,6 @@
 <body>
 
 </body>
-<!--<script>
-    function Stack() {
-        this.dataStore = [];
-        this.top = 0;
-        this.push = push;
-        this.pop = pop;
-        this.peek = peek;
-        this.length = length;
-        this.clear = clear;
-    }
-
-    function push(element) {
-        this.dataStore[this.top++] = element;
-    }
-
-    function pop(element) {
-        this.dataStore[--this.top] = element;
-    }
-
-    function peek() {
-        return this.dataStore[this.top - 1];
-    }
-
-    function length() {
-        return this.top;
-    }
-
-    function clear() {
-        this.top = 0;
-    }
-
-</script>-->
 <script>
     class Stack {
         constructor() {
@@ -50,8 +18,8 @@
         push(element) {
             this.dataStore[this.top++] = element;
         }
-        pop(element) {
-            this.dataStore[--this.top] = element;
+        pop() {
+            return this.dataStore[--this.top];
         }
         peek() {
             return this.dataStore[this.top - 1];
@@ -63,22 +31,38 @@
             this.top = 0;
         }
     }
-    var s = new Stack();
-    s.push("David");
-    s.push("Raymond");
-    s.push("Bryan");
-    console.log("length: " + s.length());
-    console.log(s.peek());
-    var popped = s.pop();
-    console.log("The popped element is: " + popped);
-    console.log(s.peek());
-    s.push("Cynthia");
-    console.log(s.peek());
-    s.clear();
-    console.log("length: " + s.length());
-    console.log(s.peek());
-    s.push("Clayton");
-    console.log(s.peek());
+    // var s = new Stack();
+    // s.push("David");
+    // s.push("Raymond");
+    // s.push("Bryan");
+    // console.log("length: " + s.length());
+    // // console.log(s.peek());
+    // console.log(s);
+    // var popped = s.pop('Bryan');
+    // console.log("The popped element is: " + popped);
+    // console.log(s);
+    // s.push("Cynthia");
+    // console.log(s.peek());
+    // s.clear();
+    // console.log(s);
+    // console.log("length: " + s.length());
+    // console.log(s.peek());
+    // s.push("Clayton");
+    // console.log(s.peek());
+    // console.log(s)
+    // recursion
+    const recursion = (n) => {
+        let s = new Stack();
+        while (n > 1) {
+            s.push(n--);
+        }
+        let product = 1;
+        while (s.length() > 0) {
+            product *= s.pop();
+        }
+        return product;
+    }
+    console.log(recursion(5));
 
 </script>
 

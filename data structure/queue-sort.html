@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+</body>
+<script>
+    class Queque {
+        constructor() {
+            this.dataStore = [];
+        }
+        enqueue(element) {
+            this.dataStore.push(element);
+        }
+        dequeue() {
+            return this.dataStore.shift();
+        }
+        front() {
+            return this.dataStore[0];
+        }
+        back() {
+            return this.dataStore[this.dataStore.length - 1];
+        }
+        toString() {
+            let retStr = '';
+            for (let i = 0; i < this.dataStore.length; i++) {
+                retStr += this.dataStore[i] + '\n';
+            }
+            return retStr;
+        }
+        empty() {
+            if (this.dataStore.length == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    const distribute = (nums, queues, n, digit) => {
+        for (let i = 0; i < n; i++) {
+            //个位
+            if (digit == 1) {
+                //取模后的数 为所对应的队列序号，然后进入相应序号的队列中
+                queues[nums[i] % 10].enqueue(nums[i]);
+            } else {
+                queues[Math.floor(nums[i] / 10)].enqueue(nums[i]);
+            }
+        }
+    }
+    //按顺序取出各队列中的数
+    const collect = (queues, nums) => {
+        let i = 0;
+        for (let k = 0; k < 10; k++) {
+            while (!queues[k].empty()) {
+                nums[i++] = queues[k].dequeue();
+            }
+        }
+    }
+
+    const dispArray = (arr) => {
+        let displayArr = [];
+        for (let i = 0; i < arr.length; i++) {
+            displayArr.push(arr[i] + '');
+        }
+        console.log(displayArr)
+    }
+
+    let queues = [];
+    for (let i = 0; i < 10; i++) {
+        queues[i] = new Queque();
+    }
+    let nums = [];
+    for (let i = 0; i < 10; i++) {
+        nums[i] = Math.floor(Math.floor(Math.random() * 101));
+    }
+    console.log("个位排序前");
+    dispArray(nums);
+    //个位排序
+    distribute(nums, queues, 10, 1);
+    collect(queues, nums);
+    console.log("个位排序后")
+    dispArray(nums);
+    //十位排序
+    distribute(nums, queues, 10, 10);
+    collect(queues, nums);
+    console.log("十位排序后")
+    dispArray(nums);
+
+</script>
+
+</html>
