@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function foo(something) {
+            this.a = something;
+        }
+
+        var obj1 = {
+            foo: foo
+        };
+        var obj2 = {};
+
+        obj1.foo(2);
+        console.log(obj1.a);
+
+        obj1.foo.call(obj2, 3);
+        console.log(obj2.a);
+
+        var bar = new obj1.foo(4);
+        console.log(obj1.a);
+        console.log(bar.a);
+       /**
+        * 
+       1 函数是和new一起被调用的吗（new绑定）？如果是，this就是新构建的对象。
+
+        var bar = new foo()
+
+       2 函数是用call或apply被调用（明确绑定），甚至是隐藏在bind 硬绑定 之中吗？如果是，this就是明确指定的对象。
+
+        var bar = foo.call( obj2 )
+
+       3 函数是用环境对象（也称为拥有者或容器对象）被调用的吗（隐含绑定）？如果是，this就是那个环境对象。
+
+        var bar = obj1.foo()
+
+       4 否则，使用默认的this（默认绑定）。如果在strict mode下，就是undefined，否则是global对象。 var bar = foo()
+        * */
+    </script>
+</body>
+
+</html>

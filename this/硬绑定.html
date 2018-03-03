@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        (function () {
+            function foo() {
+                console.log(this.a);
+            }
+
+            var obj = {
+                a: 2
+            }
+            var bar = function () {
+                foo.call(obj);
+            }
+
+            // bar();
+            // setTimeout(bar, 1000);
+            // // bar将foo的this硬绑定到obj
+            // //所以它不可以被覆盖
+            // bar.call(window);
+            
+        })()
+    </script>
+    <script>
+        (function(){
+            function foo(something){
+                console.log(this.a,something);
+                return this.a+something;
+            }
+
+            function bind(fn,obj){
+                return function(){
+                    return fn.apply(obj,arguments);
+                }
+            }
+
+            var obj = {
+                a:2
+            }
+            var bar = bind(foo,obj);
+            var b = bar(3);
+            console.log(b);
+        })()
+    </script>
+</body>
+
+</html>

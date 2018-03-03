@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function Person(name, age, job) {
+            this.name = name;
+            this.age = age;
+            this.job = job;
+            this.sayName = function () {
+                console.log(this.name);
+            }
+        }
+
+        var person1 = new Person('nlj',26,'web');
+        var person2 = new Person('nlj2',27,'web');
+
+        // console.log(person1.sayName());
+        // console.log(person2.sayName());
+        // console.log(
+        //     person1 instanceof Object,
+        //     person1 instanceof Person,
+        //     person2 instanceof Object,
+        //     person2 instanceof Person
+        // )
+
+        // //将构造函数当作函数
+        // person1.sayName();
+        
+        // //作为普通函数
+        // Person('nlj3',28,'web');
+        // window.sayName();
+        
+        // //在另一个对象的作用域中调用
+        // var o = new Object();
+        // Person.call(o,'nlj4',29,'web');
+        // o.sayName();
+
+        console.log(person1.sayName==person2.sayName);
+    </script>
+</body>
+
+</html>

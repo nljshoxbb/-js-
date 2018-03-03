@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function SuperType(name){
+            this.name = name;
+            this.colors = ['red','blue'];
+        }
+
+        function SubType(){
+            //在将要创建的SubType实例的环境下调用SuperType构造函数。
+            //会在新的SubType对象上执行SuperType函数中定义的所有对象初始化代码。
+            //结果SubType每个实例都会有自己的colors属性副本
+            //继承SuperType
+            SuperType.call(this,'nlj');
+        }
+
+        var instance1 = new SubType();
+        var instance2 = new SubType();
+
+        instance1.colors.push("black");
+        console.log(instance1.colors);
+        console.log(instance2.colors);
+        console.log(instance1.name)
+    </script>
+</body>
+</html>

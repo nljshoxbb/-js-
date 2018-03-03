@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+            var person = {
+                name:'nlj',
+                friends:['nlj1','nlj2']
+            }
+            var anotherPerson = Object.create(person);
+            anotherPerson.name = 'nlj3';
+            anotherPerson.friends.push('nlj4');
+
+            var yetAnotherPerson = Object.create(person);
+            yetAnotherPerson.name = 'nlj5';
+            yetAnotherPerson.friends.push('nlj6');
+
+            console.log(person.friends);
+    </script>
+</body>
+</html>
