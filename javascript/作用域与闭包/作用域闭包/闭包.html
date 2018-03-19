@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 闭包就是当一个函数即使是在它的词法作用域之外被调用时，也可以记住并访问它的词法作用域。
+        function foo() {
+            var a = 2;
+
+            function bar() {
+                console.log(a);
+            }
+
+            return bar;
+        }
+
+        var baz = foo();
+
+        baz(); // 2 -- 哇噢，看到闭包了，伙计。
+        /*
+            bar() 被执行了，必然的。在这个例子中，它是在它被声明的词法作用域 外部 被执行的
+            有赖于它被声明的位置，bar()拥有一个词法作用域闭包覆盖着foo()的内部作用域，闭包为了能使bar()在以后任意的时刻可以引用这个作用域而保持它的存在。
+            bar它被编写时的词法作用域之外被调用。闭包 使这个函数可以继续访问它在编写时被定义的词法作用域
+        */
+
+
+        /*
+            var fn;
+
+            function foo() {
+                var a = 2;
+
+                function baz() {
+                    console.log( a );
+                }
+
+                fn = baz; // 将`baz`赋值给一个全局变量
+            }
+
+            function bar() {
+                fn(); // 看妈妈，我看到闭包了！
+            }
+
+            foo();
+
+            bar(); // 2
+        */
+
+        /*
+            无论我们使用什么方法将内部函数 传送 到它的词法作用域之外，它都将维护一个指向它最开始被声明时的作用域的引用，而且无论我们什么时候执行它，这个闭包就会被行使。
+        */
+    </script>
+</body>
+
+</html>

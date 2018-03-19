@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // for (var i = 0; i < 10; i++) {
+        //     console.log(i);
+        // }
+
+        // var foo = true;
+        // if (foo) {
+        //     var bar = foo * 2;
+        //     bar = something(bar);
+        //     console.log(bar);
+        // }
+
+        // try/catch
+
+        try {
+            undefined(); //用非法的操作强制产生一个异常！
+        }
+        catch (err) {
+            console.log(err); // 好用！
+        }
+
+        console.log(err); // ReferenceError: `err` not found
+
+        // let
+
+        var foo = true;
+        if (foo) {
+            { // <-- 明确的块儿
+                let bar = foo * 2;
+                bar = something(bar);
+                console.log(bar);
+            }
+        }
+
+        console.log(bar); // ReferenceError
+    </script>
+</body>
+
+</html>

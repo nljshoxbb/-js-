@@ -1,0 +1,2 @@
+1.React 组件中绑定回调
+当我们把handleClick绑定到 onClick的时候我们传递的是一个函数的引用，真正调用handleClick的是事件处理系统。因此handleClick 的this上下文和我们想向的是不一样的

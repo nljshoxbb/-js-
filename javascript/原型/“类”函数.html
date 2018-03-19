@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function Foo() {
+            // ...
+        }
+
+        Foo.prototype; // { }
+        // 每个由调用new Foo()（见第二章）而创建的对象将最终（有些随意地）被[[Prototype]]链接到这个“Foo点儿原型”对象
+
+        var a = new Foo();
+       
+        console.log(Object.getPrototypeOf(a) === Foo.prototype);
+
+        /*
+        在面向类的语言中，可以制造一个类的多个 拷贝（即“实例”），就像从模具中冲压出某些东西一样。
+        因为初始化（或者继承）类的处理意味着，“将行为计划从这个类拷贝到物理对象中”，对于每个新实例这都会发生。
+
+        但是在JavaScript中，没有这样的拷贝处理发生。你不会创建类的多个实例。你可以创建多个对象，它们的[[Prototype]]连接至一个共通对象。
+        但默认地，没有拷贝发生，如此这些对象彼此间最终不会完全分离和切断关系，而是 链接在一起。
+
+        new Foo()得到一个新对象（我们叫他a），这个新对象a内部地被[[Prototype]]链接至Foo.prototype对象。
+        结果我们得到两个对象，彼此链接。 如是而已。我们没有初始化一个对象。
+        当然我们也没有做任何从一个“类”到一个实体对象拷贝。我们只是让两个对象互相链接在一起。
+        */
+    </script>
+</body>
+
+</html>

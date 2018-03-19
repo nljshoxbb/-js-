@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function Foo() {
+            // ...
+        }
+
+        Foo.prototype.blah = 123;
+
+        var a = new Foo();
+
+        console.log(a instanceof Foo);
+        // 在a的整个[[Prototype]]链中，有没有出现被那个被Foo.prototype所随便指向的对象
+
+        Object.getPrototypeOf(a) === Foo.prototype; // true
+
+        Object.defineProperty(Object.prototype, "__proto__", {
+            get: function () {
+                return Object.getPrototypeOf(this);
+            },
+            set: function (o) {
+                // setPrototypeOf(..) as of ES6
+                Object.setPrototypeOf(this, o);
+                return o;
+            }
+        });
+    </script>
+</body>
+
+</html>

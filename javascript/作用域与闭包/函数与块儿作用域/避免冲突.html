@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function foo() {
+            function bar(a) {
+                i = 3; // 在外围的for循环的作用域中改变`i`
+                console.log(a + i);
+            }
+
+            for (var i = 0; i < 10; i++) {
+                bar(i * 2); // 噢，无限循环！
+            }
+        }
+
+        foo();
+
+        // 全局“名称空间”
+
+        var MyReallyCoolLibrary = {
+            awesome: "stuff",
+            doSomething: function () {
+                // ...
+            },
+            doAnotherThing: function () {
+                // ...
+            }
+        };
+    </script>
+</body>
+
+</html>

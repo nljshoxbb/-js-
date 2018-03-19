@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function Foo(name) {
+            this.name = name;
+        }
+
+        Foo.prototype.myName = function () {
+            return this.name;
+        };
+
+        function Bar(name, label) {
+            Foo.call(this, name);
+            this.label = label;
+        }
+
+        // 这里，我们创建一个新的`Bar.prototype`链接链到`Foo.prototype`
+        Bar.prototype = Object.create(Foo.prototype);
+
+        // 注意！现在`Bar.prototype.constructor`不存在了，
+        // 如果你有依赖这个属性的习惯的话，可以被手动“修复”。
+
+        Bar.prototype.myLabel = function () {
+            return this.label;
+        };
+
+        var a = new Bar("a", "obj a");
+
+        a.myName(); // "a"
+        a.myLabel(); // "obj a"
+
+         /* 
+         这里一个常见的误解/困惑是，下面两种方法 也 能工作，但是他们不会如你期望的那样工作
+
+         // 不会如你期望的那样工作!
+        Bar.prototype = Foo.prototype;
+
+        // 会如你期望的那样工作
+        // 但会带有你可能不想要的副作用 :
+        Bar.prototype = new Foo();
+         
+
+        Bar.prototype = Foo.prototype不会创建新对象让Bar.prototype链接。
+        它只是让Bar.prototype成为Foo.prototype的另一个引用，将Bar直接链到Foo链着的 同一个对象：Foo.prototype。
+        这意味着当你开始赋值时，比如Bar.prototype.myLabel = ...，你修改的 不是一个分离的对象 而是那个被分享的Foo.prototype对象本身，它将影响到所有链接到Foo.prototype的对象。
+        这几乎可以确定不是你想要的。如果这正是你想要的，那么你根本就不需要Bar，你应当仅使用Foo来使你的代码更简单。
+
+        Bar.prototype = new Foo()确实 创建了一个新的对象，这个新对象也的确链接到了我们希望的Foo.prototype。
+        但是，它是用Foo(..)“构造器调用”来这样做的。如果这个函数有任何副作用（比如logging，改变状态，注册其他对象，向this添加数据属性，等等），
+        这些副作用就会在链接时发生（而且很可能是对错误的对象！），而不是像可能希望的那样，仅最终在Bar()的“后裔”被创建时发生。
+          */
+    </script>
+</body>
+
+</html>

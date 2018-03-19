@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var anotherObject = {
+            a: 2
+        };
+
+        // 创建一个链接到`anotherObject`的对象
+        var myObject = Object.create(anotherObject);
+
+        myObject.a; // 2
+
+        /*
+        和这种[[Prototype]]链查询处理相似，如果你使用for..in循环迭代一个对象，所有在它的链条上可以到达的（并且是enumerable——见第三章）属性都会被枚举。
+        如果你使用in操作符来测试一个属性在一个对象上的存在性，in将会检查对象的整个链条（不管 可枚举性）
+
+        var anotherObject = {
+            a: 2
+        };
+
+        // 创建一个链接到`anotherObject`的对象
+        var myObject = Object.create( anotherObject );
+
+        for (var k in myObject) {
+            console.log("found: " + k);
+        }
+        // 找到: a
+
+        ("a" in myObject); // true
+        */
+    </script>
+</body>
+
+</html>

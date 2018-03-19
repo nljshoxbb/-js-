@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>    
+    /*
+    1.如果一个普通的名为foo的数据访问属性在[[Prototype]]链的高层某处被找到，而且没有被标记为只读（writable:false），
+      那么一个名为foo的新属性就直接添加到myObject上，形成一个 遮蔽属性。
+
+    2.如果一个foo在[[Prototype]]链的高层某处被找到，但是它被标记为 只读（writable:false） ，那么设置既存属性和在myObject上创建遮蔽属性都是 不允许 的。
+      如果代码运行在strict mode下，一个错误会被抛出。否则，这个设置属性值的操作会被无声地忽略。不论怎样，没有发生遮蔽。
+
+    3.如果一个foo在[[Prototype]]链的高层某处被找到，而且它是一个setter（见第三章），那么这个setter总是被调用。
+      没有foo会被添加到（也就是遮蔽在）myObject上，这个foo setter也不会被重定义。
+    */
+
+    var anotherObject = {
+        a:2
+    };
+
+    var myObject = Object.create(anotherObject);
+
+    console.log(anotherObject.a,myObject.a)
+
+    console.log(anotherObject.hasOwnProperty( "a" ),myObject.hasOwnProperty( "a" ),);
+
+    myObject.a++; // 噢，隐式遮蔽！
+
+    console.log(anotherObject.a,myObject.a);
+
+    console.log(myObject.hasOwnProperty( "a" ));
+
+    /*
+    虽然看起来myObject.a++应当（通过委托）查询并 原地 递增anotherObject.a属性，但是++操作符相当于myObject.a = myObject.a + 1。
+    结果就是在[[Prototype]]上进行a的[[Get]]查询，从anotherObject.a得到当前的值2，将这个值递增1，然后将值3用[[Put]]赋值到myObject上的新遮蔽属性a上
+    */
+        
+    </script>
+</body>
+
+</html>
