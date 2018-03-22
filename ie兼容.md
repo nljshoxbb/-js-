@@ -242,3 +242,18 @@ var eventshiv = {
     }
 };
 ```
+
+## 17. 列举 IE 与其他浏览器不一样的特性？
+
+* IE 支持 `currentStyle`，FIrefox 使用 `getComputStyle`
+* IE 使用 innerText，Firefox 使用 `textContent`
+* 滤镜方面：IE:`filter:alpha(opacity= num)`；Firefox：`-moz-opacity:num`
+* 事件方面：IE：`attachEvent`：火狐是 `addEventListener`
+* 鼠标位置：IE 是 `event.clientX`；火狐是 `event.pageX`
+* IE 使用 `event.srcElement`；Firefox 使用 `event.target`
+* IE 中消除 list 的原点仅需 `margin:0` 即可达到最终效果；FIrefox 需要设置 `margin:0;padding:0` 以及 `list-style:none`
+* CSS 圆角：ie7 以下不支持圆角
+
+## 18. IE 缓存问题
+
+在 IE 浏览器下，如果请求的方法是 GET，并且请求的 URL 不变，那么这个请求的结果就会被缓存。解决这个问题的办法可以通过实时改变请求的 URL，只要 URL 改变，就不会被缓存，可以通过在 URL 末尾添加上随机的时间戳参数`('t'= + new Date().getTime())`或者：`open('GET','demo.php?rand=+Math.random()',true);`
