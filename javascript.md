@@ -5,6 +5,21 @@
 3.  执行构造函数中的代码（为这个新对象添加属性）
 4.  返回新对象
 
+```
+var p = [];
+var A = new Function();
+A.prototype = p; //原型继承？？？
+var a = new A;
+a.push(1);
+console.log(a.length);
+console.log(p.length);
+// 1，0
+```
+
+`new A` 过程:
+`var obj = {};obj._proto_ = A.prototype;A.apply(obj);`
+**new 如果在继承对象是没有参数的情况下，是可以不加后面的括号的，编译器会自动替你加上的**
+
 ## 2. null 和 undefined 的区别？
 
 1.  `null` 是一个表示”无”的对象，转为数值时为 0；`undefined` 是一个表示”无”的原始值，转为数值时为 `NaN`。
@@ -730,3 +745,524 @@ alert(GetBytes("你好,as"));
 * `property` 就是 `dom` 元素在 `js` 中作为对象拥有的属性。
 
 > 对于 `html` 的标准属性来说，`attribute` 和 `property` 是同步的，是会自动更新的，但是对于自定义的属性来说，他们是不同步的，
+
+## 31.===运算符判断相等的流程是怎样的
+
+1.  如果两个值不是相同类型，它们不相等
+2.  如果两个值都是 null 或者都是 undefined，它们相等
+3.  如果两个值都是布尔类型 true 或者都是 false，它们相等
+4.  如果其中有一个是**NaN**，它们不相等
+5.  如果都是数值型并且数值相等，他们相等， -0 等于 0
+6.  如果他们都是字符串并且在相同位置包含相同的 16 位值，他它们相等；如果在长度或者内容上不等，它们不相等；两个字符串显示结果相同但是编码不同==和===都认为他们不相等
+7.  如果他们指向相同对象、数组、函数，它们相等；如果指向不同对象，他们不相等
+
+## 32.==运算符判断相等的流程是怎样的
+
+1.  如果两个值类型相同，按照===比较方法进行比较
+2.  如果类型不同，使用如下规则进行比较
+
+* 如果其中一个值是 null，另一个是 undefined，它们相等
+* 如果一个值是**数字**另一个是**字符串**，将**字符串转换为数字**进行比较
+* 如果有布尔类型，将**true 转换为 1，false 转换为 0**，然后用==规则继续比较
+* 如果一个值是对象，另一个是数字或字符串，将对象转换为原始值然后用==规则继续比较
+* **其他所有情况都认为不相等**
+
+## 33.对象到字符串的转换步骤
+
+1.  如果对象有`toString()`方法，javascript 调用它。如果返回一个原始值（primitive value 如：`string number boolean`）,将这个值转换为字符串作为结果
+2.  如果对象没有`toString()`方法或者返回值不是原始值，javascript 寻找对象的`valueOf()`方法，如果存在就调用它，返回结果是原始值则转为字符串作为结果
+3.  否则，javascript 不能从`toString()`或者`valueOf()`获得一个原始值，此时`throws a TypeError`
+
+## 34.对象到数字的转换步骤
+
+1.  如果对象有`valueOf()`方法并且返回元素值，javascript 将返回值转换为数字作为结果
+2.  否则，如果对象有`toString()`并且返回原始值，javascript 将返回结果转换为数字作为结果
+3.  否则，`throws a TypeError`
+
+## 35.<,>,<=,>=的比较规则
+
+所有比较运算符都支持任意类型，但是**比较只支持数字和字符串**，所以需要执行必要的转换然后进行比较，转换规则如下:
+
+1.  如果操作数是对象，转换为原始值：如果`valueOf`方法返回原始值，则使用这个值，否则使用`toString`方法的结果，如果转换失败则报错
+2.  经过必要的对象到原始值的转换后，如果两个操作数都是字符串，按照字母顺序进行比较（他们的 16 位 unicode 值的大小）
+3.  否则，如果有一个操作数不是字符串，**将两个操作数转换为数字**进行比较
+
+## 36. +运算符工作流程
+
+1.  如果有操作数是对象，转换为原始值
+2.  此时如果有**一个操作数是字符串**，其他的操作数都转换为字符串并执行连接
+3.  否则：**所有操作数都转换为数字并执行加法**
+
+## 37.函数内部 arguments 变量有哪些特性,有哪些属性,如何将它转换为数组
+
+* `arguments`所有函数中都包含的一个局部变量，是一个类数组对象，对应函数调用时的实参。如果函数定义同名参数会在调用时覆盖默认对象
+* `arguments[index]`分别对应函数调用时的实参，并且通过 arguments 修改实参时会同时修改实参
+* `arguments.length`为实参的个数（Function.length 表示形参长度）
+* `arguments.callee`为当前正在执行的函数本身，使用这个属性进行递归调用时需注意`this`的变化
+* `arguments.caller`为调用当前函数的函数（已被遗弃）
+* 转换为数组：`var args = Array.prototype.slice.call(arguments, 0);`
+
+## 38.DOM 事件模型是如何的,编写一个 EventUtil 工具类实现事件管理兼容
+
+* DOM 事件包含捕获（capture）和冒泡（bubble）两个阶段：捕获阶段事件从 window 开始触发事件然后通过祖先节点一次传递到触发事件的 DOM 元素上；冒泡阶段事件从初始元素依次向祖先节点传递直到 window
+* 标准事件监听 elem.addEventListener(type, handler, capture)/elem.removeEventListener(type, handler, capture)：handler 接收保存事件信息的 event 对象作为参数，event.target 为触发事件的对象，handler 调用上下文 this 为绑定监听器的对象，event.preventDefault()取消事件默认行为，event.stopPropagation()/event.stopImmediatePropagation()取消事件传递
+* 老版本 IE 事件监听 elem.attachEvent('on'+type, handler)/elem.detachEvent('on'+type, handler)：handler 不接收 event 作为参数，事件信息保存在 window.event 中，触发事件的对象为 event.srcElement，handler 执行上下文 this 为 window 使用闭包中调用 handler.call(elem, event)可模仿标准模型，然后返回闭包，保证了监听器的移除。event.returnValue 为 false 时取消事件默认行为，event.cancleBubble 为 true 时取消时间传播
+* 通常利用事件冒泡机制托管事件处理程序提高程序性能。
+
+```
+/**
+ * 跨浏览器事件处理工具。只支持冒泡。不支持捕获
+ * @author  (qiu_deqing@126.com)
+ */
+
+var EventUtil = {
+    getEvent: function (event) {
+        return event || window.event;
+    },
+    getTarget: function (event) {
+        return event.target || event.srcElement;
+    },
+    // 返回注册成功的监听器，IE中需要使用返回值来移除监听器
+    on: function (elem, type, handler) {
+        if (elem.addEventListener) {
+            elem.addEventListener(type, handler, false);
+            return handler;
+        } else if (elem.attachEvent) {
+            var wrapper = function () {
+              var event = window.event;
+              event.target = event.srcElement;
+              handler.call(elem, event);
+            };
+            elem.attachEvent('on' + type, wrapper);
+            return wrapper;
+        }
+    },
+    off: function (elem, type, handler) {
+        if (elem.removeEventListener) {
+            elem.removeEventListener(type, handler, false);
+        } else if (elem.detachEvent) {
+            elem.detachEvent('on' + type, handler);
+        }
+    },
+    preventDefault: function (event) {
+        if (event.preventDefault) {
+            event.preventDefault();
+        } else if ('returnValue' in event) {
+            event.returnValue = false;
+        }
+    },
+    stopPropagation: function (event) {
+        if (event.stopPropagation) {
+            event.stopPropagation();
+        } else if ('cancelBubble' in event) {
+            event.cancelBubble = true;
+        }
+    },
+    /**
+     * keypress事件跨浏览器获取输入字符
+     * 某些浏览器在一些特殊键上也触发keypress，此时返回null
+     **/
+     getChar: function (event) {
+        if (event.which == null) {
+            return String.fromCharCode(event.keyCode);  // IE
+        }
+        else if (event.which != 0 && event.charCode != 0) {
+            return String.fromCharCode(event.which);    // the rest
+        }
+        else {
+            return null;    // special key
+        }
+     }
+};
+```
+
+## 39.评价一下三种方法实现继承的优缺点,并改进
+
+```
+function Shape() {}
+
+function Rect() {}
+
+// 方法1
+Rect.prototype = new Shape();
+
+// 方法2
+Rect.prototype = Shape.prototype;
+
+// 方法3
+Rect.prototype = Object.create(Shape.prototype);
+
+Rect.prototype.area = function () {
+  // do something
+};
+```
+
+方法 1：
+
+优点：
+
+* 正确设置原型链实现继承
+* 父类实例属性得到继承，原型链查找效率提高，也能为一些属性提供合理的默认值
+
+缺点：
+
+* 父类实例属性为引用类型时，不恰当地修改会导致所有子类被修改
+* 创建父类实例作为子类原型时，可能无法确定构造函数需要的合理参数，这样提供的参数继承给子类没有实际意义，当子类需要这些参数时应该在构造函数中进行初始化和设置
+
+总结：继承应该是继承方法而不是属性，为子类设置父类实例属性应该是通过在子类构造函数中调用父类构造函数进行初始化
+
+方法 2：
+
+1.  优点：正确设置原型链实现继承
+2.  缺点：父类构造函数原型与子类相同。修改子类原型添加方法会修改父类
+
+方法 3：
+
+1.  优点：正确设置原型链且避免方法 1.2 中的缺点
+2.  缺点：ES5 方法需要注意兼容性
+
+改进：
+
+1.  所有三种方法应该在子类构造函数中调用父类构造函数实现实例属性初始化
+
+```
+function Rect() {
+    Shape.call(this);
+}
+```
+
+2.  用新创建的对象替代子类默认原型，设置`Rect.prototype.constructor = Rect;`保证一致性
+3.  第三种方法的 polyfill：
+
+```
+function create(obj) {
+    if (Object.create) {
+        return Object.create(obj);
+    }
+
+    function f() {};
+    f.prototype = obj;
+    return new f();
+}
+```
+
+## 40.下面这段代码想要循环延时输出结果 0 1 2 3 4,请问输出结果是否正确,如果不正确,请说明为什么,并修改循环内的代码使其输出正确结果
+
+```
+for (var i = 0; i < 5; ++i) {
+  setTimeout(function () {
+    console.log(i + ' ');
+  }, 100);
+}
+```
+
+不能输出正确结果，因为循环中 `setTimeout` 接受的参数函数通过闭包访问变量 `i`。javascript 运行环境为单线程，`setTimeout` 注册的函数需要等待线程空闲才能执行，此时 `for` 循环已经结束，`i` 值为 5.五个定时输出都是 5 修改方法：将 `setTimeout` 放在函数立即调用表达式中，将 `i` 值作为参数传递给包裹函数，创建新闭包
+
+```
+// 第一种
+for (var i = 0; i < 5; ++i) {
+  (function (i) {
+    setTimeout(function () {
+      console.log(i + ' ');
+    }, 100);
+  }(i));
+}
+
+// 第二种 在每次迭代时都为i创建新的绑定。
+for (let i = 0; i < 5; ++i) {
+  setTimeout(function () {
+    console.log(i + ' ');
+  }, 100);
+}
+```
+
+## 41.如何判断一个对象是否为数组
+
+```
+/**
+ * 判断一个对象是否是数组，参数不是对象或者不是数组，返回false
+ *
+ * @param {Object} arg 需要测试是否为数组的对象
+ * @return {Boolean} 传入参数是数组返回true，否则返回false
+ */
+function isArray(arg) {
+    if (typeof arg === 'object') {
+        return Object.prototype.toString.call(arg) === '[object Array]';
+    }
+    return false;
+}
+```
+
+## 42. 如何判断一个对象是否为函数
+
+```
+/**
+ * 判断对象是否为函数，如果当前运行环境对可调用对象（如正则表达式）
+ * 的typeof返回'function'，采用通用方法，否则采用优化方法
+ *
+ * @param {Any} arg 需要检测是否为函数的对象
+ * @return {boolean} 如果参数是函数，返回true，否则false
+ */
+function isFunction(arg) {
+    if (arg) {
+        if (typeof (/./) !== 'function') {
+            return typeof arg === 'function';
+        } else {
+            return Object.prototype.toString.call(arg) === '[object Function]';
+        }
+    } // end if
+    return false;
+}
+```
+
+## 43. 数组去重
+
+### 1.双层循环
+
+```
+var array = [1, 1, '1', '1'];
+
+function unique(array) {
+    // res用来存储结果
+    var res = [];
+    for (var i = 0, arrayLen = array.length; i < arrayLen; i++) {
+        for (var j = 0, resLen = res.length; j < resLen; j++ ) {
+            if (array[i] === res[j]) {
+                break;
+            }
+        }
+        // 如果array[i]是唯一的，那么执行完循环，j等于resLen
+        if (j === resLen) {
+            res.push(array[i])
+        }
+    }
+    return res;
+}
+
+console.log(unique(array)); // [1, "1"]
+```
+
+优点：兼容性缺点：对象和 NaN 不去重
+
+### 2.indexOf
+
+```
+var array = [1, 1, '1'];
+
+function unique(array) {
+    var res = [];
+    for (var i = 0, len = array.length; i < len; i++) {
+        var current = array[i];
+        if (res.indexOf(current) === -1) {
+            res.push(current)
+        }
+    }
+    return res;
+}
+
+console.log(unique(array));
+```
+
+缺点：对象和 NaN 不去重
+
+### 3.filter
+
+```
+var array = [1, 2, 1, 1, '1'];
+
+// array.concat() 复制出来一份原有的数组，且对复制出来的新数组的操作不会影响到原有数组
+function unique(array) {
+    return array.concat().sort().filter(function(item, index, array){
+        return !index || item !== array[index - 1]
+    })
+}
+
+console.log(unique(array));
+```
+
+缺点：对象不去重 NaN 会被忽略掉
+
+### 4.Object 键值对
+
+```
+// 因为 1 和 '1' 是不同的，但是这种方法会判断为同一个值，这是因为对象的键值只能是字符串，所以我们可以使用 typeof item + item 拼成字符串作为 key 值来避免这个问题
+// 依然无法正确区分出两个对象，比如 {value: 1} 和 {value: 2}，因为 typeof item + item 的结果都会是 object[object Object]，不过我们可以使用 JSON.stringify 将对象序列化
+var array = [{ value: 1 }, { value: 1 }, { value: 2 }, { value: 2 }];
+
+function unique(array) {
+    var obj = {};
+    return array.filter(function (item, index, array) {
+        var key = typeof item + JSON.stringify(item)
+        return obj.hasOwnProperty(key) ? false : (obj[key] = true)
+    })
+}
+
+console.log(unique(array)); // [{value: 1}, {value: 2}]
+```
+
+优点：全部去重
+
+### 5.ES6
+
+```
+var array = [1, 2, 1, 1, '1'];
+
+function unique(array) {
+   return Array.from(new Set(array));
+}
+console.log(unique(array)); // [1, 2, "1"]
+// Set。它类似于数组，但是成员的值都是唯一的，没有重复的值
+。
+```
+
+简化
+
+```
+var unique = (a) => [...new Set(a)]
+```
+
+缺点：对象不去重 NaN 去重
+
+## 44. 闭包
+
+```
+function mo(){
+    var x = 0;
+    return function(){
+        console.log(++x)
+    }
+}
+var a = mo();
+var b = mo();
+a();
+a();
+b();
+// 1，2，1
+// a再次执行的时候没有走mo()函数，直接走的内部函数，保存了外层的x变量给自己用。
+```
+
+## 45.es6 中的扩展运算符...的实现原理
+
+```
+var a = {aa:1,bb:2,cc:3};
+
+const {aa,...b} = a;
+
+// babel解构实现
+function _objectWithoutProperties(obj, keys) {
+    var target = {};
+    for (var i in obj) {
+        if (keys.indexOf(i) >= 0) continue;
+        if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
+        target[i] = obj[i];
+    }
+    return target;
+}
+
+var a = { aa: 1, bb: 2, cc: 3 };
+
+var aa = a.aa,
+    b = _objectWithoutProperties(a, ["aa"]);
+```
+
+原理就是 es6 直接采用 `for of`，也就是说，所有总有迭代器的对象都能使用扩展运算符，在 es6 里说不能放前面的，但是在 es7 里如果**用于对象**是可以放前面的
+
+## 46. for of 和 for in 区别
+
+`for in` 是键值对形式，`for of` 是输出 value 形式，然后 for of 只要是配置了迭代器，都能遍历。
+
+## 47.箭头函数中的 this
+
+箭头函数的 `this` 一定来自定义时最上层的 `this`，普通函数的 `this` 来自执行者本身。
+
+```
+var obj = {
+    field: 'hello',
+    a: () => { console.log(this) }
+}
+// obj === window.obj //true
+// 所以在定义时obj的this来自window。
+// 箭头函数this在定义时指定，所以this来自window。
+var obj2 = {
+    b: function () {
+        console.log(this)
+    }
+}
+console.log(obj === window.obj);
+obj.a();
+obj2.b();
+```
+
+## 48.什么是纯函数
+
+纯函数是指 不依赖于且不改变它作用域之外的变量状态 的函数。也就是说， 纯函数的返回值只由它调用时的参数决定 ，它的执行不依赖于系统的状态（比如：何时、何处调用它——译者注）。
+
+## 49.页面和服务器之间的交互有哪几种
+
+* Ajax
+* WebSocket
+
+## 50.长连接与长轮询分别如何实现的？各有哪些优势和劣势？
+
+1.  **轮询**：客户端定时向服务器发送 Ajax 请求，服务器接到请求后马上返回响应信息并关闭连接。
+
+优点：后端程序编写比较容易。
+
+缺点：请求中有大半是无用，浪费带宽和服务器资源。
+
+实例：适于小型应用。
+
+2.  **长轮询**：客户端向服务器发送 Ajax 请求，服务器接到请求后 hold 住连接，直到有新消息才返回响应信息并关闭连接，客户端处理完响应信息后再向服务器发送新的请求。
+
+优点：在无消息的情况下不会频繁的请求。
+
+缺点：服务器 hold 连接会消耗资源。
+
+实例：WebQQ、Hi 网页版、Facebook IM。
+
+另外，对于长连接和 socket 连接也有区分：
+
+1.  **长连接**：在页面里嵌入一个隐蔵 iframe，将这个隐蔵 iframe 的 src 属性设为对一个长连接的请求，服务器端就能源源不断地往客户端输入数据。
+
+优点：消息即时到达，不发无用请求。
+
+缺点：服务器维护一个长连接会增加开销。
+
+实例：Gmail 聊天
+
+2.  **Flash Socket**：在页面中内嵌入一个使用了 Socket 类的 Flash 程序 JavaScript 通过调用此 Flash 程序提供的 Socket 接口与服务器端的 Socket 接口进行通信，JavaScript 在收到服务器端传送的信息后控制页面的显示。
+
+优点：实现真正的即时通信，而不是伪即时。
+
+缺点：客户端必须安装 Flash 插件；非 HTTP 协议，无法自动穿越防火墙。
+
+实例：网络互动游戏。
+
+## 51.单页面应用和多页面应用的区别
+
+1.  应用组成
+    * mpa:多个完整页面构成
+    * spa:一个外壳页面和多个页面片段构成
+2.  跳转方式
+    * mpa:
+    * spa:把一个页面片段删除或隐藏，加载另一个页面片段显示出来
+3.  刷新方式
+4.  跳转后公共资源是否重新加载
+5.  url 模式
+6.  用户体验
+7.  能否实现转场动画
+8.  页面间数据传递
+9.  搜索引擎优化
+10. 特别使用范围
+
+## 52.import 和 require 的区别
+
+* 遵循的模块化规范不一样
+* 出现的时间不同
+* 形式不一样(写法比较多)
+
+### 本质上的差别
+
+1.  CommonJS 还是 ES6 Module 输出都可以看成是一个具备多个属性或者方法的对象；
+2.  `default` 是 ES6 Module 所独有的关键字，`export default fs` 输出默认的接口对象，`import fs from 'fs'` 可直接导入这个对象；
+3.  ES6 Module 中导入模块的属性或者方法是强绑定的，包括基础类型；而 CommonJS 则是普通的值传递或者引用传递。

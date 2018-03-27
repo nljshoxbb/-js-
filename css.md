@@ -383,3 +383,12 @@ BFC，块级格式化上下文，一个创建了新的 BFC 的盒子是独立布
 
 > 相邻元素不发生折叠的因素是触发 BFC 因素的子集，也就是说如果我为上下相邻的元素设置了 overflow:hidden，虽然触发了 BFC，但是上下元素的上下 margin 还是会发生折叠创建 BFC 的初衷只是为了让元素本身（包括它的子元素）能够正确的计算自己的宽高。
 
+## 19 display,float,position的关系
+
+1. 如果``display``为none，那么position和float都不起作用，这种情况下元素不产生框
+2. 否则，如果position值为absolute或者fixed，框就是绝对定位的，float的计算值为none，display根据下面的表格进行调整。
+3. 否则，如果float不是none，框是浮动的，display根据下表进行调整
+4. 否则，如果元素是根元素，display根据下表进行调整
+5. 其他情况下display的值为指定值
+总结起来：**绝对定位、浮动、根元素都需要调整``display``**
+![display转换规则](img/display-adjust.png)

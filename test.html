@@ -1,32 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <style>
-        .fl {
-            float: left;
-        }
-
-        .clearfix::after {
-            clear: both;
-            /* overflow: hidden; */
-            content: '';
-            height: 0;
-            display: block;
-            background-color: red
-        }
-    </style>
+    <meta charset="utf-8">
+    <title>TEst</title>
 </head>
 
 <body>
-    <div class="clearfix">
-        <div class="fl">123</div>
+    <div id="d">
+        <div id="a"></div>
+        <div id="b"></div>
+        <div id="c"></div>
     </div>
     <script>
+        var obj = {
+            field: 'hello',
+            a: () => { console.log(this) }
+        }
+        // obj === window.obj //true
+        // 所以在定义时obj的this来自window。
+        // 箭头函数this在定义时指定，所以this来自window。
+        var obj2 = {
+            b: function () {
+                console.log(this)
+            }
+        }
+        console.log(obj === window.obj);
+        obj.a();
+        obj2.b();
 
     </script>
 </body>
