@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .parent {
+            display: table-cell;
+            vertical-align: middle;
+            height: 100px;
+            background-color: peachpuff
+        }
+
+        .parent1 {
+            /* display: inline-block; */
+            vertical-align: middle;
+            line-height: 100px;
+            background-color: peachpuff
+        }
+
+        .parent2 {
+            position: relative;
+            background-color: peachpuff;
+            height: 100px;
+        }
+
+        .child2 {
+            position: absolute;
+            top: 50%;
+            transform: translate(0, -50%);
+        }
+
+        .parent3{
+            display: flex;
+            align-items: center;
+            background-color: peachpuff;
+            height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>第一种</h1>
+    <div class="parent">
+        <div class="child">123</div>
+    </div>
+
+    <h1>第二种</h1>
+    <div class="parent1">
+        <div class="child1">123</div>
+    </div>
+
+    <h1>实用绝对定位</h1>
+    <div class="parent2">
+        <div class="child2">123</div>
+    </div>
+
+    <h1>实用flex实现</h1>
+    <div class="parent3">
+        <div class="child3">123</div>
+    </div>
+    
+</body>
+
+</html>

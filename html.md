@@ -37,3 +37,29 @@
 
 1.  `title`是 global attributes 之一，用于为元素提供附加的 advisory information。通常当鼠标滑动到元素上的时候显示。
 2.  `alt`是`<img>的特有属性，是图片内容的等价描述，用于图片无法加载时显示、读屏器阅读图片。可提图片高可访问性，除了纯装饰图片外都必须设置有意义的值，搜索引擎会重点分析。
+
+## 6. 简述一下 src 与 href 的区别
+
+* href 是指向网络资源所在位置，建立和当前元素（锚点）或当前文档（链接）之间的链接，用于超链接。
+* src 用于替换当前元素，href 用于在当前文档和引用资源之间确立联系。
+* src 是 source 的缩写，指向外部资源的位置，指向的内容将会嵌入到文档中当前标签所在位置；在请求 src 资源时会将其指向的资源下载并应用到文档内，例如 js 脚本，img 图片和 frame 等元素。
+  `<script src ="js.js"></script>`
+* 当浏览器解析到该元素时，会暂停其他资源的下载和处理，直到将该资源加载、编译、执行完毕，图片和框架等元素也如此，类似于将所指向资源嵌入当前标签内。这也是为什么将 js 脚本放在底部而不是部。
+* href 是 Hypertext Reference 的缩写，指向网络资源所在位置，建立和当前元素（锚点）或当前文档（链接）之间的链接，如果我们在文档中添加
+  `<link href="common.css" rel="stylesheet"/>`
+  那么浏览器会识别该文档为 css 文件，就会并行下载资源并且不会停止对当前文档的处理。这也是为什么建议使用 link 方式来加载 css，而不是使用@import 方式。
+
+## 7.用一个 div 模拟 textarea 的实现
+
+```
+#textarea{
+    width:300px;
+    min-height:120px;
+    max-height:300px;
+    border:1px solid #333;
+    overflow-y:auto
+}
+
+
+  <div id="textarea" contenteditable="true"></div>
+```

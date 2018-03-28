@@ -7,29 +7,8 @@
 </head>
 
 <body>
-    <div id="d">
-        <div id="a"></div>
-        <div id="b"></div>
-        <div id="c"></div>
-    </div>
-    <script>
-        var obj = {
-            field: 'hello',
-            a: () => { console.log(this) }
-        }
-        // obj === window.obj //true
-        // 所以在定义时obj的this来自window。
-        // 箭头函数this在定义时指定，所以this来自window。
-        var obj2 = {
-            b: function () {
-                console.log(this)
-            }
-        }
-        console.log(obj === window.obj);
-        obj.a();
-        obj2.b();
-
-    </script>
+    <div contenteditable="true"></div>
+  
 </body>
 
 </html>

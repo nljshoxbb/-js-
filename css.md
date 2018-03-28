@@ -34,25 +34,25 @@
 
 * CSS3 实现圆角（border-radius），阴影（box-shadow），
 * 对文字加特效（text-shadow、），线性渐变（gradient），旋转（transform）
-* transform:rotate(9deg) scale(0.85,0.90) translate(0px,-30px) skew(-9deg,0deg);//旋转,缩放,定位,倾斜。
-* 增加了更多的 CSS 选择器 多背景 rgba;
-* 在 CSS3 中唯一引入的伪元素是::selection;
+* `transform:rotate(9deg) scale(0.85,0.90) translate(0px,-30px) skew(-9deg,0deg);`//旋转,缩放,定位,倾斜。
+* 增加了更多的 CSS 选择器 多背景 `rgba`;
+* 在 CSS3 中唯一引入的伪元素是`::selection`;
 * 媒体查询，多栏布局;
 * border-image;
 
 ## 6. CSS sprites
 
-> CSS Sprites 其实就是把网页中一些背景图片整合到一张图片文件中，再利用 CSS 的`background-image`，`background- repeat`，`background-position`的组合进行背景定位，`background-position`可以用数字能精确的定位出背景图片的位置。这样可以减少很多图片请求的开销，因为请求耗时比较长；请求虽然可以并发，但是也有限制，一般浏览器都是 6 个。对于未来而言，就不需要这样做了，因为有了`http2`。
+CSS Sprites 其实就是把网页中一些背景图片整合到一张图片文件中，再利用 CSS 的`background-image`，`background- repeat`，`background-position`的组合进行背景定位，`background-position`可以用数字能精确的定位出背景图片的位置。这样可以减少很多图片请求的开销，因为请求耗时比较长；请求虽然可以并发，但是也有限制，一般浏览器都是 6 个。对于未来而言，就不需要这样做了，因为有了`http2`。
 
 ## 7. 解释下浮动和它的工作原理？清除浮动的技巧
 
-> 浮动元素脱离文档流，不占据空间。浮动元素碰到包含它的边框或者浮动元素的边框停留。
+浮动元素脱离文档流，不占据空间。浮动元素碰到包含它的边框或者浮动元素的边框停留。
 
-1.  使用空标签清除浮动。这种方法是在所有浮动标签后面添加一个空标签 定义 css clear:both. 弊端就是增加了无意义标签。
-2.  使用 overflow。设置 overflow 为 hidden（触发 bfc） 或者 auto，给包含浮动元素的父标签添加 css 属性 overflow:auto; zoom:1; zoom:1 用于兼容 IE6。
-3.  使用 after 伪对象清除浮动。该方法只适用于非 IE 浏览器。该方法中必须为需要清除浮动元素的伪对象中设置 height:0，否则该元素会比实际高出若干像素；
+* 使用空标签清除浮动。这种方法是在所有浮动标签后面添加一个空标签 定义 css `clear:both`. 弊端就是增加了无意义标签。
+* 使用`overflow`。设置 `overflow` 为 `hidden`（触发 bfc） 或者 `auto`，给包含浮动元素的父标签添加 css 属性 `overflow:auto; zoom:1`; zoom:1 用于兼容 IE6。
+* 使用 `after` 伪对象清除浮动。该方法只适用于非 IE 浏览器。该方法中必须为需要清除浮动元素的伪对象中设置 `height:0`，否则该元素会比实际高出若干像素；
 
-### 1. 添加额外标签(不推荐)
+### (1) 添加额外标签(不推荐)
 
 ```
 <div class="wrap">
@@ -63,7 +63,7 @@
 </div>
 ```
 
-### 2. 使用 br 标签及自身 html 属性(不推荐)
+### (2) 使用 br 标签及自身 html 属性(不推荐)
 
 ```
 <div class="wrap">
@@ -75,7 +75,7 @@
 <div class="footer">.footer</div>
 ```
 
-### 3. 父元素设置 overflow 属性(不推荐)
+### (3) 父元素设置 overflow 属性(不推荐)
 
 ```
 .clear{
@@ -90,9 +90,9 @@
 </div>
 ```
 
-> **缺点** overflow:hidden; 内容增多时候容易造成不会自动换行导致内容被隐藏掉，无法显示需要溢出的元素；不要使用 overflow:auto; 多层嵌套后，firefox 与 IE 可能会出现显示错误；不要使用
+**缺点** overflow:hidden; 内容增多时候容易造成不会自动换行导致内容被隐藏掉，无法显示需要溢出的元素；不要使用 overflow:auto; 多层嵌套后，firefox 与 IE 可能会出现显示错误；不要使用
 
-### 4. 父元素也设置浮动(不推荐)
+### (4)父元素也设置浮动(不推荐)
 
 ```
 <div class="wrap left"  >
@@ -102,9 +102,9 @@
 </div>
 ```
 
-> **缺点** 使得与父元素相邻的元素的布局会受到影响，不可能一直浮动到 body，不推荐使用
+**缺点** 使得与父元素相邻的元素的布局会受到影响，不可能一直浮动到 body，不推荐使用
 
-### 5. 父元素设置 display:table(不推荐)
+### (5) 父元素设置 display:table(不推荐)
 
 ```
 .clear{
@@ -118,9 +118,9 @@
 </div>
 ```
 
-> **缺点** 盒模型属性已经改变，由此造成的一系列问题，得不偿失，不推荐使用
+**缺点** 盒模型属性已经改变，由此造成的一系列问题，得不偿失，不推荐使用
 
-### 6. 使用:after 伪元素(推荐)
+### (6) 使用:after 伪元素(推荐)
 
 ```
 .clearfix:after {
@@ -225,15 +225,15 @@ $("#yellow").on('click',function(e) {
 
 ## 12. px/em/rem 区别
 
-> * `px` 在缩放页面时无法调整那些使用它作为单位的字体、按钮等的大小
-> * `em` 的值并不是固定的，会继承父级元素的字体大小，代表倍数；
-> * `rem` 的值并不是固定的，始终是基于根元素 `<html>` 的，也代表倍数。
+* `px` 在缩放页面时无法调整那些使用它作为单位的字体、按钮等的大小
+* `em` 的值并不是固定的，会继承父级元素的字体大小，代表倍数；
+* `rem` 的值并不是固定的，始终是基于根元素 `<html>` 的，也代表倍数。
 
 ### em
 
-> em 的使用是相对于其父级的字体大小的，即倍数。浏览器的默认字体高都是 16px，未经调整的浏览器显示 1em = 16px。但是有一个问题，如果设置 1.2em 则变成 19.2px，问题是 px 表示大小时数值会忽略掉小数位的（你想像不出来半个像素吧）。而且 1em = 16px 的关系不好转换，因此，常常人为地使 1em = 10px。这里要借助字体的 % 来作为桥梁。
+em 的使用是相对于其父级的字体大小的，即倍数。浏览器的默认字体高都是 16px，未经调整的浏览器显示 1em = 16px。但是有一个问题，如果设置 1.2em 则变成 19.2px，问题是 px 表示大小时数值会忽略掉小数位的（你想像不出来半个像素吧）。而且 1em = 16px 的关系不好转换，因此，常常人为地使 1em = 10px。这里要借助字体的 % 来作为桥梁。
 
-> 但是由于 em 是相对于其父级字体的倍数的，当出现有多重嵌套内容时，使用 em 分别给它们设置字体的大小往往要重新计算
+但是由于 em 是相对于其父级字体的倍数的，当出现有多重嵌套内容时，使用 em 分别给它们设置字体的大小往往要重新计算
 
 ```
 body { font-size: 62.5%; }
@@ -245,14 +245,14 @@ span { font-size: 1.6em; }
 
 ### rem
 
-> rem 的出现再也不用担心还要根据父级元素的 font-size 计算 em 值了，因为它始终是基于根元素`<html>`的。比如默认的 html font-size=16px，那么想设置 12px 的文字就是：12÷16=0.75(rem)仍然是上面的例子，CSS 改为
+rem 的出现再也不用担心还要根据父级元素的 `font-size` 计算 em 值了，因为它始终是基于根元素`<html>`的。比如默认的 html `font-size=16px`，那么想设置 `12px` 的文字就是：12÷16=0.75(rem)仍然是上面的例子，CSS 改为
 
 ```
 html { font-size: 62.5%; }
 span { font-size: 16px; font-size: 1.6rem; }
 ```
 
-> 需要注意的是，为了兼容不支持 rem 的浏览器，我们需要在各个使用了 rem 地方前面写上对应的 px 值，这样不支持的浏览器可以优雅降级
+需要注意的是，为了兼容不支持 rem 的浏览器，我们需要在各个使用了 rem 地方前面写上对应的 px 值，这样不支持的浏览器可以优雅降级
 
 ## 13.有没有遇到过 margin 重叠的现象
 
@@ -383,12 +383,169 @@ BFC，块级格式化上下文，一个创建了新的 BFC 的盒子是独立布
 
 > 相邻元素不发生折叠的因素是触发 BFC 因素的子集，也就是说如果我为上下相邻的元素设置了 overflow:hidden，虽然触发了 BFC，但是上下元素的上下 margin 还是会发生折叠创建 BFC 的初衷只是为了让元素本身（包括它的子元素）能够正确的计算自己的宽高。
 
-## 19 display,float,position的关系
+## 19 display,float,position 的关系
 
-1. 如果``display``为none，那么position和float都不起作用，这种情况下元素不产生框
-2. 否则，如果position值为absolute或者fixed，框就是绝对定位的，float的计算值为none，display根据下面的表格进行调整。
-3. 否则，如果float不是none，框是浮动的，display根据下表进行调整
-4. 否则，如果元素是根元素，display根据下表进行调整
-5. 其他情况下display的值为指定值
-总结起来：**绝对定位、浮动、根元素都需要调整``display``**
-![display转换规则](img/display-adjust.png)
+1.  如果`display`为 none，那么 position 和 float 都不起作用，这种情况下元素不产生框
+2.  否则，如果 position 值为 absolute 或者 fixed，框就是绝对定位的，float 的计算值为 none，display 根据下面的表格进行调整。
+3.  否则，如果 float 不是 none，框是浮动的，display 根据下表进行调整
+4.  否则，如果元素是根元素，display 根据下表进行调整
+5.  其他情况下 display 的值为指定值总结起来：**绝对定位、浮动、根元素都需要调整`display`**
+    ![display转换规则](img/display-adjust.png)
+
+## 20 1 像素边框问题
+
+### (1) border-image 图片 实现
+
+* 缺点：需要制作图片，圆角的时候会出现模糊。
+
+```
+.border-image-1px {
+    border-width: 1px 0px;
+    -webkit-border-image: url("...") 2 0 stretch;
+}
+```
+
+### (2) background-image 渐变实现
+
+缺点:不能实现圆角
+
+```
+.border {
+    background-image:linear-gradient(180deg, red, red 50%, transparent 50%),
+    linear-gradient(270deg, red, red 50%, transparent 50%),
+    linear-gradient(0deg, red, red 50%, transparent 50%),
+    linear-gradient(90deg, red, red 50%, transparent 50%);
+    background-size: 100% 1px,1px 100% ,100% 1px, 1px 100%;
+    background-repeat: no-repeat;
+    background-position: top, right top,  bottom, left top;
+    padding: 10px;
+}
+```
+
+### (3) viewport+rem 实现
+
+优点:直接设置 1px 就行了，剩下的就交给 js 了，而且圆角什么的都没问题
+
+```
+<span style="font-size:18px;"><html>  
+    <head>  
+        <title>1px question</title>  
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">  
+        <meta name="viewport" id="WebViewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+        <style>  
+            html {  
+                font-size: 1px;  
+            }
+            * {  
+                padding: 0;  
+                margin: 0;  
+            }  
+
+            .bds_b {  
+                border-bottom: 1px solid #ccc;  
+            }  
+
+            .a,  
+            .b {  
+                margin-top: 1rem;  
+                padding: 1rem;
+                font-size: 1.4rem;  
+            }  
+
+            .a {  
+                width: 30rem;  
+            }  
+
+            .b {  
+                background: #f5f5f5;  
+                width: 20rem;  
+            }  
+        </style>  
+        <script>  
+
+            var viewport = document.querySelector("meta[name=viewport]");  
+            //下面是根据设备像素设置viewport  
+            if (window.devicePixelRatio == 1) {  
+                viewport.setAttribute('content', 'width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no');  
+            }  
+            if (window.devicePixelRatio == 2) {  
+                viewport.setAttribute('content', 'width=device-width,initial-scale=0.5, maximum-scale=0.5, minimum-scale=0.5, user-scalable=no');  
+            }  
+            if (window.devicePixelRatio == 3) {  
+                viewport.setAttribute('content', 'width=device-width,initial-scale=0.3333333333333333, maximum-scale=0.3333333333333333, minimum-scale=0.3333333333333333, user-scalable=no');  
+            }  
+            var docEl = document.documentElement;  
+            var fontsize = 10 * (docEl.clientWidth / 320) + 'px';  
+            docEl.style.fontSize = fontsize;  
+
+        </script>  
+    </head>  
+
+    <body>  
+        <div class="bds_b a">下面的底边宽度是虚拟1像素的</div>  
+        <div class="b">上面的边框宽度是虚拟1像素的</div>  
+    </body>  
+
+</html></span>
+```
+
+### (4) box-shadow 实现
+
+优点:圆角不是问题
+
+缺点:是颜色不好控制
+
+```
+div{
+    -webkit-box-shadow:0 1px 1px -1px rgba(0, 0, 0, 0.5);
+}
+```
+
+### (5) transform: scale(0.5) 实现
+
+以上的例子都是把 1px 缩放到 0.5px 的状态下，而 0.5px 并不是所有都支持，再根据媒体查询设置不同的缩放比例就可以了
+
+#### 1.用`height：1px`的 div，然后根据媒体查询设置`transform: scaleY(0.5)`
+
+```
+div{
+    height:1px;
+    background:#000;
+    -webkit-transform: scaleY(0.5);
+    -webkit-transform-origin:0 0;
+    overflow: hidden;
+}
+```
+
+#### 2.用`::after`和`::before`,设置`border-bottom：1px solid #000`,然后在缩放`-webkit-transform: scaleY(0.5)`;可以实现两根边线的需求
+
+```
+div::after{
+    content:'';
+    width:100%;
+    border-bottom:1px solid #000;
+    transform: scaleY(0.5);
+}
+```
+
+#### 3.用`::after`设置`border：1px solid #000; width:200%; height:200%`,然后再缩放`scaleY(0.5)`
+
+优点:可以实现圆角，京东就是这么实现的
+
+缺点:是按钮添加 active 比较麻烦。
+
+```
+.div::after {
+    content: '';
+    width: 200%;
+    height: 200%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px solid #bfbfbf;
+    border-radius: 4px;
+    -webkit-transform: scale(0.5,0.5);
+    transform: scale(0.5,0.5);
+    -webkit-transform-origin: top left;
+}
+```

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        html,body,.parent{
+            height: 100%;
+            overflow: hidden;
+        }
+        .top{
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background-color: red;
+        }
+        .left{
+            position: absolute;
+            top: 100px;
+            left: 0;
+            bottom: 50px;
+            width: 200px;
+            background-color: greenyellow;
+        }
+        .right{
+            position: absolute;
+            overflow: auto;
+            left: 200px;
+            right: 0;
+            top: 100px;
+            bottom: 50px;
+            background-color: firebrick
+        }
+
+        .bottom{
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 50px;
+            background-color: deepskyblue
+        }
+    </style>
+</head>
+
+<body>
+    <div class="parent">
+        <div class="top">top</div>
+        <div class="left">left</div>
+        <div class="right">right</div>
+        <div class="bottom">bottom</div>
+    </div>
+</body>
+
+</html>

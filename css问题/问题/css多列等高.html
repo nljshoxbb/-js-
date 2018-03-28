@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+            color: #f00;
+        }
+
+        .container{
+            margin: 0 auto;
+            width: 600px;
+            border: 3px solid royalblue;
+            overflow: hidden;
+        }
+
+        .left{
+            float: left;
+            width: 150px;
+            background-color: greenyellow;
+            padding-bottom: 2000px;
+            margin-bottom: -2000px;
+        }
+
+        .right{
+            float: left;
+            width: 450px;
+            background-color: fuchsia;
+            padding-bottom:2000px;
+            margin-bottom: -2000px;
+        }
+        
+        
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="left">我是left</div>
+        <div class="right">我是right
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>现在我的高度比left高，但left用它的padding-bottom补偿了这部分高度</div>
+        <div style="clear:both"></div>
+    </div>
+</body>
+
+</html>

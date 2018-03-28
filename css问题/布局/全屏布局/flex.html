@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        html,body{
+            height: 100%;
+            
+        }
+       .parent{
+           display: flex;
+           flex: 1;
+           flex-direction: column;
+       }
+
+       .top{
+           height: 100px;
+           background-color: deepskyblue
+       }
+       .bottom{
+           height: 50px;
+           background-color: deeppink
+       }
+       .middle{
+           float: 1;
+           display: flex;
+           background-color: red
+       }
+       .left{
+           width: 200px;
+           background-color: powderblue
+       }
+       .right{
+           flex:1;
+           overflow: auto;
+           background-color: palevioletred
+       }
+    </style>
+</head>
+
+<body>
+    <div class="parent">
+        <div class="top">top</div>
+        <div class="middle">
+            <div class="left">left</div>
+            <div class="right">right</div>
+        </div>
+        <div class="bottom">bottom</div>
+    </div>
+</body>
+
+</html>
