@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        li {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <ul id='drag'>
+        <li draggable="true">1</li>
+        <li draggable="true">2</li>
+        <li draggable="true">3</li>
+        <li draggable="true">4</li>
+        <li draggable="true">5</li>
+    </ul>
+    <script>
+        var ele;
+        var dragContent = document.querySelector('#drag')
+        dragContent.addEventListener('dragstart', function (e) {
+            ele = e.target;
+            console.log(ele.classList)
+            ele.classList.add('draging');
+        })
+        dragContent.addEventListener('dragover', function (e) {
+            e.preventDefault();
+
+            if (e.target.nodeName === 'LI') {
+                e.target.parentNode.insertBefore(ele, e.target);
+            }
+        })
+        dragContent.addEventListener('drop', function (e) {
+            ele.classList.remove('draging');
+        })
+    </script>
+</body>
+
+</html>

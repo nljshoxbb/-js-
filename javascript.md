@@ -57,9 +57,9 @@ boundGetX(); // 返回 81
 
 ## 6. 如何解决跨域问题?
 
-> 这里说的 js 跨域是指通过 js 在不同的域之间进行数据传输或通信，比如用 ajax 向一个不同的域请求数据，或者通过 js 获取页面中不同域的框架中(iframe)的数据。只要协议、域名、端口有任何一个不同，都被当作是不同的域。
+这里说的 js 跨域是指通过 js 在不同的域之间进行数据传输或通信，比如用 ajax 向一个不同的域请求数据，或者通过 js 获取页面中不同域的框架中(iframe)的数据。只要协议、域名、端口有任何一个不同，都被当作是不同的域。
 
-> 当一个资源从与该资源本身所在的服务器不同的域或端口请求一个资源时，资源会发起一个**跨域 HTTP 请求**。出于安全原因，浏览器限制从脚本内发起的跨源 HTTP 请求。 例如，`XMLHttpRequest` 和 `Fetch API` 遵循同源策略。 这意味着使用这些 API 的 Web 应用程序只能从加载应用程序的同一个域请求 HTTP 资源，除非使用 跨域资源共享`CORS`(跨域资源共享) 头文件。
+当一个资源从与该资源本身所在的服务器不同的域或端口请求一个资源时，资源会发起一个**跨域 HTTP 请求**。出于安全原因，浏览器限制从脚本内发起的跨源 HTTP 请求。 例如，`XMLHttpRequest` 和 `Fetch API` 遵循同源策略。 这意味着使用这些 API 的 Web 应用程序只能从加载应用程序的同一个域请求 HTTP 资源，除非使用 跨域资源共享`CORS`(跨域资源共享) 头文件。
 
 ### 1.通过 jsonp 跨域
 
@@ -185,21 +185,26 @@ addEventListener('message', function(e){
 
 ## 7. 说说严格模式的限制
 
-> 变量必须声明后再使用函数的参数不能有同名属性，否则报错禁止 this 指向全局对象不能使用 with 语句增加了保留字
-> arguments 不会自动反映函数参数的变化设立”严格模式”的目的：消除 Javascript 语法的一些不合理、不严谨之处，减少一些怪异行为;
-> 消除代码运行的一些不安全之处，保证代码运行的安全；提高编译器效率，增加运行速度；为未来新版本的 Javascript 做好铺垫。
+* 变量必须声明后再使用函数的参数不能有同名属性，否则报错禁止 this 指向全局对象不能使用 with 语句增加了保留字
+* arguments 不会自动反映函数参数的变化设立”严格模式”的目的：消除 Javascript 语法的一些不合理、不严谨之处，减少一些怪异行为;
+* 消除代码运行的一些不安全之处，保证代码运行的安全；提高编译器效率，增加运行速度；为未来新版本的 Javascript 做好铺垫。
 
 ## 8. 请解释什么是事件代理
 
 事件代理（Event Delegation），又称之为事件委托。即是把原本需要绑定的事件委托给父元素，让父元素担当事件监听的职务。事件代理的原理是 DOM 元素的事件冒泡。使用事件代理的好处是可以提高性能
 
+使用委托代理的原因：
+
+* 需要绑定事件的元素很多，且处理逻辑类似。
+* 元素是动态创建，或频繁增加、删除，导致元素绑定事件过于复杂的。
+
 ## 9. Event Loop、消息队列、事件轮询
 
-> 异步函数在执行结束后，会在事件队列中添加一个事件（回调函数）(遵循先进先出原则)，主线程中的代码执行完毕后（即一次循环结束），下一次循环开始就在事件队列中“读取”事件，然后调用它所对应的回调函数。这个过程是循环不断的，所以整个的这种运行机制又称为 Event Loop（事件循环）
+异步函数在执行结束后，会在事件队列中添加一个事件（回调函数）(遵循先进先出原则)，主线程中的代码执行完毕后（即一次循环结束），下一次循环开始就在事件队列中“读取”事件，然后调用它所对应的回调函数。这个过程是循环不断的，所以整个的这种运行机制又称为 Event Loop（事件循环）
 
-> 主线程运行的时候，产生堆（heap）和栈（stack），栈中的代码（同步任务）调用各种外部 API，它们在”任务队列”中加入各种事件（click，load，done）。只要栈中的代码执行完毕，主线程就会去读取”任务队列”，依次执行那些事件所对应的回调函数。
+主线程运行的时候，产生堆（heap）和栈（stack），栈中的代码（同步任务）调用各种外部 API，它们在”任务队列”中加入各种事件（click，load，done）。只要栈中的代码执行完毕，主线程就会去读取”任务队列”，依次执行那些事件所对应的回调函数。
 
-> 执行栈中的代码（同步任务），总是在读取”任务队列”（异步任务）之前执行。
+执行栈中的代码（同步任务），总是在读取”任务队列”（异步任务）之前执行。
 
 ## 10. ES6 的了解
 
@@ -374,6 +379,11 @@ var throttle = function(delay, action){
 ### requestAnimationFrame
 
 > 告诉浏览器您希望执行动画并请求浏览器在下一次重绘之前调用指定的函数来更新动画。该方法使用一个回调函数作为参数，这个回调函数会在浏览器重绘之前调用。是另一种限速执行的方式。跟 `_.throttle(dosomething, 16)` 等价。它是高保真的，如果追求更好的精确度的话，可以用浏览器原生的 API 。
+
+**异步**
+
+* 在浏览器重绘前调用，保证浏览器渲染效率和性能
+* 可以精准地控制动画的每一帧
 
 #### 优点
 
@@ -1266,3 +1276,146 @@ obj2.b();
 1.  CommonJS 还是 ES6 Module 输出都可以看成是一个具备多个属性或者方法的对象；
 2.  `default` 是 ES6 Module 所独有的关键字，`export default fs` 输出默认的接口对象，`import fs from 'fs'` 可直接导入这个对象；
 3.  ES6 Module 中导入模块的属性或者方法是强绑定的，包括基础类型；而 CommonJS 则是普通的值传递或者引用传递。
+
+## 53.手写 parseInt 的实现
+
+```
+const parseInt = str => str - 0;
+const parseInt = str => str / 1;
+const parseInt = str => str * 1;
+```
+
+## 54.使用框架 ( vue / react 等)带来好处( 相对 jQuery )
+
+* MVVC 架构，数据驱动视图，数据绑定，减少 DOM 操作。
+* 组件化组织页面，效率更高，维护更简便。
+  * 局部 CSS 样式，避免给全局带来混乱
+  * 局部 JS 逻辑，更好的封装性
+  * HTML 模板，使得 DOM 变更更为方便快捷
+* Virtual Dom 带来性能上的提升
+* 路由控制，单页应用更为简便
+
+## 55.单页应用，如何实现其路由功能
+
+### Hash
+
+```
+window.addEventListener('hashchange', () => {
+  // 隐藏其他页面
+  Array.from(document.querySelectorAll('.page')).map(page => {
+    page.style.display = 'none';
+  });
+  // 根据hash值显示对应的页面
+  document.querySelector(location.hash).style.display = 'block';
+});
+```
+
+### History
+
+```
+// push 页面
+history.pushState('', '', url);
+// pop 页面
+window.onpopstate = (e) => {
+};
+```
+
+## 55.如何快速把这个数组清空
+
+```
+const len = arr.length
+arr.length = 0
+arr = Array.from({ length: len })
+```
+
+## 56.下面代码输出结果？为什么？
+
+### 1
+
+```
+Function.prototype.a = 'a';
+Object.prototype.b = 'b';
+function Person(){};
+var p = new Person();
+console.log('p.a: '+ p.a); // p.a: undefined
+console.log('p.b: '+ p.b); // p.b: b
+```
+
+Person 的实例 p 的原型对象是 Person.prototype 没有 a 属性，Person.prototype.**proto** 指向 Object.prototype.**proto**同样没有 a 属性，所以是 undefined
+
+### 2 promise
+
+```
+setTimeout(function() {
+
+ console.log(1)}, 0);
+
+new Promise(function executor(resolve) {
+
+ console.log(2);  
+
+for( var i=0 ; i<10000 ; i++ ) {
+
+   i == 9999 && resolve();
+
+ }
+ console.log(3);
+
+}).then(function() {  
+
+console.log(4);
+
+});
+
+console.log(5);
+// 2 3 5 4 1
+```
+
+* `Promise.then`是异步执行的，而创建 Promise 实例（`executor`）是同步执行的
+* `setTimeout`的异步和`Promise.then`的异步看起来 **“不太一样”** ——至少是不在同一个队列中。
+
+`Promise`里的函数会按顺序执行，输出 2 3 ，`Promise`里的`then`就是会异步执行，放到当前`Promise`任务队列的最后执行，而`console.log(5`）是按顺序执行的，所以先输出 5，再输出 4。`Promise.then()`里面的回调属于 microtask, 会在当前 Event Loop 的最后执行, 而 `SetTimeout` 内的回调属于 macrotask, 会在下一个 Event Loop 中执行
+
+### 3
+
+```
+async function async1() {
+    console.log("a");
+    await  async2(); //执行这一句后，await会让出当前线程，将后面的代码加到任务队列中，然后继续执行函数后面的同步代码
+    console.log("b");
+
+}
+async function async2() {
+   console.log( 'c');
+}
+console.log("d");
+setTimeout(function () {
+    console.log("e");
+},0);
+async1();
+new Promise(function (resolve) {
+    console.log("f");
+    resolve();
+}).then(function () {
+    console.log("g");
+});
+console.log('h');
+// 谁知道为啥结果不一样？？？？？？？？？？？？？
+// 直接在控制台中运行结果：      d a c f h g b e
+// 在页面的script标签中运行结果：d a c f h b g e
+```
+
+### 4 闭包
+
+```
+for (var i = 0; i < 5; i++) {
+
+ setTimeout((function(i) {
+
+   console.log(i);
+
+ })(i), i * 1000);
+}
+```
+
+延时函数的第一个参数变成了一个立即执行函数，在这里应该是一个`undefined`，等价于：`setTimeout( undefined, … )`;立即函数会立马执行，所以是立马就输出 0 ～ 4；

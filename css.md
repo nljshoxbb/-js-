@@ -1,4 +1,4 @@
-## 1. display:none 和 visibility:hidden 的区别？
+## display:none 和 visibility:hidden 的区别？
 
 联系：它们都能让元素不可见
 
@@ -7,7 +7,7 @@
 3.  修改常规流中元素的 display 通常会造成文档**重排**。修改 visibility 属性只会造成本元素的**重绘**。
 4.  读屏器不会读取 `display: none;`元素内容；会读取 `visibility: hidden;`元素内容
 
-## 2. position:absolute 和 float 属性的异同
+## position:absolute 和 float 属性的异同
 
 共同点：对内联元素设置`float`和`absolute`属性，可以让元素脱离文档流，并且可以设置其宽高。
 
@@ -15,44 +15,74 @@
 
 **position: relative 并没有改变行内元素的 Display 属性**
 
-## 3. 介绍一下 box-sizing 属性
+## 介绍一下 box-sizing 属性
 
-`box-sizing` 属性主要用来控制元素的盒模型的解析模式。默认值是 `content-box`。
+设置 CSS 盒模型为标准模型或 IE 模型。标准模型的宽度只包括`content`，IE 模型包括`border`和`padding` `box-sizing`属性可以为三个值之一：
 
-* `content-box`：让元素维持 W3C 的标准盒模型。元素的宽度/高度由 `border + padding + content` 的宽度/高度决定，设置 `width/height` 属性指的是 `content` 部分的宽/高，一旦修改了元素的边框或内距，就会影响元素的盒子尺寸，就不得不重新计算元素的盒子尺寸，从而影响整个页面的布局。
-* `border-box`：让元素维持 IE 传统盒模型（IE6 以下版本和 IE6~7 的怪异模式）。设置 `width/height` 属性指的是 `border + padding + content`
+* `content-box`，默认值，只计算内容的宽度，`border`和`padding`不计算入`width`之内
+* `padding-box`，`padding`计算入宽度内
+* `border-box`，`border`和`padding`计算入宽度之内
 
-## 4. position 的值
+## position 的值
 
-* static 默认值。没有定位，元素出现在正常的流中
-* relative 生成相对定位的元素，相对于其在普通流中的位置进行定位。
-* absolute 生成绝对定位的元素， 相对于最近一级的 定位不是 static 的父元素来进行定位。
+* `static` 默认值。没有定位，元素出现在正常的流中。(此时会忽略任何 `top`、 `bottom`、`left` 或 `right` 声明)
+* `relative` 生成相对定位的元素，相对于其在普通流中的位置进行定位。它偏移的值都以它原来的位置为基准偏移，而不管其他元素会怎么样。注意 `relative` 移动后的元素在原来的位置仍占据空间。
+* `absolute` 父容器设置了 position 属性，并且 position 的属性值为 `absolute` 或者 `relative`，那么就会依据父容器进行偏移。如果其父容器没有设置 position 属性，那么偏移是以 body 为依据。注意设置 `absolute` 属性的元素在标准流中不占位置。
 * fixed （老 IE 不支持）生成绝对定位的元素，相对于浏览器窗口进行定位。
 * sticky 生成粘性定位的元素，容器的位置根据正常文档流计算得出，然后相对于该元素在流中的 flow root（BFC）和 containing block（最近的块级祖先元素）定位
 
-## 5. CSS3 新特性
+## CSS3 新特性
 
-* CSS3 实现圆角（border-radius），阴影（box-shadow），
-* 对文字加特效（text-shadow、），线性渐变（gradient），旋转（transform）
+* CSS3 实现圆角（`border-radius`），阴影（`box-shadow`），
+* 对文字加特效（`text-shadow`），线性渐变（`gradient`），旋转（`transform`）
 * `transform:rotate(9deg) scale(0.85,0.90) translate(0px,-30px) skew(-9deg,0deg);`//旋转,缩放,定位,倾斜。
 * 增加了更多的 CSS 选择器 多背景 `rgba`;
 * 在 CSS3 中唯一引入的伪元素是`::selection`;
-* 媒体查询，多栏布局;
+* 伪类选择器：`:target`, `:enabled`, `:disabed`, `:first-child`, `last-child`
+* 媒体查询（`@media`），多栏布局（`columns`）;
 * border-image;
+* `animation`:动画，3D 可以调用硬件渲染。
+* 新的长度单位：`rem`， `ch`，`vw`，`vh`，`vmax`，`vmin` 等。
+* `flex`: `flex`布局
 
-## 6. CSS sprites
+## CSS sprites
 
 CSS Sprites 其实就是把网页中一些背景图片整合到一张图片文件中，再利用 CSS 的`background-image`，`background- repeat`，`background-position`的组合进行背景定位，`background-position`可以用数字能精确的定位出背景图片的位置。这样可以减少很多图片请求的开销，因为请求耗时比较长；请求虽然可以并发，但是也有限制，一般浏览器都是 6 个。对于未来而言，就不需要这样做了，因为有了`http2`。
 
-## 7. 解释下浮动和它的工作原理？清除浮动的技巧
+## 解释下浮动和它的工作原理？清除浮动的技巧
+
+### 浮动的特性
 
 浮动元素脱离文档流，不占据空间。浮动元素碰到包含它的边框或者浮动元素的边框停留。
+
+* 浮动元素会从普通文档流中脱离，但浮动元素影响的不仅是自己，它会影响周围的元素对齐进行环绕。
+* 不管一个元素是行内元素还是块级元素，如果被设置了浮动，那浮动元素会生成一个块级框，可以设置它的 width 和 height，因此 float 常常用于制作横向配列的菜单，可以设置大小并且横向排列
+
+### 浮动元素的展示在不同情况下会有不同的规则：
+
+* 浮动元素在浮动的时候，其 `margin` 不会超过包含块的 `padding`。PS：如果想要元素超出，可以设置 `margin` 属性
+* 如果两个元素一个向左浮动，一个向右浮动，左浮动元素的 `marginRight` 不会和右浮动元素的 `marginLeft` 相邻。
+* 如果有多个浮动元素，浮动元素会按顺序排下来而不会发生重叠的现象。
+* 如果有多个浮动元素，后面的元素高度不会超过前面的元素，并且不会超过包含块。
+* 如果有非浮动元素和浮动元素同时存在，并且非浮动元素在前，则浮动元素不会高于非浮动元素
+* 浮动元素会尽可能地向顶端对齐、向左或向右对齐
+
+### 重叠问题
+
+* **行内元素**与浮动元素发生重叠，其边框，背景和内容都会显示在浮动元素之上
+* **块级元素**与浮动元素发生重叠时，边框和背景会显示在浮动元素之下，内容会显示在浮动元素之上
+
+### 父元素高度塌陷问题
+
+一个块级元素如果没有设置 `height`，其 `height` 是由子元素撑开的。对子元素使用了浮动之后，子元素会脱离标准文档流，也就是说，父级元素中没有内容可以撑开其高度，这样父级元素的 `height` 就会被忽略，这就是所谓的高度塌陷。
+
+### 清除浮动的方法
 
 * 使用空标签清除浮动。这种方法是在所有浮动标签后面添加一个空标签 定义 css `clear:both`. 弊端就是增加了无意义标签。
 * 使用`overflow`。设置 `overflow` 为 `hidden`（触发 bfc） 或者 `auto`，给包含浮动元素的父标签添加 css 属性 `overflow:auto; zoom:1`; zoom:1 用于兼容 IE6。
 * 使用 `after` 伪对象清除浮动。该方法只适用于非 IE 浏览器。该方法中必须为需要清除浮动元素的伪对象中设置 `height:0`，否则该元素会比实际高出若干像素；
 
-### (1) 添加额外标签(不推荐)
+#### (1) 添加额外标签(不推荐)
 
 ```
 <div class="wrap">
@@ -63,7 +93,7 @@ CSS Sprites 其实就是把网页中一些背景图片整合到一张图片文�
 </div>
 ```
 
-### (2) 使用 br 标签及自身 html 属性(不推荐)
+#### (2) 使用 br 标签及自身 html 属性(不推荐)
 
 ```
 <div class="wrap">
@@ -75,7 +105,7 @@ CSS Sprites 其实就是把网页中一些背景图片整合到一张图片文�
 <div class="footer">.footer</div>
 ```
 
-### (3) 父元素设置 overflow 属性(不推荐)
+#### (3) 父元素设置 overflow 属性(不推荐)
 
 ```
 .clear{
@@ -90,9 +120,11 @@ CSS Sprites 其实就是把网页中一些背景图片整合到一张图片文�
 </div>
 ```
 
-**缺点** overflow:hidden; 内容增多时候容易造成不会自动换行导致内容被隐藏掉，无法显示需要溢出的元素；不要使用 overflow:auto; 多层嵌套后，firefox 与 IE 可能会出现显示错误；不要使用
+**优点** 代码简介，不存在结构和语义化问题
 
-### (4)父元素也设置浮动(不推荐)
+**缺点** `overflow:hidden`; 内容增多时候容易造成不会自动换行导致内容被隐藏掉，无法显示需要溢出的元素；不要使用 `overflow:auto`; 多层嵌套后，firefox 与 IE 可能会出现显示错误；不要使用
+
+#### (4)父元素也设置浮动(不推荐)
 
 ```
 <div class="wrap left"  >
@@ -104,7 +136,7 @@ CSS Sprites 其实就是把网页中一些背景图片整合到一张图片文�
 
 **缺点** 使得与父元素相邻的元素的布局会受到影响，不可能一直浮动到 body，不推荐使用
 
-### (5) 父元素设置 display:table(不推荐)
+#### (5) 父元素设置 display:table(不推荐)
 
 ```
 .clear{
@@ -120,7 +152,7 @@ CSS Sprites 其实就是把网页中一些背景图片整合到一张图片文�
 
 **缺点** 盒模型属性已经改变，由此造成的一系列问题，得不偿失，不推荐使用
 
-### (6) 使用:after 伪元素(推荐)
+#### (6) 使用:after 伪元素(推荐)
 
 ```
 .clearfix:after {
@@ -140,11 +172,11 @@ CSS Sprites 其实就是把网页中一些背景图片整合到一张图片文�
 </div>
 ```
 
-* display:block 使生成的元素以块级元素显示,占满剩余空间;
-* height:0 避免生成内容破坏原有布局的高度。
-* visibility:hidden 使生成的内容不可见，并允许可能被生成内容盖住的内容可以进行点击和交互;
-* 通过 content:”.”生成内容作为最后一个元素，至于 content 里面是点还是其他都是可以的，例如 oocss 里面就有经典的 content:”XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX”,有些版本可能 content 里面内容为空,不推荐这样做的,firefox 直到 7.0 content:”” 仍然会产生额外的空隙；
-* zoom：1 触发 IE hasLayout。通过分析发现，除了 clear：both 用来闭合浮动的，其他代码无非都是为了隐藏掉 content 生成的内容，这也就是其他版本的闭合浮动为什么会有 font-size：0，line-height：0。
+* `display:block` 使生成的元素以块级元素显示,占满剩余空间;
+* `height:0` 避免生成内容破坏原有布局的高度。
+* `visibility:hidden` 使生成的内容不可见，并允许可能被生成内容盖住的内容可以进行点击和交互;
+* 通过 `content:”.”`生成内容作为最后一个元素，至于 content 里面是点还是其他都是可以的，例如 oocss 里面就有经典的 `content:”XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX”`,有些版本可能 content 里面内容为空,不推荐这样做的,firefox 直到 7.0 content:”” 仍然会产生额外的空隙；
+* `zoom：1` 触发 IE hasLayout。通过分析发现，除了 `clear：both` 用来闭合浮动的，其他代码无非都是为了隐藏掉 content 生成的内容，这也就是其他版本的闭合浮动为什么会有 `font-size：0`，`line-height：0`。
 
 ```
 #box:after{
@@ -156,21 +188,21 @@ CSS Sprites 其实就是把网页中一些背景图片整合到一张图片文�
 }
 ```
 
-> 闭合浮动的原理为什么设置父元素 overflow 或者 display:table 可以闭合浮动?
-> 其原理为 Block formatting contexts （块级格式化上下文），以下简称 BFC
-> CSS3 里面对这个规范做了改动，称之为： flow root ，并且对触发条件进行了进一步说明
+### 闭合浮动的原理为什么设置父元素 overflow 或者 display:table 可以闭合浮动?
+
+其原理为 Block formatting contexts （块级格式化上下文），以下简称 BFC。CSS3 里面对这个规范做了改动，称之为： flow root ，并且对触发条件进行了进一步说明
 
 #### 建议
 
 在写的时候尽量用同一方向的 margin，比如都设置为 top 或者 bottom，因为你在实践的时候有时不需要为每个元素设置浮动、inline-block 或者 absolute 。
 
-## 8. 浮动元素引起的问题
+## 浮动元素引起的问题
 
 1.  父元素的高度无法被撑开，影响与父元素同级的元素
 2.  与浮动元素同级的非浮动元素（内联元素）会跟随其后
 3.  若非第一个元素浮动，则该元素之前的元素也需要浮动，否则会影响页面显示的结构
 
-## 9. link 和@import 的区别?
+## link 和@import 的区别?
 
 ```
 <link rel="stylesheet" rev="stylesheet" href="CSS文件" type="text/css" media="all" />
@@ -187,7 +219,7 @@ CSS Sprites 其实就是把网页中一些背景图片整合到一张图片文�
 * link 支持使用 Javascript 控制 DOM 去改变样式；而@import 不支持。
 * link 最大限度支持并行下载，@import 过多嵌套导致串行下载
 
-## 10.如何在页面上实现一个圆形的可点击区域 3.纯 js 实现 需要求一个点在不在圆上简单算法、获取鼠标坐标等等
+## 如何在页面上实现一个圆形的可点击区域 3.纯 js 实现 需要求一个点在不在圆上简单算法、获取鼠标坐标等等
 
 ```
 1.map+area或者svg
@@ -217,13 +249,13 @@ $("#yellow").on('click',function(e) {
 });
 ```
 
-## 11. 实现不使用 border 画出 1px 高的线，在不同浏览器的标准模式与怪异模式下都能保持一致的效果？
+## 实现不使用 border 画出 1px 高的线，在不同浏览器的标准模式与怪异模式下都能保持一致的效果？
 
 ```
 <div style="height:1px;overflow:hidden;background:red"></div>
 ```
 
-## 12. px/em/rem 区别
+## px/em/rem 区别
 
 * `px` 在缩放页面时无法调整那些使用它作为单位的字体、按钮等的大小
 * `em` 的值并不是固定的，会继承父级元素的字体大小，代表倍数；
@@ -254,7 +286,7 @@ span { font-size: 16px; font-size: 1.6rem; }
 
 需要注意的是，为了兼容不支持 rem 的浏览器，我们需要在各个使用了 rem 地方前面写上对应的 px 值，这样不支持的浏览器可以优雅降级
 
-## 13.有没有遇到过 margin 重叠的现象
+## 有没有遇到过 margin 重叠的现象
 
 > 当相邻元素都设置了 `margin` 边距时，`margin` 将取最大值，舍弃小值。为了不让边距重叠，可以给子元素加一个父元素，并设置该父元素为 BFC：`overflow: hidden`;
 
@@ -270,7 +302,7 @@ span { font-size: 16px; font-size: 1.6rem; }
 </div>
 ```
 
-## 14.Boostrap 清除浮动的 css
+## Boostrap 清除浮动的 css
 
 ```
 .clearfix:before,
@@ -303,7 +335,7 @@ span { font-size: 16px; font-size: 1.6rem; }
 
 ### `zoom: 1` 用于在 ie6/7 下触发 `haslayout` 和 `contain floats`
 
-## 15. CSS 选择符有哪些？哪些属性可以继承？优先级算法如何计算？ CSS3 新增伪类有那些？
+## CSS 选择符有哪些？哪些属性可以继承？优先级算法如何计算？ CSS3 新增伪类有那些？
 
 ```
 1.  id 选择器（ # myid）
@@ -334,7 +366,7 @@ span { font-size: 16px; font-size: 1.6rem; }
 7.  :checked 单选框或复选框被选中。
 ```
 
-## 16.`display: block;`和`display: inline;`的区别
+## `display: block;`和`display: inline;`的区别
 
 `block`元素特点：
 
@@ -355,11 +387,19 @@ span { font-size: 16px; font-size: 1.6rem; }
 7.  浮动或绝对定位时会转换为`block`
 8.  `vertical-align`属性生效
 
-## 18 对 BFC 规范的理解？
+## 对 BFC 规范的理解？
 
-BFC，块级格式化上下文，一个创建了新的 BFC 的盒子是独立布局的，盒子里面的子元素的样式不会影响到外面的元素。在同一个 BFC 中的两个毗邻的块级盒在垂直方向（和布局方向有关系）的 margin 会发生折叠。（W3C CSS 2.1 规范中的一个概念，它决定了元素如何对其内容进行布局，以及与其他元素的关系和相互作用。
+### 定义
+
+BFC(Block formatting context)直译为"块级格式化上下文"。它是一个独立的渲染区域，只有 Block-level box 参 与， 它规定了内部的 Block-level Box 如何布局，并且与这个区域外部毫不相干。
 
 > 创建 BFC 的初衷只是为了让元素本身（包括它的子元素）能够正确的计算自己的宽高。
+
+### BFC 布局规则
+
+* BFC 这个元素的垂直方向的边距会发生重叠，垂直方向的距离由`margin`决定，取最大值
+* BFC 的区域不会与浮动盒子重叠（清除浮动原理）
+* 计算 BFC 的高度时，浮动元素也参与计算。
 
 ### BFC 的特性
 
@@ -367,7 +407,7 @@ BFC，块级格式化上下文，一个创建了新的 BFC 的盒子是独立布
 * 块级格式化上下文不会重叠浮动元素
 * 块级格式化上下文通常可以包含浮动
 
-### 如何触发 BFC?
+### 如何触发(生成) BFC?
 
 1.  根元素
 2.  浮动元素（`float`不是`none`）
@@ -383,7 +423,7 @@ BFC，块级格式化上下文，一个创建了新的 BFC 的盒子是独立布
 
 > 相邻元素不发生折叠的因素是触发 BFC 因素的子集，也就是说如果我为上下相邻的元素设置了 overflow:hidden，虽然触发了 BFC，但是上下元素的上下 margin 还是会发生折叠创建 BFC 的初衷只是为了让元素本身（包括它的子元素）能够正确的计算自己的宽高。
 
-## 19 display,float,position 的关系
+## display,float,position 的关系
 
 1.  如果`display`为 none，那么 position 和 float 都不起作用，这种情况下元素不产生框
 2.  否则，如果 position 值为 absolute 或者 fixed，框就是绝对定位的，float 的计算值为 none，display 根据下面的表格进行调整。
@@ -392,7 +432,7 @@ BFC，块级格式化上下文，一个创建了新的 BFC 的盒子是独立布
 5.  其他情况下 display 的值为指定值总结起来：**绝对定位、浮动、根元素都需要调整`display`**
     ![display转换规则](img/display-adjust.png)
 
-## 20 1 像素边框问题
+## 1 像素边框问题
 
 ### (1) border-image 图片 实现
 
@@ -549,3 +589,23 @@ div::after{
     -webkit-transform-origin: top left;
 }
 ```
+
+## CSS 隐藏元素的几种方式及区别
+
+### (1)display:none
+
+* 元素在页面上将彻底消失，元素本来占有的空间就会被其他元素占有，也就是说它会导致浏览器的重排和重绘。
+* 不会触发其点击事件
+
+### (2)visibility:hidden
+
+* 和`display:none`的区别在于，元素在页面消失后，其占据的空间依旧会保留着，所以它只会导致浏览器重绘而不会重排
+* 无法触发其点击事件
+* 适用于那些元素隐藏后不希望页面布局会发生变化的场景
+
+### (3)opacity:0
+
+* 和 `visibility:hidden` 的一个共同点是元素隐藏后依旧占据着空间，但我们都知道，设置透明度为 0 后，元素只是隐身了，它依旧存在页面中
+* 可以触发点击事件
+
+### (4)设置 height，width 等盒模型属性为 0
