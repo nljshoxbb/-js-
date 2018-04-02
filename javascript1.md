@@ -552,40 +552,27 @@ addLoadEvent(secondFunction);
 
 ### 两大特色
 
-1.  code splitting（可以自动完成）
-
-2.  loader 可以处理各种类型的静态文件，并且支持串联操作
+* code splitting（可以自动完成）
+* loader 可以处理各种类型的静态文件，并且支持串联操作
 
 ### 新特性
 
-1.  对 CommonJS 、 AMD 、ES6 的语法做了兼容
-
-2.  对 js、css、图片等资源文件都支持打包
-
-3.  串联式模块加载器以及插件机制，让其具有更好的灵活性和扩展性，例如提供对 CoffeeScript、ES6 的支持
-
-4.  有独立的配置文件 webpack.config.js
-
-5.  可以将代码切割成不同的 chunk，实现按需加载，降低了初始化时间
-
-6.  支持 SourceUrls 和 SourceMaps，易于调试
-
-7.  具有强大的 Plugin 接口，大多是内部插件，使用起来比较灵活
-
-8.  webpack 使用异步 IO 并具有多级缓存。这使得 webpack 很快且在增量编译上更加快
+* 对 CommonJS 、 AMD 、ES6 的语法做了兼容
+* 对 js、css、图片等资源文件都支持打包
+* 串联式模块加载器以及插件机制，让其具有更好的灵活性和扩展性，例如提供对 CoffeeScript、ES6 的支持
+* 有独立的配置文件 webpack.config.js
+* 可以将代码切割成不同的 chunk，实现按需加载，降低了初始化时间
+* 支持 SourceUrls 和 SourceMaps，易于调试
+* 具有强大的 Plugin 接口，大多是内部插件，使用起来比较灵活
+* webpack 使用异步 IO 并具有多级缓存。这使得 webpack 很快且在增量编译上更加快
 
 ## 20.创建 ajax 过程
 
 1.  创建 XMLHttpRequest 对象,也就是创建一个异步调用对象.
-
 2.  创建一个新的 HTTP 请求,并指定该 HTTP 请求的方法、URL 及验证信息.
-
 3.  设置响应 HTTP 请求状态变化的函数.
-
 4.  发送 HTTP 请求.
-
 5.  获取异步调用返回的数据.
-
 6.  使用 JavaScript 和 DOM 实现局部刷新.
 
 ```
@@ -1419,3 +1406,225 @@ for (var i = 0; i < 5; i++) {
 ```
 
 延时函数的第一个参数变成了一个立即执行函数，在这里应该是一个`undefined`，等价于：`setTimeout( undefined, … )`;立即函数会立马执行，所以是立马就输出 0 ～ 4；
+
+## 57.装饰器原理
+
+```
+// 语法糖
+class Cat {
+    say() {
+        console.log("meow ~");
+    }
+}
+
+// 实现
+
+function Cat() {}
+Object.defineProperty(Cat.prototype, "say", {
+    value: function() { console.log("meow ~"); },
+    enumerable: false,
+    configurable: true,
+    writable: true
+});
+```
+
+* 装饰器作用于**类**本身的时候，操作的对象也是这个类本身，
+
+* 装饰器在作用于**属性**的时候，实际上是通过 `Object.defineProperty` 来进行扩展和封装的。
+
+## 58.实现 destructuringArray 方法，达到如下效果
+
+```
+// destructuringArray( [1,[2,4],3], "[a,[b],c]" );
+// result
+// { a:1, b:2, c:3 }
+
+const targetArray = [1, [2, 3], 4];
+const formater = "[a, [b], c]";
+const formaterArray = ['a', ['b'], 'c'];
+
+const destructuringArray = (values, keys) => {
+  try {
+    const obj = {};
+    if (typeof keys === 'string') {
+      keys = JSON.parse(keys.replace(/\w+/g, '"$&"'));
+    }
+
+    const iterate = (values, keys) =>
+      keys.forEach((key, i) => {
+        if(Array.isArray(key)) iterate(values[i], key)
+        else obj[key] = values[i]
+      })
+
+    iterate(values, keys)
+
+    return obj;
+  } catch (e) {
+    console.error(e.message);
+  }
+}
+
+console.dir(destructuringArray(targetArray,formater));
+console.dir(destructuringArray(targetArray,formaterArray));
+```
+
+## 59.async 与 defer 区别
+
+异步(`async`) 脚本将在其加载完成后立即执行，而 延迟(`defer`) 脚本将等待 HTML 解析完成后，并按加载顺序执行。
+
+## 60.react 阻止点击事件
+
+react 事件实际上是合成事件，而不是本地事件。
+
+> 事件委托：React 实际上并未将事件处理程序附加到节点本身。 当 React 启动时，它开始使用单个事件侦听器监听顶级的所有事件。 当组件被挂载或卸载时，事件处理程序可以简单地添加到内部映射或从内部映射中删除。 当事件发生时，React 知道如何使用这个映射来分派它。 当映射中没有事件处理程序时，React 的事件处理程序是简单的无操作。
+
+> 如果某个元素有多个相同类型事件的事件监听函数,则当该类型的事件触发时,多个事件监听函数将按照顺序依次执行.如果某个监听函数执行了 `event.stopImmediatePropagation()`方法,则除了该事件的冒泡行为被阻止之外(`event.stopPropagation`方法的作用),该元素绑定的后序相同类型事件的监听函数的执行也将被阻止.
+
+区别：
+
+* `event.stopPropagation`将阻止父元素上的处理程序运行。
+* `event.stopImmediatePropagation`也会阻止同一元素上的其他处理程序运行
+
+```
+  e.stopPropagation();
+  e.nativeEvent.stopImmediatePropagation();
+```
+
+## 61.找出数组中的最大值
+
+1.  `reduce`
+
+```
+var arr = [6, 4, 1, 8, 2, 11, 3];
+function max (prev, next) {
+    return Math.max(prev, next)
+}
+console.log(arr.reduce(max));
+```
+
+2.  `apply`
+
+```
+var arr = [6, 4, 1, 8, 2, 11, 3];
+console.log(Math.max.apply(null, arr));
+```
+
+3.  `ES6`
+
+```
+var arr = [6, 4, 1, 8, 2, 11, 3];
+function max (arr) {
+    return Math.max(...arr);
+}
+console.log(max(arr));
+```
+
+## 62. 数字格式化 1234567890 -> 1,234,567,890
+
+```
+function formatNum (num) {
+    return num.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+var num = '1234567890';
+var res = formatNum(num);
+console.log(res);
+```
+
+## 63.简单的字符串模板
+
+```
+var TemplateEngine = function (tpl, data) {
+    var re = /<%([^%>]+)?%>/g, match;
+
+    while (match = re.exec(tpl)) {
+        tpl = tpl.replace(match[0], data[match[1]]);
+    }
+    return tpl;
+}
+
+
+var template = '<p>Hello, my name is <%name%>. I\'m <%age%> years old.</p>';
+console.log(TemplateEngine(template, {
+    name: "Yeaseon",
+    age: 24
+}));
+```
+
+## 64.考察知识点最广的 JS 面试题
+
+```
+function Foo() {
+    getName = function () { console.log(1); }
+    return this;
+}
+Foo.getName = function () { console.log(2); } //静态方法
+Foo.prototype.getName = function () { console.log(3); }
+var getName = function () { console.log(4); }
+function getName() { console.log(5); }
+/* 写出输出 */
+Foo.getName(); // 2 静态方法，不用实例化直接调用
+
+getName(); // 4 函数声明提升，但是被函数表达式覆盖
+
+Foo().getName(); // 1 Foo()返回this,执行window下的getName,而getName已经被改写
+
+getName(); // 1 被上面重写
+
+// JS的运算符优先级问题
+// new (带参数列表)比new (无参数列表)高比函数调用高
+// 相当于 new (Foo.getName)()
+new Foo.getName(); // 2
+
+// 优先级：new有参数列表(18)->.成员访问(18)->()函数调用(17)
+// 相当于 (new Foo()).getName()
+// 由于返回的是this，而this在构造函数中本来就代表当前实例化对象，最终Foo函数返回实例化对象。
+// 之后调用实例化对象的getName函数，因为在Foo构造函数中没有为实例化对象添加任何属性，当前对象的原型对象(prototype)中寻找getName函数
+new Foo().getName(); // 3
+
+// new有参数列表(18)->new有参数列表(18)
+// 相当于 new ((new Foo()).getName)();
+new new Foo().getName();// 3
+```
+
+## 65. es7 装饰器用过没，是干什么用的
+
+装饰器本质是一个函数。修饰器是一个对类进行处理的函数。用来修改类的行为。装饰器只能用于类和类的方法，不能用于函数，因为存在**函数提升**。
+
+## 66. 三种事件
+
+### (1)DOM0 级模型
+
+* HTML 代码中直接绑定:
+
+```
+<input type="button" onclick="fun()">
+```
+
+* 通过 JS 代码指定属性值:
+
+```
+var btn = document.getElementById('.btn');
+btn.onclick = fun;
+```
+
+移除监听函数：
+
+```
+btn.onclick = null;
+```
+
+### （2）IE 事件模型
+
+```
+var btn = document.getElementById('.btn');
+btn.attachEvent(‘onclick’, showMessage);
+btn.detachEvent(‘onclick’, showMessage);
+```
+
+### (3)DOM2 级模型
+
+```
+var btn = document.getElementById('.btn');
+btn.addEventListener(‘click’, showMessage, false);
+btn.removeEventListener(‘click’, showMessage, false);
+```

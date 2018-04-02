@@ -54,7 +54,6 @@ obj.postB('checkfy');
 obj.postC('checkfy');
 ```
 
-
 ## 补充代码,鼠标单击 Button1 后将 Button1 移动到 Button2 的后面
 
 * 如果要插入的 newElement 已经在 DOM 树中存在，那么执行此方法会将该节点从 DOM 树中移除。
@@ -118,6 +117,14 @@ obj.postC('checkfy');
                 flat(d, result);
             }
         }
+    }
+
+    // 另一种
+    function flatten(arr) {
+        while (arr.some(item => Array.isArray(item))) {
+            arr = [].concat(...arr);
+        }
+        return arr;
     }
 
     var result = [];
@@ -543,7 +550,61 @@ Event.prototype.once = function (type, handler) {
 };
 ```
 
-## es7 装饰器用过没，是干什么用的
+## 观察者模式
 
-装饰器本质是一个函数。修饰器是一个对类进行处理的函数。用来修改类的行为。
-装饰器只能用于类和类的方法，不能用于函数，因为存在**函数提升**。
+```
+var events = (function() {
+  var topics = {};
+
+  return {
+    publish: function(topic, info) {
+      console.log('publish a topic:' + topic);
+      if (topics.hasOwnProperty(topic)) {
+        topics[topic].forEach(function(handler) {
+          handler(info ? info : {});
+        })
+      }
+    },
+    subscribe: function(topic, handler) {
+      console.log('subscribe an topic:' + topic);
+      if (!topics.hasOwnProperty(topic)) {
+        topics[topic] = [];
+      }
+
+      topics[topic].push(handler);
+    },
+    remove: function(topic, handler) {
+      if (!topics.hasOwnProperty(topic)) {
+        return;
+      }
+
+      var handlerIndex = -1;
+      topics[topic].forEach(function(element, index) {
+        if (element === handler) {
+          handlerIndex = index;
+        }
+      });
+
+      if (handlerIndex >= 0) {
+        topics[topic].splice(handlerIndex, 1);
+      }
+    },
+    removeAll: function(topic) {
+      console.log('remove all the handler on the topic:' + topic);
+      if (topics.hasOwnProperty(topic)) {
+        topics[topic].length = 0;
+      }
+    }
+  }
+})();
+
+//主题监听函数
+var handler = function(info) {
+    console.log(info);
+}
+//订阅hello主题
+events.subscribe('hello', handler);
+
+//发布hello主题
+events.publish('hello', 'hello world');
+```

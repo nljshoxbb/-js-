@@ -432,7 +432,7 @@ BFC(Block formatting context)直译为"块级格式化上下文"。它是一个�
 5.  其他情况下 display 的值为指定值总结起来：**绝对定位、浮动、根元素都需要调整`display`**
     ![display转换规则](img/display-adjust.png)
 
-## 1 像素边框问题
+## 一像素边框问题
 
 ### (1) border-image 图片 实现
 
@@ -587,6 +587,39 @@ div::after{
     -webkit-transform: scale(0.5,0.5);
     transform: scale(0.5,0.5);
     -webkit-transform-origin: top left;
+}
+```
+
+sass实现
+```
+/* 定义 */
+@mixin border-1px ($color) {
+    position: relative;
+    &:after {
+        display: block;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        border-top: 1px solid $color;
+        context: '';
+    }
+}
+@media (-webkit-min-device-pixel-radio: 1.5), (min-device-pixel-radio: 1.5) {
+    border-1px {
+        &:after {
+            -webkit-transform: scaleY(0.7);
+            transform: scaleY(0.7);
+        }
+    }
+}
+@media (-webkit-min-device-pixel-radio: 2), (min-device-pixel-radio: 2) {
+    border-1px {
+        &:after {
+            -webkit-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+        }
+    }
 }
 ```
 
