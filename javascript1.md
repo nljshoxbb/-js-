@@ -672,10 +672,81 @@ getElementById()    //通过元素Id，唯一性
 
 ## 23.js 延迟加载的方式有哪些？
 
-1.  defer
-2.  async
+### (1). defer
+
+这个布尔属性被设定用来通知浏览器该脚本将在文档完成解析后，触发 `DOMContentLoaded` 事件前执行。如果缺少 `src` 属性（即内嵌脚本），该属性不应被使用，因为这种情况下它不起作用。对动态嵌入的脚本使用 `async=false` 来达到类似的效果。
+
+```
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="test1.js" defer="defer"></script>
+    <script src="test2.js" defer="defer"></script>
+</head>
+<body>
+<!-- 这里放内容 -->
+</body>
+</html>  
+```
+
+虽然`<script>` 元素放在了`<head>`元素中，但包含的脚本将延迟浏览器遇到`</html>`标签后再执行。`HTML5`规范要求脚本按照它们出现的先后顺序执行。在现实当中，延迟脚本并不一定会按照顺序执行。`defer`属性**只适用于外部脚本文件**。支持 `HTML5` 的实现会忽略嵌入脚本设置的 `defer`属性。
+
+### (2). async（HTML5）
+
+该布尔属性指示浏览器是否在允许的情况下异步执行该脚本。该属性对于内联脚本无作用 (即没有 src 属性的脚本）,**只适用于外部脚本文件**。
+
+目的：不让页面等待脚本下载和执行，从而**异步加载页面其他内容**。异步脚本一定会在页面 load 事件前执行。不能保证脚本会按顺序执行。
+
+```
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="test1.js" async></script>
+    <script src="test2.js" async></script>
+</head>
+<body>
+<!-- 这里放内容 -->
+</body>
+</html>  
+```
+
 3.  动态创建 DOM 方式（创建 script，插入到 DOM 中，加载完毕后 callBack）
-4.  按需异步载入 js
+
+```
+//这些代码应被放置在</body>标签前(接近HTML文件底部)
+<script type="text/javascript">  
+   function downloadJSAtOnload() {  
+       varelement = document.createElement("script");  
+       element.src = "defer.js";  
+       document.body.appendChild(element);  
+   }  
+   if (window.addEventListener)  
+      window.addEventListener("load",downloadJSAtOnload, false);  
+   else if (window.attachEvent)  
+      window.attachEvent("onload",downloadJSAtOnload);  
+   else
+      window.onload =downloadJSAtOnload;  
+</script>  
+```
+
+4.  通过 ajax 按需异步载入 js
+
+```
+var xhr = new XMLHttpRequest();  
+xhr.open("get", "script1.js", true);  
+xhr.onreadystatechange = function(){  
+    if (xhr.readyState == 4){  
+        if (xhr.status >= 200 && xhr.status < 300 || xhr.status == 304){  
+            var script = document.createElement ("script");  
+            script.type = "text/javascript";  
+            script.text = xhr.responseText;  
+            document.body.appendChild(script);  
+        }  
+    }  
+};  
+xhr.send(null);  
+```
+
 5.  创建并插入 iframe，让它异步执行 js
 
 ## 24. 哪些操作会造成内存泄漏？
@@ -1199,42 +1270,6 @@ obj2.b();
 * Ajax
 * WebSocket
 
-## 50.长连接与长轮询分别如何实现的？各有哪些优势和劣势？
-
-1.  **轮询**：客户端定时向服务器发送 Ajax 请求，服务器接到请求后马上返回响应信息并关闭连接。
-
-优点：后端程序编写比较容易。
-
-缺点：请求中有大半是无用，浪费带宽和服务器资源。
-
-实例：适于小型应用。
-
-2.  **长轮询**：客户端向服务器发送 Ajax 请求，服务器接到请求后 hold 住连接，直到有新消息才返回响应信息并关闭连接，客户端处理完响应信息后再向服务器发送新的请求。
-
-优点：在无消息的情况下不会频繁的请求。
-
-缺点：服务器 hold 连接会消耗资源。
-
-实例：WebQQ、Hi 网页版、Facebook IM。
-
-另外，对于长连接和 socket 连接也有区分：
-
-1.  **长连接**：在页面里嵌入一个隐蔵 iframe，将这个隐蔵 iframe 的 src 属性设为对一个长连接的请求，服务器端就能源源不断地往客户端输入数据。
-
-优点：消息即时到达，不发无用请求。
-
-缺点：服务器维护一个长连接会增加开销。
-
-实例：Gmail 聊天
-
-2.  **Flash Socket**：在页面中内嵌入一个使用了 Socket 类的 Flash 程序 JavaScript 通过调用此 Flash 程序提供的 Socket 接口与服务器端的 Socket 接口进行通信，JavaScript 在收到服务器端传送的信息后控制页面的显示。
-
-优点：实现真正的即时通信，而不是伪即时。
-
-缺点：客户端必须安装 Flash 插件；非 HTTP 协议，无法自动穿越防火墙。
-
-实例：网络互动游戏。
-
 ## 51.单页面应用和多页面应用的区别
 
 1.  应用组成
@@ -1254,15 +1289,69 @@ obj2.b();
 
 ## 52.import 和 require 的区别
 
-* 遵循的模块化规范不一样
-* 出现的时间不同
-* 形式不一样(写法比较多)
+### (1) 遵循的模块化规范不一样
 
-### 本质上的差别
+* `require`最早应该见于 nodejs 开发，属于 CommonJS 规范的一部分
+* `import`是 ES2015 里的新模块化规范
 
-1.  CommonJS 还是 ES6 Module 输出都可以看成是一个具备多个属性或者方法的对象；
-2.  `default` 是 ES6 Module 所独有的关键字，`export default fs` 输出默认的接口对象，`import fs from 'fs'` 可直接导入这个对象；
-3.  ES6 Module 中导入模块的属性或者方法是强绑定的，包括基础类型；而 CommonJS 则是普通的值传递或者引用传递。
+### (2) 形式不同
+
+* `require/exports` 的用法只有以下三种简单的写法
+
+```
+const fs = require('fs');
+— — — — — — — — — — — — — —
+exports.fs = fs;
+module.exports = fs;
+```
+
+* `import/export`的写法就多种多样
+
+```
+import fs from 'fs';
+import {default as fs} from 'fs';
+import * as fs from 'fs';
+import {readFile} from 'fs';
+import {readFile as read} from 'fs';
+import fs, {readFile} from 'fs';
+— — — — — — — — — — — — — — — — — — — —
+export default fs;
+export const fs;
+export function readFile;
+export {readFile, read};
+export * from 'fs';
+```
+
+### (3)本质上的差别
+
+* CommonJS 还是 ES6 Module 输出都可以看成是一个具备多个属性或者方法的对象；
+* `default` 是 ES6 Module 所独有的关键字，`export default fs` 输出默认的接口对象，`import fs from 'fs'` 可直接导入这个对象；
+* ES6 Module 中导入模块的属性或者方法是强绑定的，包括基础类型；而 CommonJS 则是普通的值传递或者引用传递。
+* `import` 传的是值引用，`require` 是值拷贝
+* `import` 是在编译过程中执行，而`require`是同步。
+
+```
+// counter.js
+exports.count = 0;
+setTimeout(function(){
+    console.log('counter'+exports.count++)
+},500);
+
+// common.js
+const {count} = require('./counter)
+setTimeout(function(){
+    console.log('after'+count)
+},1000);
+
+// es6.js
+import {count} from './counter'
+setTimeout(function(){
+    console.log('after'+count)
+},1000)
+
+//  common.js 输出 counter 1  after0
+//  es6.js 输出 counter 1  after1
+```
 
 ## 53.手写 parseInt 的实现
 
@@ -1628,3 +1717,12 @@ var btn = document.getElementById('.btn');
 btn.addEventListener(‘click’, showMessage, false);
 btn.removeEventListener(‘click’, showMessage, false);
 ```
+
+## 67.`prototype`和`__proto__`的区别和关系
+
+* `_proto_`是每个对象都有的一个属性，而`prototype`是函数才会有的属性。每个对象都会在内部初始化一个`__proto__`属性，当我们访问一个对象的属性时，如果这个对象内部不存在这个属性，那么他就会去`__proto__`里找这个属性，这个`__proto__`又会有自己的`__proto__`，于是就这样一直找下去，也就是我们平时所说的原型链概念。
+* `prototype`属性是只有函数才特有的属性，当你创建一个函数时， js 会自动为这个函数加上 `prototype`属性，值是一个空对象。
+* 对象有属性`__proto__`,指向该对象的构造函数的原型对象。
+* 方法除了有属性`__proto__`,还有属性`prototype`，`prototype`指向该方法的原型对象。
+
+![prototypeand__proto__](https://github.com/nljshoxbb/fe/blob/master/img/prototypeand__proto__.jpg)
