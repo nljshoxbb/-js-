@@ -48,7 +48,7 @@
             }
             friend.sayHi();
         **/
-
+        var friend = new Person();
 
         //重写原型对象切断了现有原型与任何之前已经存在的对象实例之间的联系
         Person.prototype = {
@@ -59,7 +59,9 @@
                 console.log('重写原型')
             }
         }
-        friend.sayName();
+     
+        console.log(friend);
+        // friend.sayName();
 
 
     </script>
