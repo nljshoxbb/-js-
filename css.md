@@ -337,7 +337,7 @@ span { font-size: 16px; font-size: 1.6rem; }
 
 ## CSS 选择符有哪些？哪些属性可以继承？优先级算法如何计算？ CSS3 新增伪类有那些？
 
-1.  id 选择器（` # myid`）
+1.  id 选择器（`# myid`）
 2.  类选择器（`.myclassname`）
 3.  标签选择器（`div, h1, p`）
 4.  相邻选择器（`h1 + p`）
@@ -354,7 +354,6 @@ span { font-size: 16px; font-size: 1.6rem; }
 
 ### CSS3 新增伪类举例：
 
-
 1.  `p:first-of-type` 选择属于其父元素的首个 `<p>` 元素的每个 `<p>` 元素。
 2.  `p:last-of-type` 选择属于其父元素的最后 `<p>` 元素的每个 `<p>` 元素。
 3.  `p:only-of-type` 选择属于其父元素唯一的 `<p>` 元素的每个 `<p>` 元素。
@@ -362,7 +361,6 @@ span { font-size: 16px; font-size: 1.6rem; }
 5.  `p:nth-child(2)` 选择属于其父元素的第二个子元素的每个 `<p>` 元素。
 6.  `:enabled :disabled` 控制表单控件的禁用状态。
 7.  `:checked` 单选框或复选框被选中。
-
 
 ## `display: block;`和`display: inline;`的区别
 
@@ -641,3 +639,70 @@ sass 实现
 * 可以触发点击事件
 
 ### (4)设置 height，width 等盒模型属性为 0
+
+## rem
+
+### (1)原理
+
+其实 rem 布局的本质是等比缩放，一般是基于宽度
+
+1.  如何让 html 字体大小一直等于屏幕宽度的百分之一呢？ 可以通过 js 来设置，一般需要在页面 dom ready、resize 和屏幕旋转中设置
+
+```
+document.documentElement.style.fontSize = document.documentElement.clientWidth / 100 + 'px';
+```
+
+2.  那么如何把 UE 图中的获取的像素单位的值，转换为已 rem 为单位的值呢？
+
+`公式是元素宽度 / UE图宽度 * 100`，让我们举个例子，假设 UE 图尺寸是 640px，UE 图中的一个元素宽度是 100px，根据公式 `100/640\*100 = 15.625`
+
+`p {width: 15.625rem}`
+
+### (2)比 Rem 更好的方案
+
+> vw —— 视口宽度的 1/100；vh —— 视口高度的 1/100
+
+```
+/* rem方案 */
+html {fons-size: width / 100}
+p {width: 15.625rem}
+
+/* vw方案 */
+p {width: 15.625vw}
+```
+
+vw 还可以和 rem 方案结合，这样计算 html 字体大小就不需要用 js 了
+
+```
+html {fons-size: 1vw} /* 1vw = width / 100 */
+p {width: 15.625rem}
+```
+
+缺点：兼容性不如 rem 好
+
+###(3)Rem 的问题
+
+rem 是弹性布局的一种实现方式，弹性布局可以算作响应式布局的一种，但响应式布局不是弹性布局，弹性布局强调**等比缩放**，100%还原；响应式布局强调**不同屏幕要有不同的显示**，比如媒体查询。
+
+* 字体大小并不能使用 rem，字体的大小和字体宽度，并不成线性关系
+* 由于设置了根元素字体的大小，会影响所有没有设置字体大小的元素，因为字体大小是会继承的。不可能每个元素都显示设置字体大小
+
+## viewport
+
+### (1)利用 meta 标签对 viewport 进行控制
+
+`<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">`
+
+* width:设置 layout viewport 的宽度，为一个正整数，或字符串"width-device"
+
+### (2)把当前的 viewport 宽度设置为 ideal viewport 的宽度
+
+`<meta name="viewport" content="initial-scale=1">`和`<meta name="viewport" content="width=device-width">`效果相同
+
+原因：缩放是相对于 ideal viewport 来进行缩放的，当对 ideal viewport 进行 100%的缩放，也就是缩放值为 1 的时候，得到了 ideal viewport
+
+`<meta name="viewport" content="width=400, initial-scale=1">`当遇到这种情况时，浏览器会取它们两个中较大的那个值。例如，当 width=400，ideal viewport 的宽度为 320 时，取的是 400；当 width=400， ideal viewport 的宽度为 480 时，取的是 ideal viewport 的宽度。
+
+### (3)关于缩放以及 initial-scale 的默认值
+
+* 在 iphone 和 ipad 上，无论你给 viewport 设的宽的是多少，如果没有指定默认的缩放值，则 iphone 和 ipad 会自动计算这个缩放值，以达到当前页面不会出现横向滚动条(或者说 viewport 的宽度就是屏幕的宽度)的目的。

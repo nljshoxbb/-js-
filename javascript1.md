@@ -872,9 +872,9 @@ alert(GetBytes("你好,as"));
 
 ## 38.DOM 事件模型是如何的,编写一个 EventUtil 工具类实现事件管理兼容
 
-* DOM 事件包含捕获（capture）和冒泡（bubble）两个阶段：捕获阶段事件从 window 开始触发事件然后通过祖先节点一次传递到触发事件的 DOM 元素上；冒泡阶段事件从初始元素依次向祖先节点传递直到 window
-* 标准事件监听 elem.addEventListener(type, handler, capture)/elem.removeEventListener(type, handler, capture)：handler 接收保存事件信息的 event 对象作为参数，event.target 为触发事件的对象，handler 调用上下文 this 为绑定监听器的对象，event.preventDefault()取消事件默认行为，event.stopPropagation()/event.stopImmediatePropagation()取消事件传递
-* 老版本 IE 事件监听 elem.attachEvent('on'+type, handler)/elem.detachEvent('on'+type, handler)：handler 不接收 event 作为参数，事件信息保存在 window.event 中，触发事件的对象为 event.srcElement，handler 执行上下文 this 为 window 使用闭包中调用 handler.call(elem, event)可模仿标准模型，然后返回闭包，保证了监听器的移除。event.returnValue 为 false 时取消事件默认行为，event.cancleBubble 为 true 时取消时间传播
+* DOM 事件包含捕获（capture）和冒泡（bubble）两个阶段：捕获阶段事件从 `window` 开始触发事件然后通过祖先节点一次传递到触发事件的 DOM 元素上；冒泡阶段事件从初始元素依次向祖先节点传递直到 `window`
+* 标准事件监听 `elem.addEventListener(type, handler, capture)/elem.removeEventListener(type, handler, capture)：handler` 接收保存事件信息的 event 对象作为参数，`event.target` 为触发事件的对象，`handler` 调用上下文 `this` 为绑定监听器的对象，`event.preventDefault()`取消事件默认行为，`event.stopPropagation()/event.stopImmediatePropagation()`取消事件传递
+* 老版本 IE 事件监听`elem.attachEvent('on'+type, handler)/elem.detachEvent('on'+type, handler)：handler`不接收 `event` 作为参数，事件信息保存在 `window.event` 中，触发事件的对象为 `event.srcElement`，`handler` 执行上下文 `this` 为 `window` 使用闭包中调用 `handler.call(elem, event)`可模仿标准模型，然后返回闭包，保证了监听器的移除。`event.returnValue` 为 `false` 时取消事件默认行为，`event.cancleBubble` 为 `true` 时取消时间传播
 * 通常利用事件冒泡机制托管事件处理程序提高程序性能。
 
 ```
@@ -1371,30 +1371,8 @@ const parseInt = str => str * 1;
 * Virtual Dom 带来性能上的提升
 * 路由控制，单页应用更为简便
 
-## 55.单页应用，如何实现其路由功能
 
-### Hash
 
-```
-window.addEventListener('hashchange', () => {
-  // 隐藏其他页面
-  Array.from(document.querySelectorAll('.page')).map(page => {
-    page.style.display = 'none';
-  });
-  // 根据hash值显示对应的页面
-  document.querySelector(location.hash).style.display = 'block';
-});
-```
-
-### History
-
-```
-// push 页面
-history.pushState('', '', url);
-// pop 页面
-window.onpopstate = (e) => {
-};
-```
 
 ## 55.如何快速把这个数组清空
 
@@ -1560,24 +1538,6 @@ console.dir(destructuringArray(targetArray,formaterArray));
 ## 59.async 与 defer 区别
 
 异步(`async`) 脚本将在其加载完成后立即执行，而 延迟(`defer`) 脚本将等待 HTML 解析完成后，并按加载顺序执行。
-
-## 60.react 阻止点击事件
-
-react 事件实际上是合成事件，而不是本地事件。
-
-> 事件委托：React 实际上并未将事件处理程序附加到节点本身。 当 React 启动时，它开始使用单个事件侦听器监听顶级的所有事件。 当组件被挂载或卸载时，事件处理程序可以简单地添加到内部映射或从内部映射中删除。 当事件发生时，React 知道如何使用这个映射来分派它。 当映射中没有事件处理程序时，React 的事件处理程序是简单的无操作。
-
-> 如果某个元素有多个相同类型事件的事件监听函数,则当该类型的事件触发时,多个事件监听函数将按照顺序依次执行.如果某个监听函数执行了 `event.stopImmediatePropagation()`方法,则除了该事件的冒泡行为被阻止之外(`event.stopPropagation`方法的作用),该元素绑定的后序相同类型事件的监听函数的执行也将被阻止.
-
-区别：
-
-* `event.stopPropagation`将阻止父元素上的处理程序运行。
-* `event.stopImmediatePropagation`也会阻止同一元素上的其他处理程序运行
-
-```
-  e.stopPropagation();
-  e.nativeEvent.stopImmediatePropagation();
-```
 
 ## 61.找出数组中的最大值
 
