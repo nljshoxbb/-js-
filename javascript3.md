@@ -357,6 +357,12 @@ console.log(instance2.colors); // red,blue,black
 * SubType 的所有实例都会共享这一个 colors（引用类型）属性
 * 创建子类型的实例时，不能向超类型的构造函数中传递参数
 
+### 4.总结
+
+优点：非常纯粹的继承关系、简单易用、父类新增的原型方法原型属性子类都可以访问到。
+
+缺点：要为子类新增属性和方法，必须要放到 new SubType（）之后，不能放到构造器中，来自原型对象的引用类型被所有实力共享，创建子类，无法向构造函数传参。
+
 ## 二、借用构造函数
 
 ### 1. 实现
@@ -389,12 +395,15 @@ console.log(instance1.name) // name1
 * 在`SubType`构造函数内调用`SuperType`构造函数，实际上是为`SuperType`的实例设置了`name`属性
 * 确保不被父类重写子类属性，可以在调用超类构造函数后再添加子类中定义的属性
 
-### 2.问题
+### 2.总结
 
-* 方法都在构造函数中定义,函数没有复用性
-* 超类原型定义的方法在子类中不可见
+优点：解决了共享引用类型的问题，可以在构造函数里面传参，可以实现多继承。
+
+缺点：实例不是父类实例，只能继承父类的属性和方法，不能继承父类原型的方法和属性、无法实现函数的复用。
 
 ## 三、组合继承
+
+通过调用父类的构造函数，继承父类的属性并保留参数，通过父类的实例作为子类原型，实现函数复用。
 
 ### 1. 实现
 
@@ -431,6 +440,12 @@ console.log(instance2.colors); // red,blue
 instance2.sayName(); // name2
 instance2.sayAge(); // 27
 ```
+
+### 2.总结
+
+优点：可以继承属性和方法以及原型上的属性和方法、即是子类实例也是父类实例、不存在属性共享的问题、函数可复用。
+
+缺点：调用了两次构造函数，生成了两份实例。
 
 ## 四、寄生组合式继承
 
@@ -475,7 +490,7 @@ SuperType.prototype.sayName = function () {
 }
 
 function SubType(name, age) {
-    SuperType.call(this, name); 
+    SuperType.call(this, name);
     this.age = age;
 }
 function inheritPrototype(subType, superType) {
@@ -495,3 +510,7 @@ console.log(instance,instance.sayAge(),instance.sayName());
 * 只调用一次`SuperType`构造函数,避免在`SubType.prototype`上面创建不必要的、多余的属性
 * 原型链还能保持不变
 * 还可以正常使用`instanceof`和`isPrototypeOf()`
+
+### 总结
+
+砍掉父类的实例属性，这样，在调用两次父类的构造时候，就不会初始化两次实例方法和属性，避免组合继承的缺点
