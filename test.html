@@ -8,30 +8,33 @@
 </head>
 
 <body>
-    <a onclick="window.location.href='tel:11111'">111</a>
+
     <script>
-
-        function Person(name, age, job) {
+        // 单体模式
+        var Singleton = function (name) {
             this.name = name;
-            this.age = age;
-            this.job = job;
-            this.sayName = function () {
-                alert(this.name);
-            }
+        };
+        Singleton.prototype.getName = function () {
+            return this.name;
         }
+        // 获取实例对象
+        var getInstance = (function () {
+            var instance = null;
+            return function (name) {
+                if (!instance) {
+                    instance = new Singleton(name);
+                }
+                return instance;
+            }
+        })();
+        // 测试单体模式的实例
+        var a = getInstance("aa");
+        var b = getInstance("bb");
+        console.log(a === b); // true
 
-        var person1 =Person('name1', 21, 'job1');
-        var person2 =Person('name2', 22, 'job2');
+        console.log(a.getName());// aa
 
-        // console.log(person1.constructor == Person);
-        // console.log(person2.constructor == Person);
-        // console.log(
-        //     person1 instanceof Object,
-        //     person1 instanceof Person,
-        //     person2 instanceof Object,
-        //     person2 instanceof Person
-        // )
-        console.log(window)
+        console.log(b.getName());// aa
     </script>
 </body>
 
