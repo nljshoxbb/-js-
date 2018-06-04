@@ -7,65 +7,128 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
-        .parent {
-            text-align: center;
-        }
-
-        .child {
-            display: inline-block;
-            background-color: red;
-            height: 100px;
-            width: 100px;
-        }
-
-        .child1 {
-            width: 100px;
-            margin: 0 auto;
-            height: 100px;
-            background-color: red;
-        }
-
-
-        .child2 {
-            display: table;
-            margin: 0 auto;
-            background-color: red;
-            height: 100px;
-            width: 100px;
-        }
-
-        .parent3{
+        .parent3 {
             position: relative;
             display: block;
         }
 
-        .child3{
-            position: absolute;
-            left: 50%;
-            transform: translate(-50%);
+        .child {
             background-color: red;
+            height: 100px;
+            width: 100px;
+            display: inline-block;
         }
     </style>
 </head>
 
 <body>
-    <h1>使用inline-block 和 text-align实现</h1>
-    <div class="parent">
-        <div class="child"></div>
-    </div>
+    <section class="layout margin">
+        <style>
+            .layout.margin .child {
+                margin: 0 auto;
+                width: 100px;
+                display: block;
+            }
+        </style>
+        <h1>使用margin方案</h1>
+        <article class="content">
+            <div class="child"></div>
+        </article>
+    </section>
 
-    <h1>使用margin:0 auto来实现 </h1>
-    <div class="child1"></div>
+    <section class="layout absolute">
+        <style>
+            .layout.absolute .content {
+                position: relative;
+                height: 100px;
+            }
 
-    <h1>使用table实现(待定)</h1>
-    <div class="child2">123</div>
+            .layout.absolute .child {
+                position: absolute;
+                left: 50%;
+                margin-left: -50px;
+                display: inline-block;
+            }
+
+            /* .layout.absolute .child{
+                position: absolute;
+                left: 50%;
+                transform: translate(-50%);
+            } */
+        </style>
+        <h1>使用absolute方案</h1>
+        <article class="content">
+            <div class="child"></div>
+        </article>
+    </section>
 
 
-    <h1>使用绝对定位实现(待定)</h1>
-    <div class="parent3">
-        <div class="child3">123</div>
-    </div>
-    
+    <section class="layout inline-align">
+        <style>
+            .layout.inline-align .content {
+                text-align: center;
+            }
+
+            .layout.inline-align .child {
+                display: inline-block;
+            }
+        </style>
+        <h1>使用inline-align 方案</h1>
+        <article class="content">
+            <div class="child"></div>
+        </article>
+    </section>
+
+
+    <!--     <section class="layout table">
+        <style>
+            .layout.table .content {
+                display: table;
+                table-layout: fixed;
+                width: 100%;
+                text-align: center
+            }
+
+            .layout.table .child {
+                display: table-cell;
+
+            }
+        </style>
+        <h1>使用table方案</h1>
+        <article class="content">
+            <div class="child"></div>
+        </article>
+    </section> -->
+
+    <section class="layout flex">
+        <style>
+            .layout.flex .content {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+            }
+        </style>
+        <h1>使用flex方案</h1>
+        <article class="content">
+            <div class="child"></div>
+        </article>
+    </section>
+
+<!-- 
+    <section class="layout grid">
+        <style>
+            .layout.grid .content{
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        </style>
+        <h1>使用grid方案</h1>
+        <article class="content">
+            <div class="child"></div>
+            <div class="child"></div>
+            <div class="child"></div>
+        </article>
+    </section> -->
 </body>
 
 </html>

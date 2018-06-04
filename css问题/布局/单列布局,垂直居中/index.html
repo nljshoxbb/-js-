@@ -11,63 +11,97 @@
             margin: 0;
             padding: 0;
         }
-
-        .parent {
-            display: table-cell;
-            vertical-align: middle;
-            height: 100px;
-            background-color: peachpuff
-        }
-
-        .parent1 {
-            /* display: inline-block; */
-            vertical-align: middle;
-            line-height: 100px;
-            background-color: peachpuff
-        }
-
-        .parent2 {
-            position: relative;
-            background-color: peachpuff;
-            height: 100px;
-        }
-
-        .child2 {
-            position: absolute;
-            top: 50%;
-            transform: translate(0, -50%);
-        }
-
-        .parent3{
-            display: flex;
-            align-items: center;
-            background-color: peachpuff;
-            height: 100px;
-        }
     </style>
 </head>
 
 <body>
-    <h1>第一种</h1>
-    <div class="parent">
-        <div class="child">123</div>
-    </div>
+    <!-- tabel-cell -->
+    <section>
+        <style>
+            .layout.table-cell {
+                display: table-cell;
+                vertical-align: middle;
+                height: 100px;
+                background-color: peachpuff
+            }
+        </style>
+        <h1>table-cell </h1>
+        <article class="layout table-cell">
+            <div class="child">table-cell 解决方案</div>
+        </article>
+    </section>
 
-    <h1>第二种</h1>
-    <div class="parent1">
-        <div class="child1">123</div>
-    </div>
+    <!-- vertical-align: middle -->
+    <section>
+        <style>
+            .layout.vertical-middle {
+                /* display: inline-block; */
+                vertical-align: middle;
+                line-height: 100px;
+                background-color: peachpuff
+            }
+        </style>
+        <h1>vertical-align: middle</h1>
+        <article class="layout vertical-middle">
+            <div class="child">vertical-align: middle解决方案</div>
+        </article>
+    </section>
 
-    <h1>实用绝对定位</h1>
-    <div class="parent2">
-        <div class="child2">123</div>
-    </div>
+    <!-- absolute -->
+    <section>
+        <style>
+            .layout.absolute {
+                position: relative;
+                background-color: peachpuff;
+                height: 100px;
+            }
 
-    <h1>实用flex实现</h1>
-    <div class="parent3">
-        <div class="child3">123</div>
-    </div>
-    
+            .layout.absolute .child {
+                position: absolute;
+                top: 50%;
+                transform: translate(0, -50%);
+            }
+        </style>
+        <h1>absolute</h1>
+        <article class="layout absolute">
+            <div class="child">absolute解决方案</div>
+        </article>
+    </section>
+
+
+    <!-- flex -->
+    <section>
+        <style>
+            .layout.flex {
+                display: flex;
+                align-items: center;
+                background-color: peachpuff;
+                height: 100px;
+            }
+        </style>
+        <h1>flex</h1>
+        <article class="layout flex">
+            <div class="child">flex解决方案</div>
+        </article>
+    </section>
+
+    <!-- grid -->
+    <section>
+        <style>
+            .layout.grid {
+                display: grid;
+                background-color: peachpuff;
+                height: 100px;
+                grid-template-columns: 150px;
+                align-items: center;
+            }
+        </style>
+        <h1>grid</h1>
+        <article class="layout grid">
+            <div class="child">grid解决方案</div>
+        </article>
+    </section>
+
 </body>
 
 </html>

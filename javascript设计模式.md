@@ -128,3 +128,267 @@ document.getElementById("Id").onclick = function(){
     win.src = "http://cnblogs.com";
 };
 ```
+
+# 三、模块模式
+
+```
+function CustomType() {
+    this.name = "tugenhua";
+};
+CustomType.prototype.getName = function(){
+    return this.name;
+}
+var application = (function(){
+    // 定义私有
+    var privateA = "aa";
+    // 定义私有函数
+    function A(){};
+
+    // 实例化一个对象后，返回该实例，然后为该实例增加一些公有属性和方法
+    var object = new CustomType();
+
+    // 添加公有属性
+    object.A = "aa";
+    // 添加公有方法
+    object.B = function(){
+        return privateA;
+    }
+    // 返回该对象
+    return object;
+})();
+
+
+console.log(application.A);// aa
+
+console.log(application.B()); // aa
+
+console.log(application.name); // tugenhua
+
+console.log(application.getName());// tugenhua
+```
+
+## 使用场景
+
+当必须创建一个对象并以某些数据进行初始化，同时还要公开一些能够访问这些私有数据的方法
+
+# 代理模式
+
+## 优点
+
+1.  代理对象可以代替本体被实例化，并使其可以被远程访问；
+2.  它还可以把本体实例化推迟到真正需要的时候；对于实例化比较费时的本体对象，或者因为尺寸比较大以至于不用时不适于保存在内存中的本体，我们可以推迟实例化该对象
+
+## 使用虚拟代理实现图片的预加载
+
+```
+// 不使用代理的预加载图片函数如下
+var myImage = (function(){
+    var imgNode = document.createElement("img");
+    document.body.appendChild(imgNode);
+    var img = new Image();
+    img.onload = function(){
+        imgNode.src = this.src;
+    };
+    return {
+        setSrc: function(src) {
+            imgNode.src = "http://img.lanrentuku.com/img/allimg/1212/5-121204193Q9-50.gif";
+            img.src = src;
+        }
+    }
+})();
+// 调用方式
+myImage.setSrc("https://img.alicdn.com/tps/i4/TB1b_neLXXXXXcoXFXXc8PZ9XXX-130-200.png");
+```
+
+```
+// 代理模式
+var myImage = (function(){
+    var imgNode = document.createElement("img");
+    document.body.appendChild(imgNode);
+    return {
+        setSrc: function(src) {
+            imgNode.src = src;
+        }
+    }
+})();
+// 代理模式
+var ProxyImage = (function(){
+    var img = new Image();
+    img.onload = function(){
+        myImage.setSrc(this.src);
+    };
+    return {
+        setSrc: function(src) {
+                         myImage.setSrc("http://img.lanrentuku.com/img/allimg/1212/5-121204193Q9-50.gif");
+        img.src = src;
+        }
+    }
+})();
+// 调用方式
+ProxyImage.setSrc("https://img.alicdn.com/tps/i4/TB1b_neLXXXXXcoXFXXc8PZ9XXX-130-200.png");
+```
+
+1.  第一种方案一般的方法代码的耦合性太高
+2.  第二种方案使用代理模式，其中 myImage 函数只负责做一件事,可复用，不使用代理可以移除，灵活
+
+## 虚拟代理合并 http 请求
+
+```
+// 本体函数
+var mainFunc = function(ids) {
+    console.log(ids); // 即可打印被选中的所有的id
+    // 再把所有的id一次性发ajax请求给服务器端
+};
+// 代理函数 通过代理函数获取所有的id 传给本体函数去执行
+var proxyFunc = (function(){
+    var cache = [],  // 保存一段时间内的id
+        timer = null; // 定时器
+    return function(checkboxs) {
+        // 判断如果定时器有的话，不进行覆盖操作
+        if(timer) {
+            return;
+        }
+        timer = setTimeout(function(){
+            // 在2秒内获取所有被选中的id，通过属性isflag判断是否被选中
+            for(var i = 0,ilen = checkboxs.length; i < ilen; i++) {
+                if(checkboxs[i].hasAttribute("isflag")) {
+                    var id = checkboxs[i].getAttribute("data-id");
+                    cache[cache.length] = id;
+                }
+            }
+            mainFunc(cache.join(',')); // 2秒后需要给本体函数传递所有的id
+            // 清空定时器
+            clearTimeout(timer);
+            timer = null;
+            cache = [];
+        },2000);
+    }
+})();
+var checkboxs = document.getElementsByClassName("j-input");
+for(var i = 0,ilen = checkboxs.length; i < ilen; i+=1) {
+    (function(i){
+        checkboxs[i].onclick = function(){
+            if(this.checked) {
+                // 给当前增加一个属性
+                this.setAttribute("isflag",1);
+            }else {
+                this.removeAttribute('isflag');
+            }
+            // 调用代理函数
+            proxyFunc(checkboxs);
+        }
+    })(i);
+}
+```
+
+## 缓存代理
+
+```
+// 计算乘法
+var mult = function(){
+    var a = 1;
+    for(var i = 0,ilen = arguments.length; i < ilen; i+=1) {
+        a = a*arguments[i];
+    }
+    return a;
+};
+// 计算加法
+var plus = function(){
+    var a = 0;
+    for(var i = 0,ilen = arguments.length; i < ilen; i+=1) {
+        a += arguments[i];
+    }
+    return a;
+}
+// 代理函数
+var proxyFunc = function(fn) {
+    var cache = {};  // 缓存对象
+    return function(){
+        var args = Array.prototype.join.call(arguments,',');
+        if(args in cache) { // 如果参数相同
+            return cache[args];   // 使用缓存代理
+        }
+        return cache[args] = fn.apply(this,arguments);
+    }
+};
+var proxyMult = proxyFunc(mult);
+console.log(proxyMult(1,2,3,4)); // 24
+console.log(proxyMult(1,2,3,4)); // 缓存取 24
+
+var proxyPlus = proxyFunc(plus);
+console.log(proxyPlus(1,2,3,4));  // 10
+console.log(proxyPlus(1,2,3,4));  // 缓存取 10
+```
+
+# 职责链模式
+
+## 优点
+
+消除请求的发送者与接收者之间的耦合
+
+## 流程
+
+1.  发送者知道链中的第一个接收者，它向这个接收者发送该请求。
+
+2.  每一个接收者都对请求进行分析，然后要么处理它，要么它往下传递。
+
+3.  每一个接收者知道其他的对象只有一个，即它在链中的下家(successor)。
+
+4.  如果没有任何接收者处理请求，那么请求会从链中离开。
+
+```
+function order500(orderType,isPay,count){
+    if(orderType == 1 && isPay == true)    {
+        console.log("亲爱的用户，您中奖了100元红包了");
+    }else {
+        //我不知道下一个节点是谁,反正把请求往后面传递
+        return "nextSuccessor";
+    }
+};
+function order200(orderType,isPay,count) {
+    if(orderType == 2 && isPay == true) {
+        console.log("亲爱的用户，您中奖了20元红包了");
+    }else {
+        //我不知道下一个节点是谁,反正把请求往后面传递
+        return "nextSuccessor";
+    }
+};
+function orderNormal(orderType,isPay,count){
+    // 普通用户来处理中奖信息
+    if(count > 0) {
+        console.log("亲爱的用户，您已抽到10元优惠卷");
+    }else {
+        console.log("亲爱的用户，请再接再厉哦");
+    }
+}
+// 下面需要编写职责链模式的封装构造函数方法
+var Chain = function(fn){
+    this.fn = fn;
+    this.successor = null;
+};
+Chain.prototype.setNextSuccessor = function(successor){
+    return this.successor = successor;
+}
+// 把请求往下传递
+Chain.prototype.passRequest = function(){
+    var ret = this.fn.apply(this,arguments);
+    if(ret === 'nextSuccessor') {
+        return this.successor && this.successor.passRequest.apply(this.successor,arguments);
+    }
+    return ret;
+}
+//现在我们把3个函数分别包装成职责链节点：
+var chainOrder500 = new Chain(order500);
+var chainOrder200 = new Chain(order200);
+var chainOrderNormal = new Chain(orderNormal);
+
+// 然后指定节点在职责链中的顺序
+chainOrder500.setNextSuccessor(chainOrder200);
+chainOrder200.setNextSuccessor(chainOrderNormal);
+
+//最后把请求传递给第一个节点：
+chainOrder500.passRequest(1,true,500);  // 亲爱的用户，您中奖了100元红包了
+chainOrder500.passRequest(2,true,500);  // 亲爱的用户，您中奖了20元红包了
+chainOrder500.passRequest(3,true,500);  // 亲爱的用户，您已抽到10元优惠卷
+chainOrder500.passRequest(1,false,0);   // 亲爱的用户，请再接再厉哦
+```

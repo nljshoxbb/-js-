@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .layout {
+            min-height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- flex -->
+    <section>
+        <style>
+            .layout.flex {
+                display: flex;
+            }
+
+            .layout.flex .left {
+                flex: 1;
+                background-color: royalblue;
+            }
+
+            .layout.flex .right {
+                width: 100px;
+                background-color: aquamarine;
+            }
+        </style>
+        <h1>flex解决方案</h1>
+        <article class="layout flex">
+            <div class="left">
+                <h1>自适应自适应</h1>
+                <h1>自适应自适应</h1>
+                <h1>自适应自适应</h1>
+                <h1>自适应自适应</h1>
+                <h1>自适应自适应</h1>
+                <h1>自适应自适应</h1>
+            </div>
+            <div class="right">定宽定宽定宽</div>
+        </article>
+    </section>
+
+    <!-- table -->
+    <section>
+        <style>
+            .layout.table {
+                display: table;
+                table-layout: fixed;
+                width: 100%;
+
+            }
+
+            .layout.table .left {
+                display: table-cell;
+                background-color: royalblue;
+            }
+
+            .layout.table .right {
+                width: 100px;
+                display: table-cell;
+                background-color: aquamarine;
+            }
+        </style>
+        <h1>table解决方案</h1>
+        <article class="layout table">
+            <div class="left">
+                <h1>自适应自适应</h1>
+                <h1>自适应自适应</h1>
+                <h1>自适应自适应</h1>
+                <h1>自适应自适应</h1>
+                <h1>自适应自适应</h1>
+                <h1>自适应自适应</h1>
+            </div>
+            <div class="right">定宽定宽定宽</div>
+        </article>
+    </section>
+
+
+    <!-- float-margin -->
+    <section>
+        <style>
+            .layout.float-margin {
+                margin: 0 auto;
+                height: 100px;
+                overflow: hidden;
+            }
+
+            .layout.float-margin .left {
+                margin-right: -100px;
+                width: 100%;
+                float: left;
+                background-color: royalblue;
+                height: 100px;
+            }
+
+            .layout.float-margin .right {
+                float: right;
+                width: 100px;
+                background-color: aquamarine;
+                margin-left: -100px;
+                height: 100px;
+            }
+        </style>
+        <h1>float-margin解决方案</h1>
+        <article class="layout float-margin">
+            <div class="left">
+                <h1>自适应自适应</h1>
+                <h1>自适应自适应</h1>
+                <h1>自适应自适应</h1>
+                <h1>自适应自适应</h1>
+                <h1>自适应自适应</h1>
+                <h1>自适应自适应</h1>
+            </div>
+            <div class="right">定宽定宽定宽</div>
+        </article>
+    </section>
+
+    <!-- grid -->
+    <section>
+        <style>
+            .layout.grid {
+                display: grid;
+                grid-template-columns: 1fr 100px;
+            }
+
+            .layout.grid .left {
+                background-color: royalblue;
+            }
+
+            .layout.grid .right {
+                background-color: aquamarine;
+            }
+        </style>
+        <h1>grid解决方案</h1>
+        <article class="layout grid">
+            <div class="left">
+                <h1>自适应自适应</h1>
+                <h1>自适应自适应</h1>
+                <h1>自适应自适应</h1>
+                <h1>自适应自适应</h1>
+                <h1>自适应自适应</h1>
+                <h1>自适应自适应</h1>
+            </div>
+            <div class="right">定宽定宽定宽</div>
+        </article>
+    </section>
+</body>
+
+</html>

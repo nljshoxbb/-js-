@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style type="text/css">
+        html * {
+            padding: 0;
+            margin: 0;
+        }
+
+        html,
+        body,
+        #wrapper {
+            height: 100%;
+        }
+
+        #wrapper div,section {
+            width: 150px;
+        }
+
+        #wrapper section.one,
+        .two,
+        .three,
+        .four {
+            width: 150px;
+            height: 100%;
+            display: inline-block;
+            float: left;
+        }
+
+        .one,
+        .two,
+        .three {
+            background: green;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="wrapper">
+        <!-- 1.absolute方法 -->
+        <section class="one">
+            <style type="text/css">
+                .layout.absolute div {
+                    position: absolute;
+                }
+
+                .layout.absolute .top {
+                    top: 0;
+                    height: 100px;
+                    background: red;
+                }
+
+                .layout.absolute .bottom {
+                    bottom: 0;
+                    height: 100px;
+                    background: blue;
+                }
+
+                .layout.absolute .center {
+                    top: 100px;
+                    bottom: 100px;
+                    background: yellow;
+                    overflow: auto;
+                }
+            </style>
+            <article class="layout absolute">
+                <div class="top"></div>
+                <div class="center">
+                    <h1>absolute中间自适应元素</h1>
+                </div>
+                <div class="bottom"></div>
+            </article>
+        </section>
+
+        <!-- 2.flex方法 -->
+        <section class="two">
+
+            <style type="text/css">
+                .two {
+                    margin-left: 10px;
+                }
+
+                .layout.flexbox {
+                    display: flex;
+                    width: 100%;
+                    height: 100%;
+                    flex-direction: column;
+                }
+
+                .layout.flexbox .top {
+                    height: 100px;
+                    background: red;
+                }
+
+                .layout.flexbox .center {
+                    flex: 1;
+                    background: yellow;
+                }
+
+                .layout.flexbox .bottom {
+                    height: 100px;
+                    background: blue;
+                }
+            </style>
+            <article class="layout flexbox">
+                <div class="top"></div>
+                <div class="center">
+                    <h1>flexbox中间自适应元素</h1>
+                </div>
+                <div class="bottom"></div>
+            </article>
+        </section>
+
+        <!-- 3.表格方法 -->
+        <section class="three">
+            <style type="text/css">
+                .three {
+                    margin-left: 10px;
+                }
+
+                .layout.table {
+                    display: table;
+                    height: 100%;
+                    width: 100%;
+                }
+
+                .layout.table div {
+                    display: table-row;
+                    /*特别注意*/
+                    display: inline-block;
+                }
+
+                .layout.table .top {
+                    height: 100px;
+                    background: red;
+                }
+
+                .layout.table .center {
+                    height: calc(100% - 200px);
+                    background: yellow;
+                }
+
+                .layout.table .bottom {
+                    height: 100px;
+                    background: blue;
+                }
+            </style>
+            <article class="layout table">
+                <div class="top"></div>
+                <div class="center">
+                    <h1>table方法中间自适应元素</h1>
+                </div>
+                <div class="bottom"></div>
+            </article>
+        </section>
+
+        <!-- 4.grid方法 -->
+        <section class="four">
+            <style>
+                .four {
+                    margin-left: 10px;
+                }
+
+                .layout.grid {
+                    display: grid;
+                    height: 100%;
+                    grid-template-rows: 100px auto 100px;
+                    grid-template-columns: 150px;
+                }
+
+                .layout.grid .top {
+                    background: red;
+                }
+
+                .layout.grid .center {
+                    background: yellow;
+                }
+
+                .layout.grid .bottom {
+                    background: blue;
+                }
+            </style>
+            <article class="layout grid">
+                <div class="top"></div>
+                <div class="center">
+                    <h1>grid方法中间自适应元素</h1>
+                </div>
+                <div class="bottom"></div>
+            </article>
+        </section>
+    </div>
+</body>
+
+</html>

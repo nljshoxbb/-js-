@@ -1,0 +1,283 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>TEst</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .item {
+            padding: 10px;
+            display: flex;
+            background-color: red;
+            justify-content: center;
+            border: 1px solid #fff;
+        }
+
+        .layout {
+            margin-bottom: 30px;
+        }
+
+        h3 {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- grid布局 -->
+    <section class="layout grid">
+        <style>
+            .layout.grid .contianer {
+                display: grid;
+
+            }
+        </style>
+        <h1>grid布局</h1>
+        <article class="contianer">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+        </article>
+
+    </section>
+
+    <!-- inline-grid -->
+    <section class="layout inline-grid">
+        <style>
+            .layout.inline-grid .contianer {
+                display: inline-grid;
+
+            }
+        </style>
+        <h1>inline-grid布局</h1>
+        <article class="contianer">
+            <div class="item">1</div>
+            <div class="item">2222222222222222222222222222</div>
+            <div class="item">3</div>
+        </article>
+    </section>
+
+
+    <!-- grid-template-rows -->
+    <section class="layout grid-template-rows">
+        <style>
+            .layout.grid-template-rows .contianer {
+                display: grid;
+                grid-template-rows: 50px 100px;
+            }
+        </style>
+        <h1>grid-template-rows布局</h1>
+        <article class="contianer">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+        </article>
+    </section>
+
+
+    <!-- grid-template-columns -->
+    <section class="layout grid-template-columns">
+        <style>
+            .layout.grid-template-columns .contianer {
+                display: grid;
+                grid-template-columns: 90px 50px 120px;
+            }
+        </style>
+        <h1>grid-template-columns布局</h1>
+        <article class="contianer">
+
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4</div>
+            <div class="item">5</div>
+            <div class="item">6</div>
+        </article>
+    </section>
+
+    <!--  grid-template-columns-fr -->
+    <section class="layout grid-template-columns-fr">
+        <style>
+            .layout.grid-template-columns-fr .contianer {
+                display: grid;
+                grid-template-columns: 1fr 1fr 3fr;
+            }
+        </style>
+        <h1>grid-template-columns-fr布局</h1>
+        <article class="contianer">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4</div>
+            <div class="item">5</div>
+            <div class="item">6</div>
+        </article>
+    </section>
+
+    <!--  grid-template-columns-percent -->
+    <section class="layout grid-template-columns-percent">
+        <style>
+            .layout.grid-template-columns-percent .contianer {
+                display: grid;
+                grid-template-columns: 3rem 25% 1fr 2fr;
+            }
+        </style>
+        <h1>grid-template-columns-percent布局 </h1>
+        <h3>单位fr和其它长度单位混合使用时，fr的计算基于其它单位分配后的剩余空间。 本例中，1fr = (容器宽度 - 3rem - 容器宽度的25%) / 3</h3>
+        <article class="contianer">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4</div>
+            <div class="item">5</div>
+            <div class="item">6</div>
+        </article>
+    </section>
+
+    <!--  grid-template-columns-minmax -->
+    <section class="layout grid-template-columns-minmax">
+        <style>
+            .layout.grid-template-columns-minmax .contianer {
+                display: grid;
+                grid-template-rows: minmax(100px, auto);
+                grid-template-columns: minmax(auto, 50%) 1fr 3em;
+            }
+        </style>
+        <h1>轨道的最小最大尺寸设置</h1>
+        <article class="contianer">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4CSS网格布局（Grid）是一套二维的页面布局系统，它的出现将完全颠覆页面布局的传统方式。传统的CSS页面布局 一直不够理想。包括table布局、浮动、定位及内联块等方式，从本质上都是Hack的方式，并且遗漏了一些重要的功能（比如：垂直居中）。Flexbox的出现部分解决了上述问题，但Flex布局是为了解决简单的一维布局，适用于页面局部布局。而Grid天然就是为了解决复杂的二维布局而出现的，适用页面的整体布局。在实际工作中，Grid和Flexbox不但不矛盾，而且还能很好的结合使用。做为WEB程序员，我们在页面布局问题上都付出过努力，也将不断探索新的方案。而Grid是第一个专门为布局问题而生的CSS模块，我们有理由对Grid充满期待。</div>
+            <div class="item">5</div>
+            <div class="item">6</div>
+        </article>
+    </section>
+
+    <!--  grid-repeat -->
+    <section class="layout grid-repeat">
+        <style>
+            .layout.grid-repeat .contianer {
+                display: grid;
+                grid-template-rows: repeat(2, 100px);
+                grid-template-columns: 30px repeat(4, 1fr) 30px;
+            }
+        </style>
+        <h1>重复的网格轨道</h1>
+        <article class="contianer">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4</div>
+            <div class="item">5</div>
+            <div class="item">6</div>
+            <div class="item">7</div>
+            <div class="item">8</div>
+            <div class="item">9</div>
+            <div class="item">10</div>
+            <div class="item">11</div>
+            <div class="item">12</div>
+        </article>
+    </section>
+
+
+    <!--  grid-gap 定义网格间隙-->
+    <section class="layout grid-gap">
+        <style>
+            .layout.grid-gap .contianer {
+                display: grid;
+                grid-row-gap: 20px;
+                grid-column-gap: 50px;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .layout.grid-gap .contianer1 {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-gap: 2em;
+            }
+        </style>
+        <h1>定义网格间隙 </h1>
+        <h3>间隙尺寸可以是任何非负的长度值（px，%，em等）。</h3>
+        <article class="contianer">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4</div>
+        </article>
+        <h3>如只有一个值，则其即表示行间隙，也表示列间隙。</h3>
+        <article class="contianer1">
+            <div class="item">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4</div>
+        </article>
+    </section>
+
+    <!-- 用网格线编号定位项目 -->
+    <section class="layout grid-start-end">
+        <style>
+            .layout.grid-start-end .contianer {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .layout.grid-start-end .item1 {
+                grid-row-start: 2;
+                grid-row-end: 3;
+                /* grid-column-start: 2;
+                grid-column-end: 3; */
+                grid-column: 2/3;
+                background-color: blue;
+            }
+        </style>
+        <h1>重复的网格轨道</h1>
+        <h3>这是一个3行2列的网格，即在行上有4条网格线，在列上有3条网格线。项目1利用网格线编号定位在第2行第2列的位置上。</h3>
+        <h3>属性grid-column 是 grid-column-start 和 grid-column-end的简写形式。</h3>
+        <article class="contianer">
+            <div class="item item1">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4</div>
+            <div class="item">5</div>
+            <div class="item">6</div>
+        </article>
+    </section>
+
+
+    <!-- 7 网格项目跨越行列 -->
+    <section class="layout grid-startend">
+        <style>
+            .layout.grid-startend .contianer {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+
+            .layout.grid-startend .item1 {
+                grid-column-start: 1;
+                grid-column-end: 4;
+                background-color: blue;
+            }
+        </style>
+        <h1>7 网格项目跨越行列</h1>
+        <h3>网格项目默认都占用一行和一列，但可以使用前一节中定位项目的属性来指定项目跨越多行或多列</h3>
+        <article class="contianer">
+            <div class="item item1">1</div>
+            <div class="item">2</div>
+            <div class="item">3</div>
+            <div class="item">4</div>
+            <div class="item">5</div>
+            <div class="item">6</div>
+        </article>
+    </section>
+
+
+
+</body>
+
+</html>

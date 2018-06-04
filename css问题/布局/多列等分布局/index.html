@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .layout .item {
+            min-height: 100px;
+            background-color: royalblue;
+            text-align: center;
+            font-size: 50px;
+            line-height: 2;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- flex解决方案 -->
+    <section>
+        <style>
+            .layout.flex {
+                display: flex;
+            }
+
+            .layout.flex>div {
+                flex: 1;
+                margin-right: 10px;
+            }
+
+            .layout.flex>div:nth-of-type(4n) {
+                margin-right: 0;
+            }
+        </style>
+        <h1>flex解决方案 </h1>
+        <article class="layout flex">
+            <div class="item">1</div>
+            <div class="item">1</div>
+            <div class="item">1</div>
+            <div class="item">1</div>
+        </article>
+    </section>
+
+    <!-- table解决方案 -->
+    <section>
+        <style>
+            .layout .table-fix {
+                margin-left: -10px;
+            }
+
+            .layout .table {
+                display: table;
+                table-layout: fixed;
+                width: 100%;
+            }
+
+            .layout .table>div {
+                display: table-cell;
+                padding-left: 10px;
+            }
+        </style>
+        <h1>table解决方案 </h1>
+        <article class="layout ">
+            <div class="table-fix">
+                <div class="table">
+                    <div>
+                        <div class="item">1</div>
+                    </div>
+                    <div>
+                        <div class="item">1</div>
+                    </div>
+                    <div>
+                        <div class="item">1</div>
+                    </div>
+                    <div>
+                        <div class="item">1</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <!-- float 解决方案 -->
+    <section>
+        <style>
+            .layout.float {
+                margin-left: -10px;
+            }
+
+            .layout.float>div {
+                float: left;
+                width: 25%;
+                box-sizing: border-box;
+                padding-left: 10px;
+            }
+
+            .layout.float>div:nth-of-type(1) {
+                padding: 0;
+            }
+        </style>
+        <h1>float解决方案</h1>
+        <article class="layout float ">
+            <div>
+                <div class="item">1</div>
+            </div>
+            <div>
+                <div class="item">1</div>
+            </div>
+            <div>
+                <div class="item">1</div>
+            </div>
+            <div>
+                <div class="item">1</div>
+            </div>
+        </article>
+    </section>
+
+
+    <!-- grid 解决方案 -->
+
+    <section>
+        <style>
+            .layout.grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                grid-gap: 10px;
+            }
+        </style>
+        <h1>grid解决方案</h1>
+        <article class="layout grid">
+            <div class="item">1</div>
+            <div class="item">1</div>
+            <div class="item">1</div>
+            <div class="item">1</div>
+        </article>
+    </section>
+</body>
+
+</html>

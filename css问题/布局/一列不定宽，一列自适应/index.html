@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .layout article div {
+            min-height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- float+overflow -->
+    <section class="layout float-overflow">
+        <style>
+            .layout.float-overflow .left-right {}
+
+            .layout.float-overflow .left {
+                float: left;
+                background-color: aqua;
+            }
+
+            .layout.float-overflow .right {
+                overflow: hidden;
+                background-color: blueviolet;
+
+            }
+        </style>
+        <h1>两栏布局</h1>
+        <article class="left-right">
+            <div class="left">
+                <h2> float-overflow 解决方案</h2>
+                1.本列不定宽 1.本列不定宽 1.本列不定宽
+            </div>
+            <div class="right">
+                <h2>设置overflow,触发bfc</h2>
+                本列自适应 本列自适应 本列自适应本列自适应本列自适应本列自适应
+            </div>
+        </article>
+    </section>
+
+    <!-- flex布局  -->
+    <section class="layout flex">
+        <style>
+            .layout.flex .left-right {
+                display: flex;
+            }
+
+            .layout.flex .left {
+                background-color: aqua;
+            }
+
+            .layout.flex .right {
+                background-color: blueviolet;
+                flex: 1;
+            }
+        </style>
+        <h1>两栏布局</h1>
+        <article class="left-right">
+            <div class="left">
+                <h2> flex 解决方案</h2>
+                1.本列不定宽 1.本列不定宽 1.本列不定宽
+            </div>
+            <div class="right">
+                <h2>flex 为1 自动计算，不定宽自动增加高度</h2>
+                本列自适应 本列自适应 本列自适应本列自适应本列自适应本列自适应
+            </div>
+        </article>
+    </section>
+
+    <!-- table布局 -->
+    <section class="layout table">
+        <style>
+            .layout.table .left-right {
+                display: table;
+                width: 100%;
+            }
+
+            .layout.table .left-right>div {
+                display: table-cell;
+
+            }
+
+            .layout.table .left {
+                background-color: aqua;
+                width: 0.1%;
+            }
+
+            .layout.table .right {
+                background-color: blueviolet;
+            }
+        </style>
+        <h1>两栏布局</h1>
+        <article class="left-right">
+            <div class="left">
+                <h2> table 解决方案 不定宽 设为 0.1%</h2>
+                1.本列不定宽 1.本列不定宽 1.本列不定宽
+            </div>
+            <div class="right">
+                <h2> 都被撑开</h2>
+                本列自适应 本列自适应 本列自适应本列自适应本列自适应本列自适应
+            </div>
+        </article>
+    </section>
+
+
+    <!-- grid -->
+    <section class="layout grid">
+        <style>
+            .layout.grid .left-right {
+                display: grid;
+                grid-template-columns: 200px 1fr;
+            }
+
+            .layout.grid .left {
+                background-color: aqua;
+                
+            }
+
+            .layout.grid .right {
+                background-color: blueviolet;
+            }
+        </style>
+        <h1>两栏布局</h1>
+        <article class="left-right">
+            <div class="left">
+                <h2> grid 解决方案 </h2>
+                1.本列不定宽 1.本列不定宽 1.本列不定宽1.本列不定宽 1.本列不定宽 1.本列不定宽1.本列不定宽 1.本列不定宽 1.本列不定宽1.本列不定宽 1.本列不定宽 1.本列不定宽
+            </div>
+            <div class="right">
+                <h2> 都被撑开</h2>
+                本列自适应 本列自适应 本列自适应本列自适应本列自适应本列自适应
+            </div>
+        </article>
+    </section>
+</body>
+
+</html>

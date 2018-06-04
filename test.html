@@ -4,38 +4,58 @@
 <head>
     <meta charset="utf-8">
     <title>TEst</title>
-
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
 
 <body>
 
-    <script>
-        // 单体模式
-        var Singleton = function (name) {
-            this.name = name;
-        };
-        Singleton.prototype.getName = function () {
-            return this.name;
-        }
-        // 获取实例对象
-        var getInstance = (function () {
-            var instance = null;
-            return function (name) {
-                if (!instance) {
-                    instance = new Singleton(name);
-                }
-                return instance;
+    <section>
+        <div class="container">
+            <ul class="list">
+                <li>我是一个列表</li>
+                <li>我是一个列表</li>
+                <li>我是一个列表</li>
+                <li>我是一个列表</li>
+                <li>我是一个列表</li>
+                <li>我是一个列表</li>
+                <li>我是一个列表</li>
+                <li>我是一个列表</li>
+                <li>我是一个列表</li>
+                <li>我是一个列表</li>
+            </ul>
+        </div>
+
+        <style>
+            .container {
+                margin: 0 auto;
+                width: 500px;
+                border: 1px #ccc solid;
+                margin-bottom: 20px;
             }
-        })();
-        // 测试单体模式的实例
-        var a = getInstance("aa");
-        var b = getInstance("bb");
-        console.log(a === b); // true
 
-        console.log(a.getName());// aa
+            .list {
+                overflow: hidden;
+                margin-right: -10px;
 
-        console.log(b.getName());// aa
-    </script>
+            }
+
+            .list li {
+                width: 92px;
+                height: 92px;
+                background-color: #ccc;
+                margin-bottom: 20px;
+                float: left;
+                margin-right: 10px;
+            }
+        </style>
+        <div class="absolute"></div>
+    </section>
+
 </body>
 
 </html>

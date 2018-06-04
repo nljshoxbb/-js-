@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .square {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 100%;
+            /* padding百分比是相对父元素宽度计算的 */
+            margin-bottom: 30px;
+        }
+
+        .square-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* 铺满父元素容器，这时候宽高就始终相等了 */
+        }
+
+        .square-inner>li {
+            /* calc里面的运算符两边要空格 */
+            width: calc(98% / 3);
+            height: calc(98% / 3);
+            margin-right: 1%;
+            margin-bottom: 1%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>FlexBox 适合用于移动端，PC端 IE10 以下不支持；Grid网格布局比较方便，但是规范还未成熟，主流浏览器厂商尚未推广，不推荐使用在项目中；浮动和行块级式声明可以兼容到IE6，移动端和PC端支持的都不错；Table 因为实现有瑕疵所以不推荐使用。
+    </h3>
+    <!-- flex布局 -->
+    <section class="layout flexbox">
+        <style>
+            .layout.flexbox .flex {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .flex>li {
+                flex-grow: 1;
+                /* 子元素按1/n的比例进行拉伸 */
+                background-color: #4d839c;
+                text-align: center;
+                color: #fff;
+                font-size: 50px;
+                line-height: 2;
+            }
+
+            .flex>li:nth-of-type(3n) {
+                /* 选择个数是3的倍数的元素 */
+                margin-right: 0;
+            }
+
+            .flex>li:nth-of-type(n+7) {
+                /* 选择倒数的三个元素，n可以取0 */
+                margin-bottom: 0;
+
+            }
+        </style>
+        <h1>flex布局</h1>
+        <article class="square">
+            <ul class="square-inner flex">
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+                <li>6</li>
+                <li>7</li>
+                <li>8</li>
+                <li>9</li>
+            </ul>
+        </article>
+    </section>
+
+
+    <!-- grid布局 -->
+    <section class="layout ">
+        <style>
+            .layout .grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(3, 1fr);
+                grid-gap: 1%;
+                grid-auto-flow: row;
+            }
+
+            .layout .grid>div {
+                background-color: #4d839c;
+                text-align: center;
+                color: #fff;
+                font-size: 50px;
+                line-height: 2;
+
+            }
+        </style>
+        <h1>grid布局</h1>
+        <article class="square">
+            <div class="square-inner grid">
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+                <div>4</div>
+                <div>5</div>
+                <div>6</div>
+                <div>7</div>
+                <div>8</div>
+                <div>9</div>
+            </div>
+        </article>
+    </section>
+
+    <!-- float -->
+    <section class="layout ">
+        <style>
+            .float::after {
+                content: " ";
+                display: block;
+                clear: both;
+                visibility: hidden;
+            }
+
+            .float>li {
+                float: left;
+                background-color: #4d839c;
+                text-align: center;
+                color: #fff;
+                font-size: 50px;
+                line-height: 2;
+            }
+
+            .float>li:nth-of-type(3n) {
+                margin-right: 0;
+            }
+
+            .float>li:nth-of-type(n+7) {
+                margin-bottom: 0;
+            }
+        </style>
+        <h1>float布局</h1>
+        <article class="square">
+            <ul class="square-inner float">
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+                <li>6</li>
+                <li>7</li>
+                <li>8</li>
+                <li>9</li>
+            </ul>
+        </article>
+    </section>
+
+    <!-- table -->
+    <section class="layout ">
+        <style>
+            .table::after {
+                content: " ";
+                display: block;
+                clear: both;
+                visibility: hidden;
+            }
+
+            .table {
+                /* 为表格设置合并边框模型 */
+                border-collapse: separate;
+                border-spacing: 5px;
+                font-size: 50px;
+                /* 隐藏表格中空单元格上的边框和背景 */
+                empty-cells: hide;
+                /* 在固定表格布局中，水平布局仅取决于表格宽度、列宽度、表格边框宽度、单元格间距，而与单元格的内容无关。 */
+                table-layout: fixed;
+            }
+
+            .table>tbody>tr>td {
+                text-align: center;
+                background-color: #4d839c;
+                overflow: hidden;
+                color: #fff;
+            }
+        </style>
+        <h1>table布局</h1>
+        <article class="square">
+            <table class="square-inner table">
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>6</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>8</td>
+                        <td>9</td>
+                    </tr>
+                </tbody>
+            </table>
+        </article>
+    </section>
+
+
+</body>
+
+</html>
