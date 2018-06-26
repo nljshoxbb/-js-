@@ -28,10 +28,10 @@ console.log(p.length);
 
 ## 3. call、apply、bind 的区别
 
-* 三者都是用来改变函数的 this 对象的指向的。三者第一个参数都是 this 要指向的对象，也就是想指定的上下文。
-* call 传入的参数数量不固定，第二部分参数要一个一个传，用，隔开。
-* apply 接受两个参数，第二个参数为一个带下标的集合，可以为数组，也可以为类数组。
-* bind 是返回一个改变了上下文的函数副本，便于稍后调用；apply 、call 则是立即调用 。
+- 三者都是用来改变函数的 this 对象的指向的。三者第一个参数都是 this 要指向的对象，也就是想指定的上下文。
+- call 传入的参数数量不固定，第二部分参数要一个一个传，用，隔开。
+- apply 接受两个参数，第二个参数为一个带下标的集合，可以为数组，也可以为类数组。
+- bind 是返回一个改变了上下文的函数副本，便于稍后调用；apply 、call 则是立即调用 。
 
 ```
 this.x = 9;
@@ -154,9 +154,9 @@ iframe.onload = function() {
 windowObj.postMessage(message, targetOrigin);
 ```
 
-* `windowObj`: 接受消息的 Window 对象。
-* `message`: 在最新的浏览器中可以是对象。
-* `targetOrigin`: 目标的源，`*` 表示任意。
+- `windowObj`: 接受消息的 Window 对象。
+- `message`: 在最新的浏览器中可以是对象。
+- `targetOrigin`: 目标的源，`*` 表示任意。
 
 这个方法非常强大，无视协议，端口，域名的不同
 
@@ -175,19 +175,21 @@ addEventListener('message', function(e){
 
 `message` 事件就是用来接收 `postMessage` 发送过来的请求的。函数参数的属性有以下几个：
 
-* `origin`: 发送消息的 window 的源。
-* `data`: 数据。
-* `source`: 发送消息的 Window 对象。
+- `origin`: 发送消息的 window 的源。
+- `data`: 数据。
+- `source`: 发送消息的 Window 对象。
 
 ### 5.CORS
 
 服务器端对于 `CORS` 的支持，主要就是通过设置 `Access-Control-Allow-Origin` 来进行的。如果浏览器检测到相应的设置，就可以允许 Ajax 进行跨域的访问。
 
+### 6.nginx 反向代理
+
 ## 7. 说说严格模式的限制
 
-* 变量必须声明后再使用函数的参数不能有同名属性，否则报错禁止 this 指向全局对象不能使用 with 语句增加了保留字
-* arguments 不会自动反映函数参数的变化设立”严格模式”的目的：消除 Javascript 语法的一些不合理、不严谨之处，减少一些怪异行为;
-* 消除代码运行的一些不安全之处，保证代码运行的安全；提高编译器效率，增加运行速度；为未来新版本的 Javascript 做好铺垫。
+- 变量必须声明后再使用函数的参数不能有同名属性，否则报错禁止 this 指向全局对象不能使用 with 语句增加了保留字
+- arguments 不会自动反映函数参数的变化设立”严格模式”的目的：消除 Javascript 语法的一些不合理、不严谨之处，减少一些怪异行为;
+- 消除代码运行的一些不安全之处，保证代码运行的安全；提高编译器效率，增加运行速度；为未来新版本的 Javascript 做好铺垫。
 
 ## 8. 请解释什么是事件代理
 
@@ -195,8 +197,8 @@ addEventListener('message', function(e){
 
 使用委托代理的原因：
 
-* 需要绑定事件的元素很多，且处理逻辑类似。
-* 元素是动态创建，或频繁增加、删除，导致元素绑定事件过于复杂的。
+- 需要绑定事件的元素很多，且处理逻辑类似。
+- 元素是动态创建，或频繁增加、删除，导致元素绑定事件过于复杂的。
 
 ## 9. Event Loop、消息队列、事件轮询
 
@@ -219,9 +221,9 @@ es6 是一个新的标准，它包含了许多新的语言特性和库，是 JS 
 
 **async/await** 是写异步代码的新方式，以前的方法有回调函数和 Promise。
 
-* `async/await` 是基于 `Promise` 实现的，它不能用于普通的回调函数。
-* `async/await` 与 `Promise` 一样，是非阻塞的。
-* `async/await` 使得异步代码看起来像同步代码，这正是它的魔力所在。
+- `async/await` 是基于 `Promise` 实现的，它不能用于普通的回调函数。
+- `async/await` 与 `Promise` 一样，是非阻塞的。
+- `async/await` 使得异步代码看起来像同步代码，这正是它的魔力所在。
 
 ## 11. 说说你对 Promise 的理解
 
@@ -231,8 +233,8 @@ es6 是一个新的标准，它包含了许多新的语言特性和库，是 JS 
 
 Promise 对象有以下两个特点:
 
-* 对象的状态不受外界影响，Promise 对象代表一个异步操作，有三种状态：Pending（进行中）、Resolved（已完成，又称 Fulfilled）和 Rejected（已失败）
-* 一旦状态改变，就不会再变，任何时候都可以得到这个结果。
+- 对象的状态不受外界影响，Promise 对象代表一个异步操作，有三种状态：Pending（进行中）、Resolved（已完成，又称 Fulfilled）和 Rejected（已失败）
+- 一旦状态改变，就不会再变，任何时候都可以得到这个结果。
 
 ## 12. 说说你对 AMD 和 Commonjs 的理解
 
@@ -382,20 +384,20 @@ var throttle = function(delay, action){
 
 **异步**
 
-* 在浏览器重绘前调用，保证浏览器渲染效率和性能
-* 可以精准地控制动画的每一帧
+- 在浏览器重绘前调用，保证浏览器渲染效率和性能
+- 可以精准地控制动画的每一帧
 
 #### 优点
 
-* 动画保持 60fps（每一帧 16 ms），浏览器内部决定渲染的最佳时机
-* 简洁标准的 API，后期维护成本低
+- 动画保持 60fps（每一帧 16 ms），浏览器内部决定渲染的最佳时机
+- 简洁标准的 API，后期维护成本低
 
 #### 缺点
 
-* 动画的开始/取消需要开发者自己控制，不像 ‘.debounce’ 或 ‘.throttle’由函数内部处理。
-* 浏览器标签未激活时，一切都不会执行。
-* 尽管所有的现代浏览器都支持 rAF ，IE9，Opera Mini 和 老的 Android 还是需要打补丁。
-* Node.js 不支持，无法在服务器端用于文件系统事件。
+- 动画的开始/取消需要开发者自己控制，不像 ‘.debounce’ 或 ‘.throttle’由函数内部处理。
+- 浏览器标签未激活时，一切都不会执行。
+- 尽管所有的现代浏览器都支持 rAF ，IE9，Opera Mini 和 老的 Android 还是需要打补丁。
+- Node.js 不支持，无法在服务器端用于文件系统事件。
 
 实现如下：
 
@@ -453,9 +455,9 @@ $(window).on('scroll', _.debounce(doSomething, 200));
 
 ### 总结
 
-> * `debounce`：把触发非常频繁的事件（比如按键）合并成一次执行。
-> * `throttle`：保证每 X 毫秒恒定的执行次数，比如每 200ms 检查下滚动位置，并触发 CSS 动画。
-> * `requestAnimationFrame`：可替代 `throttle` ，函数需要重新计算和渲染屏幕上的元素时，想保证动画或变化的平滑性，可以用它。注意：IE9 不支持。
+> - `debounce`：把触发非常频繁的事件（比如按键）合并成一次执行。
+> - `throttle`：保证每 X 毫秒恒定的执行次数，比如每 200ms 检查下滚动位置，并触发 CSS 动画。
+> - `requestAnimationFrame`：可替代 `throttle` ，函数需要重新计算和渲染屏幕上的元素时，想保证动画或变化的平滑性，可以用它。注意：IE9 不支持。
 
 ## 15 console
 
@@ -475,8 +477,8 @@ $(window).on('scroll', _.debounce(doSomething, 200));
 
 > js 原生方法 insertBefore 用于在某个元素之前插入新元素语法：`parentElement.insertBefore(newElement, referElement)`
 
-* 1.  如果要插入的 newElement 已经在 DOM 树中存在，那么执行此方法会将该节点从 DOM 树中移除。
-* 2.  如果`referElement`为 null，那么`newElement` 会被添加到父节点的子节点末尾
+- 1.  如果要插入的 newElement 已经在 DOM 树中存在，那么执行此方法会将该节点从 DOM 树中移除。
+- 2.  如果`referElement`为 null，那么`newElement` 会被添加到父节点的子节点末尾
 
 实现 insertAfter 功能
 
@@ -552,19 +554,19 @@ addLoadEvent(secondFunction);
 
 ### 两大特色
 
-* code splitting（可以自动完成）
-* loader 可以处理各种类型的静态文件，并且支持串联操作
+- code splitting（可以自动完成）
+- loader 可以处理各种类型的静态文件，并且支持串联操作
 
 ### 新特性
 
-* 对 CommonJS 、 AMD 、ES6 的语法做了兼容
-* 对 js、css、图片等资源文件都支持打包
-* 串联式模块加载器以及插件机制，让其具有更好的灵活性和扩展性，例如提供对 CoffeeScript、ES6 的支持
-* 有独立的配置文件 webpack.config.js
-* 可以将代码切割成不同的 chunk，实现按需加载，降低了初始化时间
-* 支持 SourceUrls 和 SourceMaps，易于调试
-* 具有强大的 Plugin 接口，大多是内部插件，使用起来比较灵活
-* webpack 使用异步 IO 并具有多级缓存。这使得 webpack 很快且在增量编译上更加快
+- 对 CommonJS 、 AMD 、ES6 的语法做了兼容
+- 对 js、css、图片等资源文件都支持打包
+- 串联式模块加载器以及插件机制，让其具有更好的灵活性和扩展性，例如提供对 CoffeeScript、ES6 的支持
+- 有独立的配置文件 webpack.config.js
+- 可以将代码切割成不同的 chunk，实现按需加载，降低了初始化时间
+- 支持 SourceUrls 和 SourceMaps，易于调试
+- 具有强大的 Plugin 接口，大多是内部插件，使用起来比较灵活
+- webpack 使用异步 IO 并具有多级缓存。这使得 webpack 很快且在增量编译上更加快
 
 ## 20.创建 ajax 过程
 
@@ -751,10 +753,10 @@ xhr.send(null);
 
 ## 24. 哪些操作会造成内存泄漏？
 
-* 内存泄漏指任何对象在您不再拥有或需要它之后仍然存在。
-* 垃圾回收器定期扫描对象，并计算引用了每个对象的其他对象的数量。如果一个对象的引用数量为 0（没有其他对象引用过该对象），或对该对象的惟一引用是循环的，那么该对象的内存即可回收。
-* setTimeout 的第一个参数使用字符串而非函数的话，会引发内存泄漏。
-* 闭包、控制台日志、循环（在两个对象彼此引用且彼此保留时，就会产生一个循环）
+- 内存泄漏指任何对象在您不再拥有或需要它之后仍然存在。
+- 垃圾回收器定期扫描对象，并计算引用了每个对象的其他对象的数量。如果一个对象的引用数量为 0（没有其他对象引用过该对象），或对该对象的惟一引用是循环的，那么该对象的内存即可回收。
+- setTimeout 的第一个参数使用字符串而非函数的话，会引发内存泄漏。
+- 闭包、控制台日志、循环（在两个对象彼此引用且彼此保留时，就会产生一个循环）
 
 ## 25. 为什么要有同源限制？
 
@@ -809,8 +811,8 @@ alert(GetBytes("你好,as"));
 
 ## 30.attribute 和 property 的区别是什么？
 
-* `attribute` 是 `dom` 元素在文档中作为 `html` 标签拥有的属性；
-* `property` 就是 `dom` 元素在 `js` 中作为对象拥有的属性。
+- `attribute` 是 `dom` 元素在文档中作为 `html` 标签拥有的属性；
+- `property` 就是 `dom` 元素在 `js` 中作为对象拥有的属性。
 
 > 对于 `html` 的标准属性来说，`attribute` 和 `property` 是同步的，是会自动更新的，但是对于自定义的属性来说，他们是不同步的，
 
@@ -829,11 +831,11 @@ alert(GetBytes("你好,as"));
 1.  如果两个值类型相同，按照===比较方法进行比较
 2.  如果类型不同，使用如下规则进行比较
 
-* 如果其中一个值是 null，另一个是 undefined，它们相等
-* 如果一个值是**数字**另一个是**字符串**，将**字符串转换为数字**进行比较
-* 如果有布尔类型，将**true 转换为 1，false 转换为 0**，然后用==规则继续比较
-* 如果一个值是对象，另一个是数字或字符串，将对象转换为原始值然后用==规则继续比较
-* **其他所有情况都认为不相等**
+- 如果其中一个值是 null，另一个是 undefined，它们相等
+- 如果一个值是**数字**另一个是**字符串**，将**字符串转换为数字**进行比较
+- 如果有布尔类型，将**true 转换为 1，false 转换为 0**，然后用==规则继续比较
+- 如果一个值是对象，另一个是数字或字符串，将对象转换为原始值然后用==规则继续比较
+- **其他所有情况都认为不相等**
 
 ## 33.对象到字符串的转换步骤
 
@@ -863,19 +865,19 @@ alert(GetBytes("你好,as"));
 
 ## 37.函数内部 arguments 变量有哪些特性,有哪些属性,如何将它转换为数组
 
-* `arguments`所有函数中都包含的一个局部变量，是一个类数组对象，对应函数调用时的实参。如果函数定义同名参数会在调用时覆盖默认对象
-* `arguments[index]`分别对应函数调用时的实参，并且通过 arguments 修改实参时会同时修改实参
-* `arguments.length`为实参的个数（Function.length 表示形参长度）
-* `arguments.callee`为当前正在执行的函数本身，使用这个属性进行递归调用时需注意`this`的变化
-* `arguments.caller`为调用当前函数的函数（已被遗弃）
-* 转换为数组：`var args = Array.prototype.slice.call(arguments, 0);`
+- `arguments`所有函数中都包含的一个局部变量，是一个类数组对象，对应函数调用时的实参。如果函数定义同名参数会在调用时覆盖默认对象
+- `arguments[index]`分别对应函数调用时的实参，并且通过 arguments 修改实参时会同时修改实参
+- `arguments.length`为实参的个数（Function.length 表示形参长度）
+- `arguments.callee`为当前正在执行的函数本身，使用这个属性进行递归调用时需注意`this`的变化
+- `arguments.caller`为调用当前函数的函数（已被遗弃）
+- 转换为数组：`var args = Array.prototype.slice.call(arguments, 0);`
 
 ## 38.DOM 事件模型是如何的,编写一个 EventUtil 工具类实现事件管理兼容
 
-* DOM 事件包含捕获（capture）和冒泡（bubble）两个阶段：捕获阶段事件从 `window` 开始触发事件然后通过祖先节点一次传递到触发事件的 DOM 元素上；冒泡阶段事件从初始元素依次向祖先节点传递直到 `window`
-* 标准事件监听 `elem.addEventListener(type, handler, capture)/elem.removeEventListener(type, handler, capture)：handler` 接收保存事件信息的 event 对象作为参数，`event.target` 为触发事件的对象，`handler` 调用上下文 `this` 为绑定监听器的对象，`event.preventDefault()`取消事件默认行为，`event.stopPropagation()/event.stopImmediatePropagation()`取消事件传递
-* 老版本 IE 事件监听`elem.attachEvent('on'+type, handler)/elem.detachEvent('on'+type, handler)：handler`不接收 `event` 作为参数，事件信息保存在 `window.event` 中，触发事件的对象为 `event.srcElement`，`handler` 执行上下文 `this` 为 `window` 使用闭包中调用 `handler.call(elem, event)`可模仿标准模型，然后返回闭包，保证了监听器的移除。`event.returnValue` 为 `false` 时取消事件默认行为，`event.cancleBubble` 为 `true` 时取消时间传播
-* 通常利用事件冒泡机制托管事件处理程序提高程序性能。
+- DOM 事件包含捕获（capture）和冒泡（bubble）两个阶段：捕获阶段事件从 `window` 开始触发事件然后通过祖先节点一次传递到触发事件的 DOM 元素上；冒泡阶段事件从初始元素依次向祖先节点传递直到 `window`
+- 标准事件监听 `elem.addEventListener(type, handler, capture)/elem.removeEventListener(type, handler, capture)：handler` 接收保存事件信息的 event 对象作为参数，`event.target` 为触发事件的对象，`handler` 调用上下文 `this` 为绑定监听器的对象，`event.preventDefault()`取消事件默认行为，`event.stopPropagation()/event.stopImmediatePropagation()`取消事件传递
+- 老版本 IE 事件监听`elem.attachEvent('on'+type, handler)/elem.detachEvent('on'+type, handler)：handler`不接收 `event` 作为参数，事件信息保存在 `window.event` 中，触发事件的对象为 `event.srcElement`，`handler` 执行上下文 `this` 为 `window` 使用闭包中调用 `handler.call(elem, event)`可模仿标准模型，然后返回闭包，保证了监听器的移除。`event.returnValue` 为 `false` 时取消事件默认行为，`event.cancleBubble` 为 `true` 时取消时间传播
+- 通常利用事件冒泡机制托管事件处理程序提高程序性能。
 
 ```
 /**
@@ -969,13 +971,13 @@ Rect.prototype.area = function () {
 
 优点：
 
-* 正确设置原型链实现继承
-* 父类实例属性得到继承，原型链查找效率提高，也能为一些属性提供合理的默认值
+- 正确设置原型链实现继承
+- 父类实例属性得到继承，原型链查找效率提高，也能为一些属性提供合理的默认值
 
 缺点：
 
-* 父类实例属性为引用类型时，不恰当地修改会导致所有子类被修改
-* 创建父类实例作为子类原型时，可能无法确定构造函数需要的合理参数，这样提供的参数继承给子类没有实际意义，当子类需要这些参数时应该在构造函数中进行初始化和设置
+- 父类实例属性为引用类型时，不恰当地修改会导致所有子类被修改
+- 创建父类实例作为子类原型时，可能无法确定构造函数需要的合理参数，这样提供的参数继承给子类没有实际意义，当子类需要这些参数时应该在构造函数中进行初始化和设置
 
 总结：继承应该是继承方法而不是属性，为子类设置父类实例属性应该是通过在子类构造函数中调用父类构造函数进行初始化
 
@@ -1267,17 +1269,17 @@ obj2.b();
 
 ## 49.页面和服务器之间的交互有哪几种
 
-* Ajax
-* WebSocket
+- Ajax
+- WebSocket
 
 ## 51.单页面应用和多页面应用的区别
 
 1.  应用组成
-    * mpa:多个完整页面构成
-    * spa:一个外壳页面和多个页面片段构成
+    - mpa:多个完整页面构成
+    - spa:一个外壳页面和多个页面片段构成
 2.  跳转方式
-    * mpa:
-    * spa:把一个页面片段删除或隐藏，加载另一个页面片段显示出来
+    - mpa:
+    - spa:把一个页面片段删除或隐藏，加载另一个页面片段显示出来
 3.  刷新方式
 4.  跳转后公共资源是否重新加载
 5.  url 模式
@@ -1291,12 +1293,12 @@ obj2.b();
 
 ### (1) 遵循的模块化规范不一样
 
-* `require`最早应该见于 nodejs 开发，属于 CommonJS 规范的一部分
-* `import`是 ES2015 里的新模块化规范
+- `require`最早应该见于 nodejs 开发，属于 CommonJS 规范的一部分
+- `import`是 ES2015 里的新模块化规范
 
 ### (2) 形式不同
 
-* `require/exports` 的用法只有以下三种简单的写法
+- `require/exports` 的用法只有以下三种简单的写法
 
 ```
 const fs = require('fs');
@@ -1305,7 +1307,7 @@ exports.fs = fs;
 module.exports = fs;
 ```
 
-* `import/export`的写法就多种多样
+- `import/export`的写法就多种多样
 
 ```
 import fs from 'fs';
@@ -1324,11 +1326,11 @@ export * from 'fs';
 
 ### (3)本质上的差别
 
-* CommonJS 还是 ES6 Module 输出都可以看成是一个具备多个属性或者方法的对象；
-* `default` 是 ES6 Module 所独有的关键字，`export default fs` 输出默认的接口对象，`import fs from 'fs'` 可直接导入这个对象；
-* ES6 Module 中导入模块的属性或者方法是强绑定的，包括基础类型；而 CommonJS 则是普通的值传递或者引用传递。
-* `import` 传的是值引用，`require` 是值拷贝
-* `import` 是在编译过程中执行，而`require`是同步。
+- CommonJS 还是 ES6 Module 输出都可以看成是一个具备多个属性或者方法的对象；
+- `default` 是 ES6 Module 所独有的关键字，`export default fs` 输出默认的接口对象，`import fs from 'fs'` 可直接导入这个对象；
+- ES6 Module 中导入模块的属性或者方法是强绑定的，包括基础类型；而 CommonJS 则是普通的值传递或者引用传递。
+- `import` 传的是值引用，`require` 是值拷贝
+- `import` 是在编译过程中执行，而`require`是同步。
 
 ```
 // counter.js
@@ -1363,16 +1365,13 @@ const parseInt = str => str * 1;
 
 ## 54.使用框架 ( vue / react 等)带来好处( 相对 jQuery )
 
-* MVVC 架构，数据驱动视图，数据绑定，减少 DOM 操作。
-* 组件化组织页面，效率更高，维护更简便。
-  * 局部 CSS 样式，避免给全局带来混乱
-  * 局部 JS 逻辑，更好的封装性
-  * HTML 模板，使得 DOM 变更更为方便快捷
-* Virtual Dom 带来性能上的提升
-* 路由控制，单页应用更为简便
-
-
-
+- MVVC 架构，数据驱动视图，数据绑定，减少 DOM 操作。
+- 组件化组织页面，效率更高，维护更简便。
+  - 局部 CSS 样式，避免给全局带来混乱
+  - 局部 JS 逻辑，更好的封装性
+  - HTML 模板，使得 DOM 变更更为方便快捷
+- Virtual Dom 带来性能上的提升
+- 路由控制，单页应用更为简便
 
 ## 55.如何快速把这个数组清空
 
@@ -1425,8 +1424,8 @@ console.log(5);
 // 2 3 5 4 1
 ```
 
-* `Promise.then`是异步执行的，而创建 Promise 实例（`executor`）是同步执行的
-* `setTimeout`的异步和`Promise.then`的异步看起来 **“不太一样”** ——至少是不在同一个队列中。
+- `Promise.then`是异步执行的，而创建 Promise 实例（`executor`）是同步执行的
+- `setTimeout`的异步和`Promise.then`的异步看起来 **“不太一样”** ——至少是不在同一个队列中。
 
 `Promise`里的函数会按顺序执行，输出 2 3 ，`Promise`里的`then`就是会异步执行，放到当前`Promise`任务队列的最后执行，而`console.log(5`）是按顺序执行的，所以先输出 5，再输出 4。`Promise.then()`里面的回调属于 microtask, 会在当前 Event Loop 的最后执行, 而 `SetTimeout` 内的回调属于 macrotask, 会在下一个 Event Loop 中执行
 
@@ -1495,9 +1494,9 @@ Object.defineProperty(Cat.prototype, "say", {
 });
 ```
 
-* 装饰器作用于**类**本身的时候，操作的对象也是这个类本身，
+- 装饰器作用于**类**本身的时候，操作的对象也是这个类本身，
 
-* 装饰器在作用于**属性**的时候，实际上是通过 `Object.defineProperty` 来进行扩展和封装的。
+- 装饰器在作用于**属性**的时候，实际上是通过 `Object.defineProperty` 来进行扩展和封装的。
 
 ## 58.实现 destructuringArray 方法，达到如下效果
 
@@ -1643,13 +1642,13 @@ new new Foo().getName();// 3
 
 ### (1)DOM0 级模型
 
-* HTML 代码中直接绑定:
+- HTML 代码中直接绑定:
 
 ```
 <input type="button" onclick="fun()">
 ```
 
-* 通过 JS 代码指定属性值:
+- 通过 JS 代码指定属性值:
 
 ```
 var btn = document.getElementById('.btn');
@@ -1680,9 +1679,9 @@ btn.removeEventListener(‘click’, showMessage, false);
 
 ## 67.`prototype`和`__proto__`的区别和关系
 
-* `_proto_`是每个对象都有的一个属性，而`prototype`是函数才会有的属性。每个对象都会在内部初始化一个`__proto__`属性，当我们访问一个对象的属性时，如果这个对象内部不存在这个属性，那么他就会去`__proto__`里找这个属性，这个`__proto__`又会有自己的`__proto__`，于是就这样一直找下去，也就是我们平时所说的原型链概念。
-* `prototype`属性是只有函数才特有的属性，当你创建一个函数时， js 会自动为这个函数加上 `prototype`属性，值是一个空对象。
-* 对象有属性`__proto__`,指向该对象的构造函数的原型对象。
-* 方法除了有属性`__proto__`,还有属性`prototype`，`prototype`指向该方法的原型对象。
+- `_proto_`是每个对象都有的一个属性，而`prototype`是函数才会有的属性。每个对象都会在内部初始化一个`__proto__`属性，当我们访问一个对象的属性时，如果这个对象内部不存在这个属性，那么他就会去`__proto__`里找这个属性，这个`__proto__`又会有自己的`__proto__`，于是就这样一直找下去，也就是我们平时所说的原型链概念。
+- `prototype`属性是只有函数才特有的属性，当你创建一个函数时， js 会自动为这个函数加上 `prototype`属性，值是一个空对象。
+- 对象有属性`__proto__`,指向该对象的构造函数的原型对象。
+- 方法除了有属性`__proto__`,还有属性`prototype`，`prototype`指向该方法的原型对象。
 
 ![prototypeand__proto__](https://github.com/nljshoxbb/fe/blob/master/img/prototypeand__proto__.jpg)

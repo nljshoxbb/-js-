@@ -13,49 +13,32 @@
 </head>
 
 <body>
-
-    <section>
-        <div class="container">
-            <ul class="list">
-                <li>我是一个列表</li>
-                <li>我是一个列表</li>
-                <li>我是一个列表</li>
-                <li>我是一个列表</li>
-                <li>我是一个列表</li>
-                <li>我是一个列表</li>
-                <li>我是一个列表</li>
-                <li>我是一个列表</li>
-                <li>我是一个列表</li>
-                <li>我是一个列表</li>
-            </ul>
-        </div>
-
-        <style>
-            .container {
-                margin: 0 auto;
-                width: 500px;
-                border: 1px #ccc solid;
-                margin-bottom: 20px;
-            }
-
-            .list {
-                overflow: hidden;
-                margin-right: -10px;
-
-            }
-
-            .list li {
-                width: 92px;
-                height: 92px;
-                background-color: #ccc;
-                margin-bottom: 20px;
-                float: left;
-                margin-right: 10px;
-            }
-        </style>
-        <div class="absolute"></div>
-    </section>
-
+    <div id="app">
+        <p>{{price}}</p>
+    </div>
 </body>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            price:100
+        }
+    })
+
+    // 
+    function render() {
+        with (this) {
+            return _c(
+                'div',
+                {
+                    attrs: { "id": "app" }
+                },
+                [
+                    _c('p', [_v(_s(price))])
+                ]
+            )
+        }
+    }
+</script>
 
 </html>
