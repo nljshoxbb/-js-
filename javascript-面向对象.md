@@ -1,6 +1,6 @@
 #创建对象
 
-## 一、工程模式
+## 一、工厂模式
 
 ```
 function createPerson(name,age,obj){
@@ -49,7 +49,7 @@ console.log(
 )
 ```
 
-### 1.构造函数当作函数调用
+### (1) 构造函数当作函数调用
 
 ```
 person1.sayName();
@@ -64,7 +64,7 @@ Person.call(o,'nlj4',29,'web');
 o.sayName();
 ```
 
-### 2.构造函数问题
+### (2) 构造函数问题
 
 优点：实例标识为一种特定的类型
 
@@ -104,11 +104,11 @@ function sayName(){
 
 虽然共享了函数，但是变为了全局函数，毫无封装性可言
 
-## 原型模式
+## 三、原型模式
 
 创建的每一个函数都有一个 prototype（原型）属性，这个属性是一个指针，指向一个对象，而这个对象的用途是包含可以由特定类型的所有实例共享的属性和方法
 
-### 1.写法
+### (1) 写法
 
 ```
 function Person(){
@@ -130,7 +130,7 @@ function hasPrototypeProperty(object,name){
 }
 ```
 
-### 2.简单的原型语法
+### (2) 简单的原型语法
 
 ```
 function Person(){}
@@ -159,7 +159,7 @@ Person.prototype = {
 }
 ```
 
-### 3.原型的动态性
+### (3) 原型的动态性
 
 由于在原型中查找值的过程是一次搜索，因此对原型对象所做的任何修改都能够立即从实例上反应出来，即使是先创建了实例后修改原型也是如此
 
@@ -195,12 +195,12 @@ Person.prototype = {
 friend.sayName(); // error
 ```
 
-### 4.问题
+### (4) 问题
 
-* 省略了为构造函数传递初始化参数，所有实例默认情况都是相同属性
-* 共享本性。实例之间的属性修改其一则另一个也被修改(引用类型 array 之类)
+- 省略了为构造函数传递初始化参数，所有实例默认情况都是相同属性
+- 共享本性。实例之间的属性修改其一则另一个也被修改(引用类型 array 之类)
 
-## 三、组合使用构造函数模式和原型模式
+## 四、组合使用构造函数模式和原型模式
 
 ```
 function Person(name,age){
@@ -225,7 +225,7 @@ console.log(person2.friends);// ["aaa", "bbb"]
 console.log(person1.sayName == person2.sayName) // true
 ```
 
-## 四、寄生构造函数模式
+## 五、寄生构造函数模式
 
 ```
 function Person(name,age,job){
@@ -241,13 +241,13 @@ function Person(name,age,job){
 
 区别：
 
-* 返回对象与构造函数或者与构造函数的原型属性之间没有关系
+- 返回对象与构造函数或者与构造函数的原型属性之间没有关系
 
 # 继承
 
 ## 一、原型链继承
 
-### 1.写法
+### (1) 写法
 
 ```
 function SuperType(){
@@ -276,12 +276,12 @@ console.log(instance.getSuperValue) // true
 
 本质：重写原型对象，代之以一个新类型的实例。原来存在与 `SuperType` 的实例中的所有属性和方法，现在也存在于 `SubType.prototype` 中。
 
-* 现原型不仅具有作为一个 `SuperType` 的实例所拥有的全部属性和方法，而且其内部还有一个指针，指向 `SuperType` 的原型。
-* `instance` 指向 `SubType` 的原型
-* `SubType` 的原型又指向 `SuperType` 的原型
-* `instance.contructor` 指向 `SuperType`,因为原来的 `SubType` 的原型指向了 `SuperType` 原型，而这个原型对象的 constructor 属性指向的是 `SuperType`
+- 现原型不仅具有作为一个 `SuperType` 的实例所拥有的全部属性和方法，而且其内部还有一个指针，指向 `SuperType` 的原型。
+- `instance` 指向 `SubType` 的原型
+- `SubType` 的原型又指向 `SuperType` 的原型
+- `instance.contructor` 指向 `SuperType`,因为原来的 `SubType` 的原型指向了 `SuperType` 原型，而这个原型对象的 constructor 属性指向的是 `SuperType`
 
-### 2.谨慎定义方法
+### (2) 谨慎定义方法
 
 ```
 function SuperType(){
@@ -314,11 +314,11 @@ var instance = new SubType();
 console.log(instance.getSuperValue) // false
 ```
 
-* 第二个方法`getSubperValue()`是原型链中已经存在的一个方法，重写这个方法将会屏蔽原来的那个方法
-* `SubType`实例调用，是调用重新定义的方法
-* `SuperType`实例调用，是调用原来定义的方法
-* 必须在用 `SuperType`的实例替换原型之后
-* 不能使用对象字面量创建原型方法，会重写原型链
+- 第二个方法`getSubperValue()`是原型链中已经存在的一个方法，重写这个方法将会屏蔽原来的那个方法
+- `SubType`实例调用，是调用重新定义的方法
+- `SuperType`实例调用，是调用原来定义的方法
+- 必须在用 `SuperType`的实例替换原型之后
+- 不能使用对象字面量创建原型方法，会重写原型链
 
 ```
 SubType.prototype = {
@@ -330,7 +330,7 @@ SubType.prototype = {
 
 原型包含的是一个 `Object` 的实例，而非 `SuperType` 的实例。`SubType` 和 `SuperType` 之间已经没有关系了
 
-### 3.问题
+### (3) 问题
 
 ```
 function SuperType(){
@@ -353,11 +353,11 @@ console.log(instance1.colors); // red,blue,black
 console.log(instance2.colors); // red,blue,black
 ```
 
-* 包含引用类型值的原型属性会被所有实例共享
-* SubType 的所有实例都会共享这一个 colors（引用类型）属性
-* 创建子类型的实例时，不能向超类型的构造函数中传递参数
+- 包含引用类型值的原型属性会被所有实例共享
+- SubType 的所有实例都会共享这一个 colors（引用类型）属性
+- 创建子类型的实例时，不能向超类型的构造函数中传递参数
 
-### 4.总结
+### (3) 总结
 
 优点：非常纯粹的继承关系、简单易用、父类新增的原型方法原型属性子类都可以访问到。
 
@@ -365,7 +365,7 @@ console.log(instance2.colors); // red,blue,black
 
 ## 二、借用构造函数
 
-### 1. 实现
+### (1) 实现
 
 ```
 function SuperType(name){
@@ -392,10 +392,10 @@ console.log(instance1.name) // name1
 
 本质：在（未来将要）新创建的`SubType`实例的环境下调用了`SuperType`构造函数。会在新`SubTyoe`对象上执行`SuperTyoe()`函数中定义的所有对象初始化代码,`SubType`的每个实例就都会有自己的`colors`属性的副本了
 
-* 在`SubType`构造函数内调用`SuperType`构造函数，实际上是为`SuperType`的实例设置了`name`属性
-* 确保不被父类重写子类属性，可以在调用超类构造函数后再添加子类中定义的属性
+- 在`SubType`构造函数内调用`SuperType`构造函数，实际上是为`SuperType`的实例设置了`name`属性
+- 确保不被父类重写子类属性，可以在调用超类构造函数后再添加子类中定义的属性
 
-### 2.总结
+### (2) 总结
 
 优点：解决了共享引用类型的问题，可以在构造函数里面传参，可以实现多继承。
 
@@ -405,7 +405,7 @@ console.log(instance1.name) // name1
 
 通过调用父类的构造函数，继承父类的属性并保留参数，通过父类的实例作为子类原型，实现函数复用。
 
-### 1. 实现
+### (1) 实现
 
 ```
 function SuperType(name){
@@ -441,7 +441,7 @@ instance2.sayName(); // name2
 instance2.sayAge(); // 27
 ```
 
-### 2.总结
+### (2) 总结
 
 优点：可以继承属性和方法以及原型上的属性和方法、即是子类实例也是父类实例、不存在属性共享的问题、函数可复用。
 
@@ -476,7 +476,7 @@ SubType.prototype.sayAge = function(){
 }
 ```
 
-通过借用构造函数来继承**属性**，通过原型链混成形式来继承**方法**
+通过借用构造函数来继承 **属性**，通过原型链混成形式来继承 **方法**
 
 思路：不必为了指定子类型的原型而调用超类型的构造函数，所需的无非就是超类型原型的一个副本而已。
 
@@ -507,9 +507,9 @@ var instance = new SubType('nlj',24);
 console.log(instance,instance.sayAge(),instance.sayName());
 ```
 
-* 只调用一次`SuperType`构造函数,避免在`SubType.prototype`上面创建不必要的、多余的属性
-* 原型链还能保持不变
-* 还可以正常使用`instanceof`和`isPrototypeOf()`
+- 只调用一次`SuperType`构造函数,避免在`SubType.prototype`上面创建不必要的、多余的属性
+- 原型链还能保持不变
+- 还可以正常使用`instanceof`和`isPrototypeOf()`
 
 ### 总结
 

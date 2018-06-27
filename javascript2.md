@@ -56,7 +56,7 @@ obj.postC('checkfy');
 
 ## 3.补充代码,鼠标单击 Button1 后将 Button1 移动到 Button2 的后面
 
-* 如果要插入的 newElement 已经在 DOM 树中存在，那么执行此方法会将该节点从 DOM 树中移除。
+- 如果要插入的 newElement 已经在 DOM 树中存在，那么执行此方法会将该节点从 DOM 树中移除。
 
 ```
 <!doctype html>
