@@ -620,3 +620,296 @@ function mySetInterval(fn, millisec){
   setTimeout(interval, millisec)
 }
 ```
+
+## lazyload
+
+场景：涉及到图片，falsh 资源 , iframe, 网页编辑器(类似 FCK)等占用较大带宽，且这些模块暂且不在浏览器可视区内,因此可以使用 lazyload 在适当的时候加载该类资源.
+
+优点：提升用户的体验，如果图片数量较大，打开页面的时候要将将页面上所有的图片全部获取加载，很可能会出现卡顿现象，影响用户体验。因此，有选择性地请求图片，这样能明显减少了服务器的压力和流量，也能够减小浏览器的负担。
+
+原理:首先在渲染时，图片引用默认图片，然后把真实地址放在 `data-\*`属性上面。`<image src='./../assets/default.png' :data-src='item.allPics' class='lazyloadimg'>`然后是监听滚动，直接用`window.onscroll` 就可以了，但是要注意一点的是类似于 `window`的 `scroll` 和 `resize`，还有 `mousemove`这类触发很频繁的事件，最好用节流(throttle)或防抖函数(debounce)来控制一下触发频率。接着要判断图片是否出现在了视窗里面，主要是三个高度：1，当前 body 从顶部滚动了多少距离。2，视窗的高度。3，当前图片距离顶部的距离
+
+实现：lazyload 的难点在如何在适当的时候加载用户需要的资源(这里用户需要的资源指该资源呈现在浏览器可视区域)。因此我们需要知道几点信息来确定目标是否已呈现在客户区,其中包括：
+
+1.  当前 body 从顶部滚动了多少距离
+2.  视窗的高度.
+3.  当前图片距离顶部的距离
+
+```
+window.onscroll =_.throttle(this.watchscroll, 200);
+watchscroll () {
+  var bodyScrollHeight =  document.body.scrollTop;// body滚动高度
+  var windowHeight = window.innerHeight;// 视窗高度
+  var imgs = document.getElementsByClassName('lazyloadimg');
+  for (var i =0; i < imgs.length; i++) {
+    var imgHeight = imgs[i].offsetTop;// 图片距离顶部高度  
+    if (imgHeight  < windowHeight  + bodyScrollHeight) {
+       imgs[i].src = imgs[i].getAttribute('data-src');
+       img[i].className = img[i].className.replace('lazyloadimg','')
+    }
+  }
+}
+```
+
+## jsDOM 操作有原生的 insertBefore 函数，但是没有 insertAfter，实现一个 insertAfter 函数
+
+> js 原生方法 insertBefore 用于在某个元素之前插入新元素语法：`parentElement.insertBefore(newElement, referElement)`
+
+- 1.  如果要插入的 newElement 已经在 DOM 树中存在，那么执行此方法会将该节点从 DOM 树中移除。
+- 2.  如果`referElement`为 null，那么`newElement` 会被添加到父节点的子节点末尾
+
+实现 insertAfter 功能
+
+```
+function insertAfter(newNode, referenceNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
+```
+
+## 创建 ajax 过程
+
+1.  创建 XMLHttpRequest 对象,也就是创建一个异步调用对象.
+2.  创建一个新的 HTTP 请求,并指定该 HTTP 请求的方法、URL 及验证信息.
+3.  设置响应 HTTP 请求状态变化的函数.
+4.  发送 HTTP 请求.
+5.  获取异步调用返回的数据.
+6.  使用 JavaScript 和 DOM 实现局部刷新.
+
+```
+function createXHR() {
+    if (typeof XMLHttpRequest != 'undefined') {
+        return new XMLHttpRequest();
+    } else if (typeof ActiveXObject != 'undefined') {
+        if (typeof arguments.callee.activeXString != 'string') {
+            var versions = [
+                "MSXML2.XMLHtpp.6.0", "MSXML2.XMLHttp.3.0", "MSXML2.XMLHttp"
+            ], i, len;
+            for (i = 0, len = versions.length; i < len; i++) {
+                try {
+                    new ActiveXObject(versions[i]);
+                    arguments.callee.activeXString = versions[i];
+                    break;
+                } catch (ex) {
+                    // 跳过
+                }
+            }
+            return new ActiveXObject(arguments.callee.activeXString);
+        }
+    } else {
+        throw new Error('no xhr object')
+    }
+}
+
+var xhr = createXHR();
+var xhr = XMLHttpRequest();
+xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4) {
+        if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
+            alert(xhr.responseText);
+        } else {
+            alert('Request was unsuccessful' + xhr.status);
+        }
+    }
+}
+
+xhr.open('get', '/index', true);
+xhr.send(null);
+
+xhr.open('post', '/index', true);
+xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+var form = document.getElementById('form');
+        xhr.send(form);
+```
+
+## 实现一个函数 clone，可以对 JavaScript 中的 5 种主要的数据类型（包括 Number、String、Object、Array、Boolean）进行值复制
+
+```
+Object.prototype.clone = function () {
+    var o = this.constructor === Array ? [] : {};
+    for (var e in this) {
+        o[e] = typeof this[e] === "object" ? this[e].clone() : this[e];
+    }
+    return o;
+}
+```
+
+## 编写一个方法 求一个字符串的字节长度
+
+```
+function GetBytes(str) {
+    var len = str.length;
+    var bytes = len;
+    for (var i = 0; i < len; i++) {
+        if (str.charCodeAt(i) > 255) bytes++;
+    }
+    return bytes;
+}
+alert(GetBytes("你好,as"));
+```
+
+## DOM 事件模型是如何的,编写一个 EventUtil 工具类实现事件管理兼容
+
+- DOM 事件包含捕获（capture）和冒泡（bubble）两个阶段：捕获阶段事件从 `window` 开始触发事件然后通过祖先节点一次传递到触发事件的 DOM 元素上；冒泡阶段事件从初始元素依次向祖先节点传递直到 `window`
+- 标准事件监听 `elem.addEventListener(type, handler, capture)/elem.removeEventListener(type, handler, capture)：handler` 接收保存事件信息的 event 对象作为参数，`event.target` 为触发事件的对象，`handler` 调用上下文 `this` 为绑定监听器的对象，`event.preventDefault()`取消事件默认行为，`event.stopPropagation()/event.stopImmediatePropagation()`取消事件传递
+- 老版本 IE 事件监听`elem.attachEvent('on'+type, handler)/elem.detachEvent('on'+type, handler)：handler`不接收 `event` 作为参数，事件信息保存在 `window.event` 中，触发事件的对象为 `event.srcElement`，`handler` 执行上下文 `this` 为 `window` 使用闭包中调用 `handler.call(elem, event)`可模仿标准模型，然后返回闭包，保证了监听器的移除。`event.returnValue` 为 `false` 时取消事件默认行为，`event.cancleBubble` 为 `true` 时取消时间传播
+- 通常利用事件冒泡机制托管事件处理程序提高程序性能。
+
+```
+/**
+ * 跨浏览器事件处理工具。只支持冒泡。不支持捕获
+ * @author  (qiu_deqing@126.com)
+ */
+
+var EventUtil = {
+    getEvent: function (event) {
+        return event || window.event;
+    },
+    getTarget: function (event) {
+        return event.target || event.srcElement;
+    },
+    // 返回注册成功的监听器，IE中需要使用返回值来移除监听器
+    on: function (elem, type, handler) {
+        if (elem.addEventListener) {
+            elem.addEventListener(type, handler, false);
+            return handler;
+        } else if (elem.attachEvent) {
+            var wrapper = function () {
+              var event = window.event;
+              event.target = event.srcElement;
+              handler.call(elem, event);
+            };
+            elem.attachEvent('on' + type, wrapper);
+            return wrapper;
+        }
+    },
+    off: function (elem, type, handler) {
+        if (elem.removeEventListener) {
+            elem.removeEventListener(type, handler, false);
+        } else if (elem.detachEvent) {
+            elem.detachEvent('on' + type, handler);
+        }
+    },
+    preventDefault: function (event) {
+        if (event.preventDefault) {
+            event.preventDefault();
+        } else if ('returnValue' in event) {
+            event.returnValue = false;
+        }
+    },
+    stopPropagation: function (event) {
+        if (event.stopPropagation) {
+            event.stopPropagation();
+        } else if ('cancelBubble' in event) {
+            event.cancelBubble = true;
+        }
+    },
+    /**
+     * keypress事件跨浏览器获取输入字符
+     * 某些浏览器在一些特殊键上也触发keypress，此时返回null
+     **/
+     getChar: function (event) {
+        if (event.which == null) {
+            return String.fromCharCode(event.keyCode);  // IE
+        }
+        else if (event.which != 0 && event.charCode != 0) {
+            return String.fromCharCode(event.which);    // the rest
+        }
+        else {
+            return null;    // special key
+        }
+     }
+};
+```
+
+## es6 中的扩展运算符...的实现原理
+
+```
+var a = {aa:1,bb:2,cc:3};
+
+const {aa,...b} = a;
+
+// babel解构实现
+function _objectWithoutProperties(obj, keys) {
+    var target = {};
+    for (var i in obj) {
+        if (keys.indexOf(i) >= 0) continue;
+        if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
+        target[i] = obj[i];
+    }
+    return target;
+}
+
+var a = { aa: 1, bb: 2, cc: 3 };
+
+var aa = a.aa,
+    b = _objectWithoutProperties(a, ["aa"]);
+```
+
+原理就是 es6 直接采用 `for of`，也就是说，所有总有迭代器的对象都能使用扩展运算符，在 es6 里说不能放前面的，但是在 es7 里如果**用于对象**是可以放前面
+
+## 实现 destructuringArray 方法，达到如下效果
+
+```
+// destructuringArray( [1,[2,4],3], "[a,[b],c]" );
+// result
+// { a:1, b:2, c:3 }
+
+const targetArray = [1, [2, 3], 4];
+const formater = "[a, [b], c]";
+const formaterArray = ['a', ['b'], 'c'];
+
+const destructuringArray = (values, keys) => {
+  try {
+    const obj = {};
+    if (typeof keys === 'string') {
+      keys = JSON.parse(keys.replace(/\w+/g, '"$&"'));
+    }
+
+    const iterate = (values, keys) =>
+      keys.forEach((key, i) => {
+        if(Array.isArray(key)) iterate(values[i], key)
+        else obj[key] = values[i]
+      })
+
+    iterate(values, keys)
+
+    return obj;
+  } catch (e) {
+    console.error(e.message);
+  }
+}
+
+console.dir(destructuringArray(targetArray,formater));
+console.dir(destructuringArray(targetArray,formaterArray));
+```
+
+## 数字格式化 1234567890 -> 1,234,567,890
+
+```
+function formatNum (num) {
+    return num.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+var num = '1234567890';
+var res = formatNum(num);
+console.log(res);
+```
+
+## 简单的字符串模板
+
+```
+var TemplateEngine = function (tpl, data) {
+    var re = /<%([^%>]+)?%>/g, match;
+
+    while (match = re.exec(tpl)) {
+        tpl = tpl.replace(match[0], data[match[1]]);
+    }
+    return tpl;
+}
+
+
+var template = '<p>Hello, my name is <%name%>. I\'m <%age%> years old.</p>';
+console.log(TemplateEngine(template, {
+    name: "Yeaseon",
+    age: 24
+}));
+```
