@@ -56,6 +56,30 @@
         /*
             无论我们使用什么方法将内部函数 传送 到它的词法作用域之外，它都将维护一个指向它最开始被声明时的作用域的引用，而且无论我们什么时候执行它，这个闭包就会被行使。
         */
+
+        // 使用场景
+        // 闭包通常用来创建内部变量，使得这些变量不能被外部随意修改，同时又可以通过指定的函数接口来操作
+
+        var foo = (function () {
+            var secret = 'secret';
+            // "闭包"内的函数可以访问secret变量，而secret变量对于外部却是隐藏的
+            return {
+                get_secret: function () {
+                    // 通过定义的接口来访问secret
+                    return secret;
+                },
+                new_secret: function (new_secret) {
+                    // 通过定义的接口来修改secret
+                    secret = new_secret;
+                }
+            };
+        }());
+
+        foo.get_secret(); // 得到 'secret'
+        foo.secret; // Type error,不能访问
+        foo.new_secret('a new secret') // 通过函数接口，我们访问并修改secret变量
+        foo.get_secret(); // 得到 'a new secret'
+        
     </script>
 </body>
 

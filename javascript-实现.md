@@ -1,4 +1,4 @@
-## 1.请用代码写出(今天是星期 x)其中 x 表示当天是星期几,如果当天是星期一,输出应该是"今天是星期一"
+## 请用代码写出(今天是星期 x)其中 x 表示当天是星期几,如果当天是星期一,输出应该是"今天是星期一"
 
 ```
 var days = ['日','一','二','三','四','五','六'];
@@ -7,7 +7,7 @@ var date = new Date();
 console.log('今天是星期' + days[date.getDay()]);
 ```
 
-## 2.现有一个 Page 类,其原型对象上有许多以 post 开头的方法(如 postMsg);另有一拦截函数 chekc,只返回 ture 或 false.请设计一个函数,该函数应批量改造原 Page 的 postXXX 方法,在保留其原有功能的同时,为每个 postXXX 方法增加拦截验证功能,当 chekc 返回 true 时继续执行原 postXXX 方法,返
+## 现有一个 Page 类,其原型对象上有许多以 post 开头的方法(如 postMsg);另有一拦截函数 chekc,只返回 ture 或 false.请设计一个函数,该函数应批量改造原 Page 的 postXXX 方法,在保留其原有功能的同时,为每个 postXXX 方法增加拦截验证功能,当 chekc 返回 true 时继续执行原 postXXX 方法
 
 ```
 function Page() {}
@@ -54,7 +54,7 @@ obj.postB('checkfy');
 obj.postC('checkfy');
 ```
 
-## 3.补充代码,鼠标单击 Button1 后将 Button1 移动到 Button2 的后面
+## 补充代码,鼠标单击 Button1 后将 Button1 移动到 Button2 的后面
 
 - 如果要插入的 newElement 已经在 DOM 树中存在，那么执行此方法会将该节点从 DOM 树中移除。
 
@@ -133,7 +133,7 @@ obj.postC('checkfy');
     console.log(result);
 ```
 
-## 4.请评价以下事件监听器代码并给出改进意见
+## 请评价以下事件监听器代码并给出改进意见
 
 ```
 if (window.addEventListener) {
@@ -192,7 +192,7 @@ else if (window.attachEvent) {
 }
 ```
 
-## 5.编写一个函数接受 url 中 query string 为参数,返回解析后的 Object,query string 使用 application/x-www-form-urlencoded 编码
+## 编写一个函数接受 url 中 query string 为参数,返回解析后的 Object,query string 使用 application/x-www-form-urlencoded 编码
 
 ```
 function parseQuery(query) {
@@ -240,7 +240,7 @@ function isArray(arg) {
 console.log(parseQuery('sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8&espv=3&espv=5'));
 ```
 
-## 6.完成函数 getViewportSize 返回指定窗口的视口尺寸
+## 完成函数 getViewportSize 返回指定窗口的视口尺寸
 
 ```
 function getViewportSize(w) {
@@ -273,7 +273,7 @@ function getViewportSize(w) {
 }
 ```
 
-## 7.完成函数 getScrollOffset 返回窗口滚动条偏移量
+## 完成函数 getScrollOffset 返回窗口滚动条偏移量
 
 ```
 function getScrollOffset(w) {
@@ -303,7 +303,7 @@ function getScrollOffset(w) {
 }
 ```
 
-## 8.现有一个字符串 richText,是一段富文本,需要显示在页面上.有个要求,需要给其中只包含一个 img 元素的 p 标签增加一个叫 pic 的 class.请编写代码实现.可以使用 jQuery 或 KISSY.
+## 现有一个字符串 richText,是一段富文本,需要显示在页面上.有个要求,需要给其中只包含一个 img 元素的 p 标签增加一个叫 pic 的 class.请编写代码实现.可以使用 jQuery 或 KISSY.
 
 ```
 function richText(text) {
@@ -322,7 +322,7 @@ function richText(text) {
 }
 ```
 
-## 9.编写一个函数将列表子元素顺序反转
+## 编写一个函数将列表子元素顺序反转
 
 ```
 <ul id="target">
@@ -345,7 +345,7 @@ function richText(text) {
 </script>
 ```
 
-## 10.使用原生 javascript 给下面列表中的 li 节点绑定点击事件,点击时创建一个 Object 对象,兼容 IE 和标准浏览器
+## 使用原生 javascript 给下面列表中的 li 节点绑定点击事件,点击时创建一个 Object 对象,兼容 IE 和标准浏览器
 
 ```
 <ul id="nav">
@@ -446,7 +446,7 @@ EventUtil.on(nav, 'click', function (event) {
 });
 ```
 
-## 11.有一个大数组,var a = ['1', '2', '3', ...];a 的长度是 100,内容填充随机整数的字符串.请先构造此数组 a,然后设计一个算法将其内容去重
+## 有一个大数组,var a = ['1', '2', '3', ...];a 的长度是 100,内容填充随机整数的字符串.请先构造此数组 a,然后设计一个算法将其内容去重
 
 ```
     /**
@@ -496,7 +496,7 @@ EventUtil.on(nav, 'click', function (event) {
     console.log(input);
 ```
 
-## 12.请实现一个 Event 类,继承自此类的对象都会拥有两个方法 on,off,once 和 trigger
+## 请实现一个 Event 类,继承自此类的对象都会拥有两个方法 on,off,once 和 trigger
 
 ```
 function Event() {
@@ -550,7 +550,7 @@ Event.prototype.once = function (type, handler) {
 };
 ```
 
-## 13.观察者模式
+## 观察者模式
 
 ```
 var events = (function() {
@@ -609,7 +609,7 @@ events.subscribe('hello', handler);
 events.publish('hello', 'hello world');
 ```
 
-## 14.用 setTimeout 实现 setInterval
+## 用 setTimeout 实现 setInterval
 
 ```
 function mySetInterval(fn, millisec){
@@ -619,6 +619,8 @@ function mySetInterval(fn, millisec){
   }
   setTimeout(interval, millisec)
 }
+
+console.log(mySetInterval(function(){console.log('xxx')},1000))
 ```
 
 ## lazyload
@@ -701,7 +703,6 @@ function createXHR() {
 }
 
 var xhr = createXHR();
-var xhr = XMLHttpRequest();
 xhr.onreadystatechange = function () {
     if (xhr.readyState == 4) {
         if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
@@ -718,7 +719,7 @@ xhr.send(null);
 xhr.open('post', '/index', true);
 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 var form = document.getElementById('form');
-        xhr.send(form);
+xhr.send(form);
 ```
 
 ## 实现一个函数 clone，可以对 JavaScript 中的 5 种主要的数据类型（包括 Number、String、Object、Array、Boolean）进行值复制
