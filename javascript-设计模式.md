@@ -171,7 +171,7 @@ console.log(application.getName());// tugenhua
 
 当必须创建一个对象并以某些数据进行初始化，同时还要公开一些能够访问这些私有数据的方法
 
-# 代理模式
+# 四、代理模式
 
 ## 优点
 
@@ -320,7 +320,7 @@ console.log(proxyPlus(1,2,3,4));  // 10
 console.log(proxyPlus(1,2,3,4));  // 缓存取 10
 ```
 
-# 职责链模式
+# 五、职责链模式
 
 ## 优点
 

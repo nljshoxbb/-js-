@@ -1,12 +1,19 @@
 # 1.React setState 会触发哪些操作？
 
+新的 state 存到一个队列（`batchUpdate`）中。上面三次执行`setState`只是对传进去的对象进行了合并,然后再统一处理（批处理），触发重新渲染过程，因此只重新渲染一次，结果只增加了一次。这样做是非常明智的，因为在一个函数里调用多个`setState`是常见的，如果每一次调用`setState`都要引发重新渲染，显然不是最佳实践。
+
+那么调用 `this.setState()`后什么时候 `this.state` 才会更新？
+答案是即将要执行下一次的 `render` 函数时。
+
+`setState`调用后，React 会执行一个事务（Transaction），在这个事务中，React 将新`state`放进一个队列中，当事务完成后，React 就会刷新队列，然后启动另一个事务，这个事务包括执行 `shouldComponentUpdate` 方法来判断是否重新渲染，如果是，React 就会进行`state`合并（`state merge`）,生成新的`state`和`props`；如果不是，React 仍然会更新`this.state`，只不过不会再 render 了。
+
 # 2.平常开发怎么设计 react 组件的。比如 container 组件，业务组件等等的。
 
 用重构去改善设计
 
 # 3.react 组件的结构（实例对象的结构）
 
-* this.props.children 可以是任何类型
+- this.props.children 可以是任何类型
 
 **实例**
 
@@ -205,7 +212,7 @@ ReactDOM.render({
 
 ### 2.子 → 父
 
-* state 定义在 parent 组件
+- state 定义在 parent 组件
 
 ```
 // parent
@@ -260,7 +267,7 @@ class Child extends Component {
 }
 ```
 
-* state 定义在 child 组件
+- state 定义在 child 组件
 
 ```
 // parent
@@ -505,24 +512,6 @@ B.contextTypes = {
 
 ### 4.Redux || Mobx
 
-## 5.react 阻止点击事件
-
-react 事件实际上是合成事件，而不是本地事件。
-
-> 事件委托：React 实际上并未将事件处理程序附加到节点本身。 当 React 启动时，它开始使用单个事件侦听器监听顶级的所有事件。 当组件被挂载或卸载时，事件处理程序可以简单地添加到内部映射或从内部映射中删除。 当事件发生时，React 知道如何使用这个映射来分派它。 当映射中没有事件处理程序时，React 的事件处理程序是简单的无操作。
-
-> 如果某个元素有多个相同类型事件的事件监听函数,则当该类型的事件触发时,多个事件监听函数将按照顺序依次执行.如果某个监听函数执行了 `event.stopImmediatePropagation()`方法,则除了该事件的冒泡行为被阻止之外(`event.stopPropagation`方法的作用),该元素绑定的后序相同类型事件的监听函数的执行也将被阻止.
-
-区别：
-
-* `event.stopPropagation`将阻止父元素上的处理程序运行。
-* `event.stopImmediatePropagation`也会阻止同一元素上的其他处理程序运行
-
-```
-  e.stopPropagation();
-  e.nativeEvent.stopImmediatePropagation();
-```
-
 ## 6.单页面应用路由实现原理
 
 ### Hash
@@ -565,9 +554,9 @@ Router.route('/green', function () {
 });
 ```
 
-* init 监听浏览器 url hash 更新事件
-* route 存储路由更新时的回调到回调数组 routes 中，回调函数将负责对页面的更新
-* refresh 执行当前 url 对应的回调函数，更新页面
+- init 监听浏览器 url hash 更新事件
+- route 存储路由更新时的回调到回调数组 routes 中，回调函数将负责对页面的更新
+- refresh 执行当前 url 对应的回调函数，更新页面
 
 ### History
 
@@ -594,9 +583,9 @@ window.onpopstate = (e) => {
 
 通过`history.pushState`或者`history.replaceState`，也能做到：改变 `url` 的同时，不会刷新页面。所以 `history` 也具备实现路由控制的潜力。
 
-* `hash` 的改变会触发 `onhashchange` 事件
-* `history` 的改变不会触发任何事件呢。解决方案：罗列出所有可能改变 `history` 的途径，然后在这些途径一一进行拦截
-* HTML5 规范中新增了一个 `onpopstate` 事件，通过它便可以监听到前进或者后退按钮的点击。但是调用`history.pushState`和`history.replaceState`并不会触发 `onpopstate` 事件
+- `hash` 的改变会触发 `onhashchange` 事件
+- `history` 的改变不会触发任何事件呢。解决方案：罗列出所有可能改变 `history` 的途径，然后在这些途径一一进行拦截
+- HTML5 规范中新增了一个 `onpopstate` 事件，通过它便可以监听到前进或者后退按钮的点击。但是调用`history.pushState`和`history.replaceState`并不会触发 `onpopstate` 事件
 
 ### react-router 与 history 结合形式
 
@@ -687,8 +676,8 @@ Link.prototype.handleClick = function handleClick(event) {
 };
 ```
 
-* `history/createBrowserHistory`中使用的是 `window.history.replaceState(historyState, null, path)`
-* `history/createHashHistory` 则使用 `window.location.hash = url`
+- `history/createBrowserHistory`中使用的是 `window.history.replaceState(historyState, null, path)`
+- `history/createHashHistory` 则使用 `window.location.hash = url`
 
 ```
 // history/createHistory中的 updateLocation 方法
@@ -716,8 +705,8 @@ function listen(listener) {
 
 ### 1、react-router 有 hashHistory 和 browserHistory 模式区别
 
-* hashHistory:不需要服务器配置
-* browserHistory: 需要服务器端做配置
+- hashHistory:不需要服务器配置
+- browserHistory: 需要服务器端做配置
 
 ### 2、browserHistory 模式为什么需要配置服务器？
 
@@ -725,5 +714,52 @@ function listen(listener) {
 
 ### 3、使用 hashHistory 模式时，像这样 ?\_k=ckuvup 没用的在 URL 中是什么？
 
-* 通过应用程序的 `pushState` 或 `replaceState` 跳转时，它可以在新的 location 中存储 location state 而不显示在 URL 中，这就像 post 的表单数据。
-* 通过 `window.location.hash = newHash` 很简单地被用于跳转，且不用存储它们的 location state。但我们想全部的 history 都能够使用 location state，因此我们要为每一个 location 创建一个唯一的 key，并把它们的状态存储在 `session storage` 中。当访客点击“后退”和“前进”时，我们就会有一个机制去恢复这些 location state。
+- 通过应用程序的 `pushState` 或 `replaceState` 跳转时，它可以在新的 location 中存储 location state 而不显示在 URL 中，这就像 post 的表单数据。
+- 通过 `window.location.hash = newHash` 很简单地被用于跳转，且不用存储它们的 location state。但我们想全部的 history 都能够使用 location state，因此我们要为每一个 location 创建一个唯一的 key，并把它们的状态存储在 `session storage` 中。当访客点击“后退”和“前进”时，我们就会有一个机制去恢复这些 location state。
+
+## 合成事件系统
+
+React 快速的原因之一就是 React 很少直接操作 DOM，浏览器事件也是一样。原因是太多的浏览器事件会占用很大内存。
+
+React 为此自己实现了一套合成系统，在 DOM 事件体系基础上做了很大改进，减少了内存消耗，简化了事件逻辑，最大化解决浏览器兼容问题。
+
+其基本原理就是，所有在 JSX 声明的事件都会被委托在顶层 `document` 节点上，并根据事件名和组件名存储回调函数(`listenerBank`)。每次当某个组件触发事件时，在 `document` 节点上绑定的监听函数（`dispatchEvent`）就会找到这个组件和它的所有父组件(`ancestors`)，对每个组件创建对应 React 合成事件(`SyntheticEvent`)并批处理(`runEventQueueInBatch(events)`)，从而根据事件名和组件名调用(`invokeGuardedCallback`)回调函数。
+
+因此，如果你采用下面这种写法，并且这样的 P 标签有很多个：
+
+```
+listView = list.map((item,index) => {
+    return (
+        <p onClick={this.handleClick} key={item.id}>{item.text}</p>
+    )
+})
+```
+
+React 帮你实现了事件委托。
+
+由于 React 合成事件系统模拟事件冒泡的方法是构建一个自己及父组件队列，因此也带来一个问题，合成事件不能阻止原生事件，原生事件可以阻止合成事件。如果需要阻止事件传播, 仅用 `event.stopPropagation()` 是不行的, 因为 React 合成事件同样实现了 `stopPropagation()`, 调用 `event.stopPropagation()` 实际上调用了 React 的 `stopPropagation()`(这里的 event 指的是 React 合成事件), 只能阻止 React 合成事件的传播, 要想彻底阻止传播(包括原生事件), 需要调用 React 合成事件暴露的原声事件接口, 因此, 阻止事件传播需要同时调用合成事件与原生事件的接口:
+
+```
+stopPropagation: function(e){
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+}
+```
+
+## react 阻止点击事件
+
+react 事件实际上是合成事件，而不是本地事件。
+
+事件委托：React 实际上并未将事件处理程序附加到节点本身。 当 React 启动时，它开始使用单个事件侦听器监听顶级的所有事件。 当组件被挂载或卸载时，事件处理程序可以简单地添加到内部映射或从内部映射中删除。 当事件发生时，React 知道如何使用这个映射来分派它。 当映射中没有事件处理程序时，React 的事件处理程序是简单的无操作。
+
+如果某个元素有多个相同类型事件的事件监听函数,则当该类型的事件触发时,多个事件监听函数将按照顺序依次执行.如果某个监听函数执行了 `event.stopImmediatePropagation()`方法,则除了该事件的冒泡行为被阻止之外(`event.stopPropagation`方法的作用),该元素绑定的后序相同类型事件的监听函数的执行也将被阻止.
+
+区别：
+
+- `event.stopPropagation`将阻止父元素上的处理程序运行。
+- `event.stopImmediatePropagation`也会阻止同一元素上的其他处理程序运行
+
+```
+  e.stopPropagation();
+  e.nativeEvent.stopImmediatePropagation();
+```

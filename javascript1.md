@@ -293,69 +293,7 @@ Promise 对象有以下两个特点:
 - 对象的状态不受外界影响，Promise 对象代表一个异步操作，有三种状态：Pending（进行中）、Resolved（已完成，又称 Fulfilled）和 Rejected（已失败）
 - 一旦状态改变，就不会再变，任何时候都可以得到这个结果。
 
-## 说说你对 AMD 和 Commonjs 的理解
 
-### (1) CommonJS
-
-`CommonJS` 规范是诞生比较早的。NodeJS 就采用了 CommonJS。加载模块是同步的，也就是说，只有加载完成，才能执行后面的操作。
-
-```
-var clock = require('clock');
-clock.start();
-```
-
-这种写法适合服务端，因为在服务器读取模块都是在本地磁盘，加载速度很快。但是如果在客户端，加载模块的时候有可能出现“假死”状况。比如上面的例子中 clock 的调用必须等待 clock.js 请求成功，加载完毕。那么，能不能异步加载模块呢？
-
-### (2) AMD
-
-AMD，即 (Asynchronous Module Definition)，这种规范是异步的加载模块，requireJs 应用了这一规范。先定义所有依赖，然后在加载完成后的回调函数中执行。非同步加载模块，允许指定回调函数。
-
-```
-require(['clock'],function(clock){
-  clock.start();
-});
-```
-
-### (3) CMD
-
-CMD (Common Module Definition), 是 seajs 推崇的规范，CMD 则是依赖就近，用的时候再 require
-
-```
-define(function(require, exports, module) {
-   var clock = require('clock');
-   clock.start();
-});
-```
-
-## Commonjs 和 es6 模块
-
-### (1) commonJS 模块
-
-1.  动态加载模块
-    commonJS 和 es6 的最大区别大概就在于此了吧，commonJS 模块的动态加载能够很轻松的实现懒加载，优化用户体验。
-
-2.  加载整个模块
-    commonJS 模块中，导出的是整个模块。
-
-3.  每个模块皆为对象
-    commonJS 模块都被视作一个对象。
-
-4.  值拷贝
-    commonJS 的模块输出和 函数的值传递相似，都是值的拷贝
-
-### (2) es6 模块
-
-1.  静态解析
-    即在解析阶段就确定输出的模块，所以 es6 模块的 import 一般写在被引入文件的开头。
-
-2.  模块不是对象
-    在 es6 里，每个模块并不会当做一个对象看待
-
-3.  加载的不是整个模块
-    在 es6 模块中经常会看见一个模块中有好几个 export 导出
-
-4.  模块的引用
-    es6 模块中，导出的并不是模块的值拷贝，而是这个模块的引用
 
 ## Debounce、throttle
 
@@ -583,25 +521,7 @@ addLoadEvent(secondFunction);
 - 数据描述方面。JSON 对数据的描述性比 XML 较差。
 - 传输速度方面。JSON 的速度要远远快于 XML。
 
-## 谈谈你对 webpack 的看法
 
-`WebPack` 是一个模块打包工具，你可以使用`WebPack`管理你的模块依赖，并编绎输出模块们所需的静态文件。它能够很好地管理、打包 Web 开发中所用到的`HTML、JavaScript、CSS`以及各种静态文件（图片、字体等），让开发过程更加高效。对于不同类型的资源，`webpack`有对应的模块加载器。`webpack`模块打包器会分析模块间的依赖关系，最后 生成了优化且合并后的静态资源。
-
-### (1) 两大特色
-
-- code splitting（可以自动完成）
-- loader 可以处理各种类型的静态文件，并且支持串联操作
-
-### (2) 新特性
-
-- 对 CommonJS 、 AMD 、ES6 的语法做了兼容
-- 对 js、css、图片等资源文件都支持打包
-- 串联式模块加载器以及插件机制，让其具有更好的灵活性和扩展性，例如提供对 CoffeeScript、ES6 的支持
-- 有独立的配置文件 webpack.config.js
-- 可以将代码切割成不同的 chunk，实现按需加载，降低了初始化时间
-- 支持 SourceUrls 和 SourceMaps，易于调试
-- 具有强大的 Plugin 接口，大多是内部插件，使用起来比较灵活
-- webpack 使用异步 IO 并具有多级缓存。这使得 webpack 很快且在增量编译上更加快
 
 ## Javascript 垃圾回收方法
 
@@ -1072,71 +992,7 @@ obj2.b(); // obj2
 9.  搜索引擎优化
 10. 特别使用范围
 
-## import 和 require 的区别
 
-### (1) 遵循的模块化规范不一样
-
-- `require`最早应该见于 nodejs 开发，属于 CommonJS 规范的一部分
-- `import`是 ES2015 里的新模块化规范
-
-### (2) 形式不同
-
-- `require/exports` 的用法只有以下三种简单的写法
-
-```
-const fs = require('fs');
-— — — — — — — — — — — — — —
-exports.fs = fs;
-module.exports = fs;
-```
-
-- `import/export`的写法就多种多样
-
-```
-import fs from 'fs';
-import {default as fs} from 'fs';
-import * as fs from 'fs';
-import {readFile} from 'fs';
-import {readFile as read} from 'fs';
-import fs, {readFile} from 'fs';
-— — — — — — — — — — — — — — — — — — — —
-export default fs;
-export const fs;
-export function readFile;
-export {readFile, read};
-export * from 'fs';
-```
-
-### (3)本质上的差别
-
-- CommonJS 还是 ES6 Module 输出都可以看成是一个具备多个属性或者方法的对象；
-- `default` 是 ES6 Module 所独有的关键字，`export default fs` 输出默认的接口对象，`import fs from 'fs'` 可直接导入这个对象；
-- ES6 Module 中导入模块的属性或者方法是强绑定的，包括基础类型；而 CommonJS 则是普通的值传递或者引用传递。
-- `import` 传的是值引用，`require` 是值拷贝
-- `import` 是在编译过程中执行，而`require`是同步。
-
-```
-// counter.js
-exports.count = 0;
-setTimeout(function(){
-    console.log('counter'+exports.count++)
-},500);
-
-// common.js
-const {count} = require('./counter)
-setTimeout(function(){
-    console.log('after'+count)
-},1000);
-
-// es6.js
-import {count} from './counter'
-setTimeout(function(){
-    console.log('after'+count)
-},1000)
-
-//  common.js 输出 counter 1  after0
-//  es6.js 输出 counter 1  after1
-```
 
 ## 手写 parseInt 的实现
 
