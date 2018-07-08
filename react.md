@@ -214,175 +214,11 @@ ReactDOM.render({
 
 - state 定义在 parent 组件
 
-```
-// parent
-
-class Parent extends Component {
-  constructor() {
-    super();
-    this.state = {
-      value: '',
-    }
-  }
-
-  setValue = value => {
-    this.setState({
-      value,
-    })
-  }
-
-  render() {
-    return (
-      <div>
-        <div>我是parent, Value是：{this.state.value}</div>
-        <Child setValue={this.setValue} />
-      </div>
-    );
-  }
-}
-
-class Child extends Component {
-
-  handleChange = e => {
-    this.value = e.target.value;
-  }
-
-  handleClick = () => {
-    const { setValue } = this.props;
-    setValue(this.value);
-  }
-
-  render() {
-    return (
-      <div>
-        我是Child
-        <div className="card">
-          state 定义在 parent
-          <input onChange={this.handleChange} />
-          <div className="button" onClick={this.handleClick}>通知</div>
-        </div>
-      </div>
-    );
-  }
-}
-```
-
 - state 定义在 child 组件
-
-```
-// parent
-
-class Parent extends Component {
-
-  onChange = value => {
-    console.log(value, '来自 child 的 value 变化');
-  }
-
-  render() {
-    return (
-      <div>
-        <div>我是parent
-        <Child onChange={this.onChange} />
-      </div>
-    );
-  }
-}
-
-class Child extends Component {
-
-  constructor() {
-    super();
-    this.state = {
-      childValue: ''
-    }
-  }
-
-  childValChange = e => {
-    this.childVal = e.target.value;
-  }
-
-  childValDispatch = () => {
-    const { onChange } = this.props;
-    this.setState({
-      childValue: this.childVal,
-    }, () => { onChange(this.state.childValue) })
-  }
-
-  render() {
-    return (
-      <div>
-        我是Child
-        <div className="card">
-          state 定义在 child
-          <input onChange={this.childValChange} />
-          <div className="button" onClick={this.childValDispatch}>通知</div>
-        </div>
-      </div>
-    );
-  }
-}
-```
 
 ## (2)兄弟组件
 
 ### 1.利用共有的 Container
-
-```
-// container
-class Container extends Component {
-  constructor() {
-    super();
-    this.state = {
-      value: '',
-    }
-  }
-
-  setValue = value => {
-    this.setState({
-      value,
-    })
-  }
-
-  render() {
-    return (
-      <div>
-        <A setValue={this.setValue}/>
-        <B value={this.state.value} />
-      </div>
-    );
-  }
-}
-
-// 兄弟A
-class A extends Component {
-
-  handleChange = (e) => {
-    this.value = e.target.value;
-  }
-
-  handleClick = () => {
-    const { setValue } = this.props;
-    setValue(this.value);
-  }
-
-  render() {
-    return (
-      <div className="card">
-        我是Brother A, <input onChange={this.handleChange} />
-        <div className="button" onClick={this.handleClick}>通知</div>
-      </div>
-    )
-  }
-}
-
-// 兄弟B
-const B = props => (
-  <div className="card">
-    我是Brother B, value是：
-    {props.value}
-  </div>
-);
-```
 
 ### 2.利用 Context
 
@@ -512,9 +348,9 @@ B.contextTypes = {
 
 ### 4.Redux || Mobx
 
-## 6.单页面应用路由实现原理
+# 单页面应用路由实现原理
 
-### Hash
+## 1. Hash
 
 当 url 的 hash 发生变化时，触发 hashchange 注册的回调，回调中去进行不同的操作，进行不同的内容的展示
 
@@ -558,7 +394,7 @@ Router.route('/green', function () {
 - route 存储路由更新时的回调到回调数组 routes 中，回调函数将负责对页面的更新
 - refresh 执行当前 url 对应的回调函数，更新页面
 
-### History
+## 2. History
 
 ```
 // 这部分可参考红宝书 P215
@@ -587,7 +423,7 @@ window.onpopstate = (e) => {
 - `history` 的改变不会触发任何事件呢。解决方案：罗列出所有可能改变 `history` 的途径，然后在这些途径一一进行拦截
 - HTML5 规范中新增了一个 `onpopstate` 事件，通过它便可以监听到前进或者后退按钮的点击。但是调用`history.pushState`和`history.replaceState`并不会触发 `onpopstate` 事件
 
-### react-router 与 history 结合形式
+## 3. react-router 与 history 结合形式
 
 ```
 // 原对象
@@ -629,9 +465,9 @@ historyModule.updateLocation();
 
 这种包装形式能够充分利用原对象（historyModule ）的内部机制，减少开发成本，也更好的分离包装函数（Router）的逻辑，减少对原对象的影响。
 
-### 从点击 Link 到 render 对应 component ，路由中发生了什么
+## 4. 从点击 Link 到 render 对应 component ，路由中发生了什么
 
-#### (1) 为何能够触发 render component ？
+### 4.1 为何能够触发 render component ？
 
 主要是因为触发了 react setState 的方法从而能够触发 render component。
 
@@ -654,7 +490,7 @@ Router.prototype.componentWillMount = function componentWillMount() {
 };
 ```
 
-#### (2)如何触发监听的回调函数的执行？
+### 4.2 如何触发监听的回调函数的执行？
 
 ```
 Link.prototype.render = function render() {
@@ -695,24 +531,24 @@ function listen(listener) {
 }
 ```
 
-### 总结：
+### 4.3 总结：
 
 1.  回调函数：含有能够更新 react UI 的 react `setState` 方法。
 2.  注册回调：在 Router `componentWillMount` 中使用 `history.listen` 注册的回调函数，最终放在 `history` 模块的 回调函数数组 `changeListeners` 中。
 3.  触发回调：`Link` 点击触发 `history` 中回调函数数组 `changeListeners` 的执行，从而触发原来 listen 中的 `setState` 方法，更新了页面
 
-## 7.react router hashHistory 和 browserHistory 模式区别与配置
+# react router hashHistory 和 browserHistory 模式区别与配置
 
-### 1、react-router 有 hashHistory 和 browserHistory 模式区别
+## 1、react-router 有 hashHistory 和 browserHistory 模式区别
 
 - hashHistory:不需要服务器配置
 - browserHistory: 需要服务器端做配置
 
-### 2、browserHistory 模式为什么需要配置服务器？
+## 2、browserHistory 模式为什么需要配置服务器？
 
 在 browserHistory 模式下，URL 是指向真实 URL 的资源路径，当通过真实 URL 访问网站的时候（首页），这个时候可以正常加载我们的网站资源，而用户在非首页下手动刷新网页时，由于路径是指向服务器的真实路径，但该路径下并没有相关资源，用户访问的资源不存在，返回给用户的是 404 错误。所以需要配置服务器，把路由都指向 index.html，静态资源指向真实的文件夹。
 
-### 3、使用 hashHistory 模式时，像这样 ?\_k=ckuvup 没用的在 URL 中是什么？
+## 3、使用 hashHistory 模式时，像这样 ?\_k=ckuvup 没用的在 URL 中是什么？
 
 - 通过应用程序的 `pushState` 或 `replaceState` 跳转时，它可以在新的 location 中存储 location state 而不显示在 URL 中，这就像 post 的表单数据。
 - 通过 `window.location.hash = newHash` 很简单地被用于跳转，且不用存储它们的 location state。但我们想全部的 history 都能够使用 location state，因此我们要为每一个 location 创建一个唯一的 key，并把它们的状态存储在 `session storage` 中。当访客点击“后退”和“前进”时，我们就会有一个机制去恢复这些 location state。
@@ -763,3 +599,9 @@ react 事件实际上是合成事件，而不是本地事件。
   e.stopPropagation();
   e.nativeEvent.stopImmediatePropagation();
 ```
+
+# 组件的生命周期（以父子组件为例）
+
+![prototypeand__proto__](https://github.com/nljshoxbb/fe/blob/master/img/react-lifecycle.png)
+
+react 在可维护性，团队合作，解决复杂交互，跨平台等方面优秀的表现

@@ -63,9 +63,20 @@ boundGetX(); // 返回 81
 
 这里说的 js 跨域是指通过 js 在不同的域之间进行数据传输或通信，比如用 ajax 向一个不同的域请求数据，或者通过 js 获取页面中不同域的框架中(iframe)的数据。只要协议、域名、端口有任何一个不同，都被当作是不同的域。
 
-当一个资源从与该资源本身所在的服务器不同的域或端口请求一个资源时，资源会发起一个**跨域 HTTP 请求**。出于安全原因，浏览器限制从脚本内发起的跨源 HTTP 请求。 例如，`XMLHttpRequest` 和 `Fetch API` 遵循同源策略。 这意味着使用这些 API 的 Web 应用程序只能从加载应用程序的同一个域请求 HTTP 资源，除非使用 跨域资源共享`CORS`(跨域资源共享) 头文件。
+当一个资源从与该资源本身所在的服务器不同的域或端口请求一个资源时，资源会发起一个 **跨域 HTTP 请求**。出于安全原因，浏览器限制从脚本内发起的跨源 HTTP 请求。 例如，`XMLHttpRequest` 和 `Fetch API` 遵循同源策略。 这意味着使用这些 API 的 Web 应用程序只能从加载应用程序的同一个域请求 HTTP 资源，除非使用 跨域资源共享`CORS`(跨域资源共享) 头文件。
 
 ### (1) 通过 jsonp 跨域
+
+一个简单的jsonp实现，其实就是拼接url，然后将动态添加一个script元素到头部。
+
+```
+function jsonp(req){
+    var script = document.createElement('script');
+    var url = req.url + '?callback=' + req.callback.name;
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script); 
+}
+```
 
 ```
 <script>
@@ -293,8 +304,6 @@ Promise 对象有以下两个特点:
 - 对象的状态不受外界影响，Promise 对象代表一个异步操作，有三种状态：Pending（进行中）、Resolved（已完成，又称 Fulfilled）和 Rejected（已失败）
 - 一旦状态改变，就不会再变，任何时候都可以得到这个结果。
 
-
-
 ## Debounce、throttle
 
 > 以下场景往往由于事件频繁被触发，因而频繁执行 DOM 操作、资源加载等重行为，导致 UI 停顿甚至浏览器崩溃。
@@ -520,8 +529,6 @@ addLoadEvent(secondFunction);
 - 数据交互方面。JSON 与 JavaScript 的交互更加方便，更容易解析处理，更好的数据交互。
 - 数据描述方面。JSON 对数据的描述性比 XML 较差。
 - 传输速度方面。JSON 的速度要远远快于 XML。
-
-
 
 ## Javascript 垃圾回收方法
 
@@ -992,8 +999,6 @@ obj2.b(); // obj2
 9.  搜索引擎优化
 10. 特别使用范围
 
-
-
 ## 手写 parseInt 的实现
 
 ```
@@ -1099,8 +1104,6 @@ for (var i = 0; i < 5; i++) {
 ```
 
 延时函数的第一个参数变成了一个立即执行函数，在这里应该是一个`undefined`，等价于：`setTimeout( undefined, … )`;立即函数会立马执行，所以是立马就输出 0 ～ 4；
-
-
 
 ## 装饰器原理
 
