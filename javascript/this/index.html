@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        // 默认绑定
+        console.log('============默认绑定===========')
+        function foo1() {
+            console.log(this.a);
+        }
+        var a = 2;
+        foo1(); // 2
+
+
+        // new 绑定
+        (function () {
+            console.log('============new 绑定===========')
+            function foo(name) {
+                this.name = name;
+            }
+
+            var bar = new foo('nlj1');
+            console.log(bar.name);  // nlj1
+        })();
+
+        // 明确绑定
+        (function () {
+            console.log('============明确绑定===========')
+            var name = 'nlj2';
+            function foo() {
+                console.log(this.name);
+            }
+            var obj = {
+                name: 'obj+nlj2'
+            }
+            foo.call(obj); // obj+nlj2
+        })();
+
+
+        // 硬绑定 
+        (function () {
+            console.log('============硬绑定===========')
+            function foo(something) {
+                return this.name + something;
+            }
+
+            function bind(fn, obj) {
+                return function () {
+                    return fn.apply(obj, arguments);
+                }
+            }
+
+            var obj = {
+                name: 'obj+nlj3'
+            }
+
+            var bar = bind(foo, obj);
+            var b = bar('something');
+            console.log(b); // obj+nlj3
+
+        })();
+
+        // 隐含绑定
+        (function () {
+            console.log('============隐含绑定===========')
+            var name = 'nlj4';
+            function foo() {
+                console.log(this.name);
+            }
+            var obj = {
+                name: 'obj+nlj4',
+                foo: foo
+            }
+
+            var obj2 = {
+                name: "obj2+nlj4",
+                obj: obj
+            }
+
+            obj2.obj.foo(); // obj+nlj4
+        })();
+
+        // 隐含地丢失
+        console.log('============隐含地丢失===========')
+        function foo() {
+            console.log(this.name);
+        }
+
+        var obj = {
+            name: 'obj+nlj5',
+            foo: foo
+        }
+
+        var bar = obj.foo; // 函数引用
+
+        var name = "global+nlj5";
+
+        function doFoo(fn) {
+            fn(); // 调用点
+        }
+
+        obj.foo(); // obj+nlj5
+        bar(); // global+nlj5
+        doFoo(obj.foo); //  global+nlj5
+        setTimeout(obj.foo, 1000);   // global+nlj5
+
+
+        // 
+    </script>
+</body>
+
+</html>
