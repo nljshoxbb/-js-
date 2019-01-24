@@ -1,37 +1,40 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title>TEst</title>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="renderer" content="webkit" />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-
-</body>
-<script>
-    function bubbleSort(arr) {
-        var len = arr.length;
-        for (var i = 0; i < len; i++) {
-            for (var j = 0; j < len - 1 - i; j++) {
-                if (arr[j] > arr[j + 1]) {
-                    var temp = arr[j + 1];
-                    arr[j + 1] = arr[j];
-                    arr[j] = temp;
-                }
-            }
-        }
-        return arr;
+  <body></body>
+  <script>
+    function Foo(who) {
+      this.me = who;
     }
-</script>
+    Foo.prototype.identify = function() {
+      return "I am" + this.me;
+    };
+    function Bar(who) {
+      Foo.call(this, who);
+    }
 
+    Bar.prototype = Object.create(Foo.prototype);
+    Bar.prototype.speak = function() {
+      console.log("Hello", this.identify() + ".");
+    };
+
+    const b1 = new Bar("b1");
+    const b2 = new Bar("b2");
+
+    b1.speak();
+    b2.speak();
+  </script>
 </html>

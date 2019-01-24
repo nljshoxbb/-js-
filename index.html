@@ -1,35 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
+  <body>
+    <button id="button">123</button>
     <script>
-        let go = function* (x) {
-            console.log('x', x)
-            let a = yield x
-            console.log('xx', x)
-            console.log('a', a)
+      const el = document.getElementById("button");
+      el.addEventListener("click", function(e) {
+       
+      });
 
-            let b = yield x + 1
-            sum = a + b
+      let go = function*(x) {
+        console.log("x", x);
+        let a = yield x;
+        console.log("xx", x);
+        console.log("a", a);
 
-            yield a + b
+        let b = yield x + 1;
+        sum = a + b;
 
-            return a + b
-        }
-        go(10)
-        let g = go(10)
-        console.log(g.next())
-        console.log(g.next(1000))
-        console.log(g.next(50))
-        console.log(g.next())
+        yield a + b;
+
+        return a + b;
+      };
+      go(10);
+      let g = go(10);
+      console.log(g.next());
+      console.log(g.next(1000));
+      console.log(g.next(50));
+      console.log(g.next());
     </script>
-</body>
-
+  </body>
 </html>
