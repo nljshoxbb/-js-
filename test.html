@@ -14,27 +14,59 @@
     </style>
   </head>
 
-  <body></body>
+  <body>
+    <button onclick="fn1(123)">点击</button>
+  </body>
   <script>
-    function Foo(who) {
-      this.me = who;
+    function debounce(fn, wait, immediate) {
+      let timer = null;
+
+      return function() {
+        let args = arguments;
+        console.log(args);
+        let context = this;
+
+        if (immediate && !timer) {
+          fn.apply(context, args);
+        }
+
+        if (timer) {
+          clearTimeout(timer);
+        }
+        timer = setTimeout(() => {
+          fn.apply(context, args);
+        }, wait);
+      };
     }
-    Foo.prototype.identify = function() {
-      return "I am" + this.me;
-    };
-    function Bar(who) {
-      Foo.call(this, who);
+
+    function throttle(fn, wait, immediate) {
+      let timer = null;
+      let callNow = immediate;
+
+      return function() {
+        let context = this;
+        let args = arguments;
+
+        if (callNow) {
+          fn.apply(context, args);
+          callNow = false;
+        }
+
+        if (!timer) {
+          timer = setTimeout(() => {
+            fn.apply(context, args);
+            timer = null;
+          }, wait);
+        }
+      };
+    }
+  </script>
+
+  <script>
+    function handleClick() {
+      console.log("click");
     }
 
-    Bar.prototype = Object.create(Foo.prototype);
-    Bar.prototype.speak = function() {
-      console.log("Hello", this.identify() + ".");
-    };
-
-    const b1 = new Bar("b1");
-    const b2 = new Bar("b2");
-
-    b1.speak();
-    b2.speak();
+    const fn1 = debounc(handleClick, 1000);
   </script>
 </html>
