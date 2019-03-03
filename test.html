@@ -15,58 +15,55 @@
   </head>
 
   <body>
-    <button onclick="fn1(123)">点击</button>
+    <!-- <button onclick="fn1(123)">点击</button> -->
+    <div id="root"></div>
   </body>
   <script>
-    function debounce(fn, wait, immediate) {
-      let timer = null;
+    // function randomHexColor() {
+    //   return (
+    //     "#" +
+    //     ("0000" + ((Math.random() * 0x1000000) << 0).toString(16)).substr(-6)
+    //   );
+    // }
+    // setTimeout(function() {
+    //   var k = 0;
+    //   var root = document.getElementById("root");
+    //   for (var i = 0; i < 10000; i++) {
+    //     k += new Date() - 0;
+    //     var el = document.createElement("div");
+    //     el.innerHTML = k;
+    //     root.appendChild(el);
+    //     el.style.cssText = `background:${randomHexColor()};height:40px`;
+    //   }
+    // }, 1000);
 
-      return function() {
-        let args = arguments;
-        console.log(args);
-        let context = this;
-
-        if (immediate && !timer) {
-          fn.apply(context, args);
-        }
-
-        if (timer) {
-          clearTimeout(timer);
-        }
-        timer = setTimeout(() => {
-          fn.apply(context, args);
-        }, wait);
-      };
+    function randomHexColor() {
+      return (
+        "#" +
+        ("0000" + ((Math.random() * 0x1000000) << 0).toString(16)).substr(-6)
+      );
     }
-
-    function throttle(fn, wait, immediate) {
-      let timer = null;
-      let callNow = immediate;
-
-      return function() {
-        let context = this;
-        let args = arguments;
-
-        if (callNow) {
-          fn.apply(context, args);
-          callNow = false;
+    var root = document.getElementById("root");
+    setTimeout(function() {
+      function loop(n) {
+        var k = 0;
+        console.log(n);
+        for (var i = 0; i < 100; i++) {
+          k += new Date() - 0;
+          var el = document.createElement("div");
+          el.innerHTML = k;
+          root.appendChild(el);
+          el.style.cssText = `background:${randomHexColor()};height:40px`;
         }
-
-        if (!timer) {
-          timer = setTimeout(() => {
-            fn.apply(context, args);
-            timer = null;
-          }, wait);
+        if (n) {
+          setTimeout(function() {
+            loop(n - 1);
+          }, 40);
         }
-      };
-    }
-  </script>
-
-  <script>
-    function handleClick() {
-      console.log("click");
-    }
-
-    const fn1 = debounc(handleClick, 1000);
+      }
+      loop(100);
+    }, 1000);
+    randomHexColor();
+    
   </script>
 </html>
