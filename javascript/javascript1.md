@@ -67,14 +67,14 @@ boundGetX(); // 返回 81
 
 ### (1) 通过 jsonp 跨域
 
-一个简单的jsonp实现，其实就是拼接url，然后将动态添加一个script元素到头部。
+一个简单的 jsonp 实现，其实就是拼接 url，然后将动态添加一个 script 元素到头部。
 
 ```
 function jsonp(req){
     var script = document.createElement('script');
     var url = req.url + '?callback=' + req.callback.name;
     script.src = url;
-    document.getElementsByTagName('head')[0].appendChild(script); 
+    document.getElementsByTagName('head')[0].appendChild(script);
 }
 ```
 
@@ -336,14 +336,36 @@ Promise 对象有以下两个特点:
 debounce(idle,action)
 
 var debounce = function(idle, action){
-  var last
+  var timer
   return function(){
     var _this = this, args = arguments
-    clearTimeout(last)
-    last = setTimeout(function(){
+    clearTimeout(timer)
+    timer = setTimeout(function(){
         action.apply(_this, args)
     }, idle)
   }
+}
+
+
+function debounce(fn, wait, immediate) {
+    let timer = null;
+
+    return function() {
+    let args = arguments;
+    console.log(args);
+    let context = this;
+
+    if (immediate && !timer) {
+        fn.apply(context, args);
+    }
+
+    if (timer) {
+        clearTimeout(timer);
+    }
+    timer = setTimeout(() => {
+        fn.apply(context, args);
+    }, wait);
+    };
 }
 ```
 
@@ -371,15 +393,38 @@ var debounce = function(idle, action){
 throttle(delay,action)
 
 var throttle = function(delay, action){
-  var last = 0;
+  var timer = 0;
   return function(){
     var curr = +new Date()
-    if (curr - last > delay){
+    if (curr - timer > delay){
       action.apply(this, arguments)
-      last = curr
+      timer = curr
     }
   }
 }
+
+
+function throttle(fn, wait, immediate) {
+      let timer = null;
+      let callNow = immediate;
+
+      return function() {
+        let context = this;
+        let args = arguments;
+
+        if (callNow) {
+          fn.apply(context, args);
+          callNow = false;
+        }
+
+        if (!timer) {
+          timer = setTimeout(() => {
+            fn.apply(context, args);
+            timer = null;
+          }, wait);
+        }
+      };
+    }
 ```
 
 ### requestAnimationFrame
@@ -477,7 +522,7 @@ $(window).on('scroll', _.debounce(doSomething, 200));
 10. `keys & values`
 11. `monitor & unmonitor`
 
-## 怎么设置多个 window.onload 事件（类似像 jquery 一样可以同时存在多个$(document).ready()事件）
+## 怎么设置多个 window.onload 事件（类似像 jquery 一样可以同时存在多个\$(document).ready()事件）
 
 ```
 /*
@@ -584,7 +629,7 @@ insertBefore() //并没有insertAfter()
 <body>
 <!-- 这里放内容 -->
 </body>
-</html>  
+</html>
 ```
 
 虽然`<script>` 元素放在了`<head>`元素中，但包含的脚本将延迟浏览器遇到`</html>`标签后再执行。`HTML5`规范要求脚本按照它们出现的先后顺序执行。在现实当中，延迟脚本并不一定会按照顺序执行。`defer`属性 **只适用于外部脚本文件**。支持 `HTML5` 的实现会忽略嵌入脚本设置的 `defer`属性。
@@ -605,44 +650,44 @@ insertBefore() //并没有insertAfter()
 <body>
 <!-- 这里放内容 -->
 </body>
-</html>  
+</html>
 ```
 
 ### (3) 动态创建 DOM 方式（创建 script，插入到 DOM 中，加载完毕后 callBack）
 
 ```
 //这些代码应被放置在</body>标签前(接近HTML文件底部)
-<script type="text/javascript">  
-   function downloadJSAtOnload() {  
-       varelement = document.createElement("script");  
-       element.src = "defer.js";  
-       document.body.appendChild(element);  
-   }  
-   if (window.addEventListener)  
-      window.addEventListener("load",downloadJSAtOnload, false);  
-   else if (window.attachEvent)  
-      window.attachEvent("onload",downloadJSAtOnload);  
+<script type="text/javascript">
+   function downloadJSAtOnload() {
+       varelement = document.createElement("script");
+       element.src = "defer.js";
+       document.body.appendChild(element);
+   }
+   if (window.addEventListener)
+      window.addEventListener("load",downloadJSAtOnload, false);
+   else if (window.attachEvent)
+      window.attachEvent("onload",downloadJSAtOnload);
    else
-      window.onload =downloadJSAtOnload;  
-</script>  
+      window.onload =downloadJSAtOnload;
+</script>
 ```
 
 ### (4) 通过 ajax 按需异步载入 js
 
 ```
-var xhr = new XMLHttpRequest();  
-xhr.open("get", "script1.js", true);  
-xhr.onreadystatechange = function(){  
-    if (xhr.readyState == 4){  
-        if (xhr.status >= 200 && xhr.status < 300 || xhr.status == 304){  
-            var script = document.createElement ("script");  
-            script.type = "text/javascript";  
-            script.text = xhr.responseText;  
-            document.body.appendChild(script);  
-        }  
-    }  
-};  
-xhr.send(null);  
+var xhr = new XMLHttpRequest();
+xhr.open("get", "script1.js", true);
+xhr.onreadystatechange = function(){
+    if (xhr.readyState == 4){
+        if (xhr.status >= 200 && xhr.status < 300 || xhr.status == 304){
+            var script = document.createElement ("script");
+            script.type = "text/javascript";
+            script.text = xhr.responseText;
+            document.body.appendChild(script);
+        }
+    }
+};
+xhr.send(null);
 ```
 
 ### (5) 创建并插入 iframe，让它异步执行 js
@@ -652,7 +697,7 @@ xhr.send(null);
 1.  解析 HTML 结构
 2.  加载外部的脚本和样式文件
 3.  解析并执行脚本代码
-4.  执行$(function(){})内对应代码
+4.  执行\$(function(){})内对应代码
 5.  加载图片等二进制资源
 6.  页面加载完毕，执行 window.onload
 
@@ -726,6 +771,34 @@ date.setDate(date.getDate() - 1);//真正的删除
 1.  如果对象有`valueOf()`方法并且返回元素值，javascript 将返回值转换为数字作为结果
 2.  否则，如果对象有`toString()`并且返回原始值，javascript 将返回结果转换为数字作为结果
 3.  否则，`throws a TypeError`
+
+## (a==1 && a==2 && a==3) 能不能为 true
+
+事实上是可以的，就是因为在`==`比较的情况下，会进行类型的隐式转换。前面已经说过，如果参数不是`Date`对象的实例，就会进行类型转换，先`valueOf`再`obj.toString()` 所以，我们只要改变原生的`valueOf`或者`tostring`方法就可以达到效果：
+
+```
+var a = {
+  num: 0,
+  valueOf: function() {
+    return this.num += 1
+  }
+};
+var eq = (a==1 && a==2 && a==3);
+console.log(eq);
+
+//或者改写他的tostring方法
+var num = 0;0
+Function.prototype.toString = function(){
+    return ++num;
+}
+function a(){}
+
+//还可以改写ES6的symbol类型的toP的方法
+var  a = {[Symbol.toPrimitive]: (function (i) { return function(){return  ++i } }) (0)};
+```
+
+其实操作符单独对对象进行转换的时候，都是先调用 `valueOf`，如果 `valueOf` 返回的不是基本类型，会再调用 `toString`。
+和你是否自定义 valueOf, toString 倒没有关系。
 
 ## <,>,<=,>=的比较规则
 
@@ -1045,12 +1118,12 @@ Person 的实例 p 的原型对象是 Person.prototype 没有 a 属性，Person.
 ```
 setTimeout(function() {console.log(1)}, 0);
 new Promise(function executor(resolve) {
-    console.log(2);  
+    console.log(2);
     for( var i=0 ; i<10000 ; i++ ) {
         i == 9999 && resolve();
     }
     console.log(3);
-}).then(function() {  
+}).then(function() {
     console.log(4);
 });
 console.log(5);
