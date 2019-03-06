@@ -406,15 +406,13 @@ var throttle = function(delay, action){
 
 function throttle(fn, wait, immediate) {
       let timer = null;
-      let callNow = immediate;
-
       return function() {
         let context = this;
         let args = arguments;
 
-        if (callNow) {
+        if (immediate) {
           fn.apply(context, args);
-          callNow = false;
+          immediate = false;
         }
 
         if (!timer) {
