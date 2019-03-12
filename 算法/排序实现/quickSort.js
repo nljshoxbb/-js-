@@ -25,7 +25,6 @@ function quickSort(array) {
       return;
     }
     var storeIndex = partition(array, left, right);
-    console.log(storeIndex)
     sort(array, left, storeIndex - 1);
     sort(array, storeIndex + 1, right);
   }

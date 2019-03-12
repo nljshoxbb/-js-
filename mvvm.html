@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
-    <script>
+  <body>
+    <!-- <script>
         function observe(data) {
             if (!data || typeof data !== 'object') {
                 return;
@@ -36,8 +35,37 @@
                 }
             })
         }
+    </script> -->
+    <script>
+      function observe(data) {
+        if (
+          !data ||
+          Object.prototype.toString.call(data) !== "[object Object]"
+        ) {
+          return;
+        }
+        Object.keys(data).forEach(key => {
+          observeProperty(data, key, data[key]);
+        });
+      }
 
+      function observeProperty(obj, key, val) {
+        observe(val);
+        Object.defineProperty(obj, key, {
+          enumerable: true,
+          configurable: true,
+          get: function() {
+            return val;
+          },
+          set: function(newVal) {
+            if (val === newVal) {
+              return;
+            }
+            console.log("数据更新", val, "=>", newVal);
+            val = newVal;
+          }
+        });
+      }
     </script>
-</body>
-
+  </body>
 </html>
