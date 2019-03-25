@@ -764,7 +764,7 @@ date.setDate(date.getDate() - 1);//真正的删除
 2.  如果对象没有`toString()`方法或者返回值不是原始值，javascript 寻找对象的`valueOf()`方法，如果存在就调用它，返回结果是原始值则转为字符串作为结果
 3.  否则，javascript 不能从`toString()`或者`valueOf()`获得一个原始值，此时`throws a TypeError`
 
-共同点：在 JavaScript 中，`toString()`方法和` valueOf()`方法，在输出对象时会自动调用。
+共同点：在 JavaScript 中，`toString()`方法和`valueOf()`方法，在输出对象时会自动调用。
 不同点：二者并存的情况下，在数值运算中，优先调用了 `valueOf`，字符串运算中，优先调用了 `toString`。
 
 ## 对象到数字的转换步骤

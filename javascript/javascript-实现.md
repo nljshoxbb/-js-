@@ -644,7 +644,7 @@ watchscroll () {
   var windowHeight = window.innerHeight;// 视窗高度
   var imgs = document.getElementsByClassName('lazyloadimg');
   for (var i =0; i < imgs.length; i++) {
-    var imgHeight = imgs[i].offsetTop;// 图片距离顶部高度  
+    var imgHeight = imgs[i].offsetTop;// 图片距离顶部高度
     if (imgHeight  < windowHeight  + bodyScrollHeight) {
        imgs[i].src = imgs[i].getAttribute('data-src');
        img[i].className = img[i].className.replace('lazyloadimg','')
@@ -720,18 +720,6 @@ xhr.open('post', '/index', true);
 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 var form = document.getElementById('form');
 xhr.send(form);
-```
-
-## 实现一个函数 clone，可以对 JavaScript 中的 5 种主要的数据类型（包括 Number、String、Object、Array、Boolean）进行值复制
-
-```
-Object.prototype.clone = function () {
-    var o = this.constructor === Array ? [] : {};
-    for (var e in this) {
-        o[e] = typeof this[e] === "object" ? this[e].clone() : this[e];
-    }
-    return o;
-}
 ```
 
 ## 编写一个方法 求一个字符串的字节长度
