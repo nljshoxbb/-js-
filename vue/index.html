@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>TEst</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="renderer" content="webkit" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p>请输入:</p>
+    <input type="text" id="input" />
+    <p id="p"></p>
+  </body>
+  <script>
+    let uid = 0;
+
+    class Dep {
+      constructor() {
+        this.id = uid++;
+        this.subs = [];
+      }
+
+      depend() {
+        Dep.target.addDep(this);
+      }
+
+      addSub(sub) {
+        this.subs.push(sub);
+      }
+
+      notify() {
+        this.subs.forEach(sub => sub.update());
+      }
+    }
+
+    Dep.target = null;
+
+    class Observer {
+      constructor(value) {
+        this.value = value;
+        this.walk(value);
+      }
+
+      walk(value) {
+        Object.keys(value).forEach(key => this.convert(key, this.value[key]));
+      }
+
+      convert(key, val) {
+        defineReactive(this.value, key, val);
+      }
+    }
+
+    function observe(value) {
+      if (!value || typeof value !== 'object') {
+        return;
+      }
+      return new Observer(value);
+    }
+
+    function defineReactive(obj, key, val) {
+      const dep = new Dep();
+      let childOb = observe(val);
+      Object.defineProperty(obj, key, {
+        enumerable: true,
+        configurable: true,
+        get: () => {
+          if (Dep.target) {
+            dep.depend();
+          }
+          return val;
+        },
+        set: newVal => {
+          if (val === newVal) return;
+          val = newVal;
+
+          childOb = observe(newVal);
+          dep.notify();
+        }
+      });
+    }
+
+    class Watcher {
+      constructor(vm, expOrFn, cb) {
+        this.depIds = {};
+        this.vm = vm;
+        this.cb = cb;
+        this.expOrFn = expOrFn;
+        this.val = this.get();
+      }
+
+      update() {
+        this.run();
+      }
+
+      addDep(dep) {
+        if (!this.depIds.hasOwnProperty(dep.id)) {
+          dep.addSub(this);
+          this.depIds[dep.id] = dep;
+        }
+      }
+      get() {
+        Dep.target = this;
+        const val = this.vm._data[this.expOrFn];
+
+        // 置空，用于下一个Watcher使用
+        Dep.target = null;
+        return val;
+      }
+      run() {
+        const val = this.get();
+        if (val !== this.val) {
+          this.val = val;
+          this.cb.call(this.vm, val);
+        }
+      }
+    }
+    class Vue {
+      constructor(options = {}) {
+        // 简化了$options的处理
+        this.$options = options;
+        // 简化了对data的处理
+        let data = (this._data = this.$options.data);
+        // 将所有data最外层属性代理到Vue实例上
+        Object.keys(data).forEach(key => this._proxy(key));
+        // 监听数据
+        observe(data);
+      }
+      // 对外暴露调用订阅者的接口，内部主要在指令中使用订阅者
+      $watch(expOrFn, cb) {
+        new Watcher(this, expOrFn, cb);
+      }
+      _proxy(key) {
+        Object.defineProperty(this, key, {
+          configurable: true,
+          enumerable: true,
+          get: () => this._data[key],
+          set: val => {
+            this._data[key] = val;
+          }
+        });
+      }
+    }
+
+    let demo = new Vue({
+      data: {
+        text: '',
+        text1: 'text1',
+        obj: {
+          name: '123',
+          obj1: {
+            name1: 'name1',
+            obj2: {
+              name2: 'name2'
+            }
+          }
+        }
+      }
+    });
+
+    const p = document.getElementById('p');
+    const input = document.getElementById('input');
+
+    input.addEventListener('keyup', function(e) {
+      demo.text = e.target.value;
+    });
+
+    demo.$watch('text', str => (p.innerHTML = str));
+    demo.$watch('text1', str => (p.innerHTML = str));
+  </script>
+</html>
