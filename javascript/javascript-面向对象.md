@@ -2,7 +2,7 @@
 
 ## 一、工厂模式
 
-```
+```javascript
 function createPerson(name,age,obj){
     var o = new Object();
     o.name = name;
@@ -26,7 +26,7 @@ var person2 = createPerson('name2',22,'job2');
 
 构造函数可以用来创建特定类型的对象。像 Object 和 Array
 
-```
+```javas
 function Person(name, age, job) {
     this.name = name;
     this.age = age;
